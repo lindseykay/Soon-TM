@@ -1,8 +1,8 @@
-### ENDPOINTS FOR SOON TM
+# ENDPOINTS FOR SOON TM
 
-### Accounts Aggregate
+# Accounts Aggregate
 
-# Create user 
+### Create user 
 
 * Endpoint path: /users/
 * Endpoint method: POST
@@ -15,19 +15,17 @@
 
     ```json
     {
-      "user": [
-        {
-          "username": string,
-          "password": string,
-          "email": email string,
-          "name": string,
-        }
-      ]
+      {
+        "username": string,
+        "password": string,
+        "email": email string,
+        "name": string,
+      }
     }
     ```
 
 
-# Specific user
+### Specific user
 
 * Endpoint path: /users/:id
 * Endpoint method: GET, PUT
@@ -52,9 +50,9 @@
     ```
 
 
-## Contacts Aggregate
+# Contacts Aggregate
 
-# All contacts pertaining to a specific user
+### All contacts pertaining to a specific user
 
 * Endpoint path: /users/:id/contacts
 * Endpoint method: GET, POST
@@ -85,7 +83,7 @@
     }
     ```
 
-# Specific contact
+### Specific contact
 
 * Endpoint path: /users/:id/contacts/:id
 * Endpoint method: GET, PUT, DELETE
@@ -115,52 +113,182 @@
     ```
 
 
-## Messages aggregate
+# Reminders aggregate
 
-# All messages pertaining to a user
 
-* Endpoint path: /users/:id/messages
+### Create a reminder pertaining to an anonymous user
+
+* Endpoint path: /users/:id=None/reminders
+* Endpoint method: POST
+
+* Headers:
+  * Authorization: No token
+
+* Response: Let anonymous user create a reminder
+* Response shape:
+
+    ```json
+    {
+      {
+        "email_target": string,
+        "message_recipients": [
+          ```List of recipent objects
+          ```
+            {
+              "name": string,
+              "email": string,
+              "phone": string,
+            }
+          ],
+        "reminder_date": date,        
+        "message": {
+            "template_id": ,
+            "text": string
+          }
+      }
+    }
+    ```
+
+
+### All reminders pertaining to a user
+
+* Endpoint path: /users/:id/reminders
 * Endpoint method: GET, POST
 
 * Headers:
   * Authorization: User token
 
-* Response: Retrieve all messages for a user or create a new message
+* Response: Retrieve all reminders for a user or create a new reminder
 * Response shape:
 
     ```json
     {
-        "messages":
+        "reminders":
             [
-                {
-                  "message_id": int,
-                  "message_recipients": [list of emails],
-                  "target_date": date,        
-                  "message": string
-                }
+              {
+                "reminder_id": int,
+                "message_recipients": [
+                  ```List of recipent objects
+                  ```
+                    {
+                      "name": string,
+                      "email": string,
+                      "phone": string,
+                    }
+                  ],
+                "reminder_date": date,        
+                "message": {
+                    "template_id": ,
+                    "text": string
+                  },
+                "sent": boolean,
+              }
             ]
     }
     ```
 
-# Specific message
+### Specific reminder
 
-* Endpoint path: /users/:id/messages/:id
+* Endpoint path: /users/:id/reminders/:id
 * Endpoint method: GET, PUT, DELETE
 
 * Headers:
   * Authorization: User token
 
-* Response: Retrieve, edit, or delete a message
+* Response: Retrieve, edit, or delete a reminder
 * Response shape:
 
     ```json
     {
-      "message": 
+      "reminder": 
         {
-            "message_id": int,
-            "message_recipients": [list of emails],
-            "target_date": date,        
-            "message": string
+          "reminder_id": int,
+          "message_recipients": [
+            ```List of recipent objects
+            ```
+              {
+                "name": string,
+                "email": string,
+                "phone": string,
+              }
+            ],
+          "reminder_date": date,        
+          "message": {
+              "template_id": ,
+              "text": string
+            },
+          "sent": boolean,
         }    
     }
     ```
+
+
+# Templates Aggregate
+
+### Get list of themes
+
+* Endpoint path: users/:id/templates/
+* Endpoint method: GET, POST
+
+* Headers:
+  * Authorization: None or user token
+
+* Response: Retrieve a list of public and user templates (if any) or create a new template
+* Response shape:
+
+* GET
+    ```json
+    {
+      "public_templates": [
+        {
+          ``` template object
+          ```
+          "theme": {
+            "theme_name": string,
+            "theme_picture": picture_url,
+          },
+          "template_name": string,
+          "text": string,
+        }
+      ],
+      "user_templates": [
+        {
+          ``` template object
+          ```
+          "template_name": string,
+          "text": string,
+        }
+      ]
+    }
+    ```
+
+
+* POST
+  ```json
+      {
+        "template_name": string,
+        "text": string,
+      }
+  ```
+
+
+
+### Specific template
+
+* Endpoint path: /users/:id/templates/:id
+* Endpoint method: GET, PUT, DELETE
+
+* Headers:
+  * Authorization: User token
+
+* Response: Retrieve, edit, or delete a template
+* Response shape:
+
+    ```json
+    {
+      "template_name": string,
+      "text": string, 
+    }
+    ```
+
+
