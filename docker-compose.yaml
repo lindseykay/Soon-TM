@@ -1,6 +1,8 @@
 volumes:
   soon-tm-data:
     external: true
+  pg-admin:
+    external: true
 services:
   ghi:
     image: node:lts-bullseye
@@ -16,25 +18,36 @@ services:
       HOST: "0.0.0.0"
       PUBLIC_URL: http://localhost:3000
       REACT_APP_SAMPLE_SERVICE_API_HOST: http://localhost:8000
+  db:
+    build:
+      context: ./relational-data
+      dockerfile: ./Dockerfile.dev
+    environment:
+      - POSTGRES_MULTIPLE_DATABASES=accounts, reminders, contacts, templates
+      - POSTGRES_PASSWORD=password
+    ports:
+      - "15432:5432"
+    volumes:
+      - soon-tm-data:/var/lib/postgresql/data
+  pg-admin:
+    image: dpage/pgadmin4
+    volumes:
+      - pg-admin:/var/lib/pgadmin
+    ports:
+      - 8082:80
+    environment:
+      PGADMIN_DEFAULT_EMAIL: soontm@soontm.com
+      PGADMIN_DEFAULT_PASSWORD: ghostbusters
+      PGADMIN_DISABLE_POSTFIX: 1
   users_api:
     build:
       context: users_service
       dockerfile: Dockerfile.dev
     environment:
-      DATABASE_URL: postgresql://ghost_buster_user:secret@db/soon_tm_db
+      DATABASE_URL: postgresql://postgres:password@db:5432/accounts
       WAIT_HOSTS: db:5432
       PORT: 8000
     ports:
       - "8000:8000"
     volumes:
       - ./users_service:/app
-  db:
-    image: postgres:14.5-bullseye
-    environment:
-      POSTGRES_PASSWORD: secret
-      POSTGRES_USER: ghost_buster_user
-      POSTGRES_DB: soon_tm_db
-    ports:
-      - "15432:5432"
-    volumes:
-      - soon-tm-data:/var/lib/postgresql/data
