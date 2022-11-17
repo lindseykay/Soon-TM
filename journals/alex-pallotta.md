@@ -6,3 +6,9 @@
 - Looking forwards:
     - Finish user endpoints by adding in an endpoint for updating
     - Divide into initial pairs and assign tasks for completing out backend
+
+## Nov 16, 2022
+- Worked as a team of 4 on the following:
+    - Structured docker-compose YAML file
+    - Finished put request for users microservice
+    - Migration files for all APIs
