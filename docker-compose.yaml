@@ -51,3 +51,39 @@ services:
       - "8000:8000"
     volumes:
       - ./users_service:/app
+  reminders_api:
+    build:
+      context: reminders_service
+      dockerfile: Dockerfile.dev
+    environment:
+      DATABASE_URL: postgresql://postgres:password@db:5432/reminders
+      WAIT_HOSTS: db:5432
+      PORT: 8001
+    ports:
+      - "8001:8000"
+    volumes:
+      - ./reminders_service:/app
+  contacts_api:
+    build:
+      context: contacts_service
+      dockerfile: Dockerfile.dev
+    environment:
+      DATABASE_URL: postgresql://postgres:password@db:5432/contacts
+      WAIT_HOSTS: db:5432
+      PORT: 8002
+    ports:
+      - "8002:8000"
+    volumes:
+      - ./contacts_service:/app
+  templates_api:
+    build:
+      context: templates_service
+      dockerfile: Dockerfile.dev
+    environment:
+      DATABASE_URL: postgresql://postgres:password@db:5432/templates
+      WAIT_HOSTS: db:5432
+      PORT: 8003
+    ports:
+      - "8003:8000"
+    volumes:
+      - ./templates_service:/app
