@@ -2,17 +2,17 @@ steps = [
     [
         # "Up" SQL statement
         """
-        create table users (
-            id serial primary key not null,
-            username varchar(48) unique not null,
-            password varchar(48) not null,
-            email varchar(64) unique not null,
-            name varchar(64) not null
+        CREATE TABLE users (
+            id SERIAL PRIMARY KEY NOT NULL,
+            username VARCHAR(48) UNIQUE NOT NULL,
+            password VARCHAR(48) NOT NULL,
+            email VARCHAR(64) UNIQUE NOT NULL,
+            name VARCHAR(64) NOT NULL
         );
         """,
         # "Down" SQL statement
         """
-        drop table users;
+        DROP TABLE users;
         """
     ],
 ]

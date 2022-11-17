@@ -2,32 +2,32 @@ steps = [
     [
         # "Up" SQL statement
         """
-        create table templates (
-            id serial primary key not null,
-            public boolean not null,
-            theme_id int,
-            user_id int,
-            name varchar(100) not null,
-            content text not null
+        CREATE TABLE templates (
+            id SERIAL PRIMARY KEY NOT NULL,
+            public boolean NOT NULL,
+            theme_id INT,
+            user_id INT,
+            name VARCHAR(100) NOT NULL,
+            content TEXT NOT NULL
         );
         """,
         # "Down" SQL statement
         """
-        drop table templates;
+        DROP TABLE templates;
         """
     ],
     [
         # "Up" SQL statement
         """
-        create table themes (
-            id serial primary key not null,
-            name varchar(50) not null,
-            picture_url varchar(255) not null
+        CREATE TABLE themes (
+            id SERIAL PRIMARY KEY NOT NULL,
+            name VARCHAR(50) NOT NULL,
+            picture_url VARCHAR(255) NOT NULL
         );
         """,
         # "Down" SQL statement
         """
-        drop table themes;
+        DROP TABLE themes;
         """
     ]
 ]

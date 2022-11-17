@@ -2,30 +2,30 @@ steps = [
     [
         # "Up" SQL statement
         """
-        create table contacts (
-            id serial primary key not null,
-            recipient_id int not null,
-            special_days_id int,
-            notes text
+        CREATE TABLE contacts (
+            id SERIAL PRIMARY KEY NOT NULL,
+            recipient_id INT NOT NULL,
+            special_days_id INT,
+            notes TEXT
         );
         """,
         # "Down" SQL statement
         """
-        drop table contacts;
+        DROP TABLE contacts;
         """
     ],
     [
         # "Up" SQL statement
         """
-        create table special_days (
-            id serial primary key not null,
-            name varchar(100) not null,
-            date date not null
+        CREATE TABLE special_days (
+            id SERIAL PRIMARY KEY NOT NULL,
+            name VARCHAR(100) NOT NULL,
+            date DATE NOT NULL
         );
         """,
         # "Down" SQL statement
         """
-        drop table special_days;
+        DROP TABLE special_days;
         """
     ],
 ]

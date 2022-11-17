@@ -3,15 +3,15 @@ steps = [
         # "Up" SQL statement
         """
         CREATE TABLE reminders (
-            id serial primary key not null,
-            user_id int,
-            email_target varchar(64) not null,
-            reminder_date date not null,
-            message_id int not null,
-            sent boolean default false not null,
-            sent_on date,
-            recurring boolean default false not null,
-            created_on date default now() not null
+            id SERIAL PRIMARY KEY NOT NULL,
+            user_id INT,
+            email_target VARCHAR(64) NOT NULL,
+            reminder_date DATE NOT NULL,
+            message_id INT NOT NULL,
+            sent boolean DEFAULT FALSE NOT NULL,
+            sent_on DATE,
+            recurring BOOLEAN DEFAULT FALSE NOT NULL,
+            created_on DATE DEFAULT NOW() NOT NULL
         );
         """,
         # "Down" SQL statement
@@ -23,9 +23,9 @@ steps = [
         # "Up" SQL statement
         """
         CREATE TABLE messages (
-            id serial primary key not null,
-            template_id int,
-            content text not null
+            id SERIAL PRIMARY KEY NOT NULL,
+            template_id INT,
+            content text NOT NULL
         );
         """,
         # "Down" SQL statement
@@ -37,8 +37,8 @@ steps = [
         # "Up" SQL statement
         """
         CREATE TABLE reminders_recipients_mapping_table (
-            reminder_id int not null,
-            recipient_id int not null
+            reminder_id INT NOT NULL,
+            recipient_id INT NOT NULL
         );
         """,
         # "Down" SQL statement
@@ -50,10 +50,10 @@ steps = [
         # "Up" SQL statement
         """
         CREATE TABLE recipients (
-            id serial primary key not null,
-            name varchar(50) not null,
-            phone varchar(20),
-            email varchar(64)
+            id SERIAL PRIMARY KEY NOT NULL,
+            name VARCHAR(50) NOT NULL,
+            phone VARCHAR(20),
+            email VARCHAR(64)
         );
         """,
         # "Down" SQL statement
