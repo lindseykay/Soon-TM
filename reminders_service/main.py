@@ -1,10 +1,10 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
-# from routers import users
+from routers import reminders
 import os
 
 app = FastAPI()
-# app.include_router(users.router)
+app.include_router(reminders.router)
 
 app.add_middleware(
     CORSMiddleware,
