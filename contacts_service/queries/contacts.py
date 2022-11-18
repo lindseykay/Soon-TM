@@ -3,6 +3,7 @@ from queries.pools import pool
 from typing import List, Optional, Union
 from queries.specialdays import SpecialDaysRepository, SpecialDayOut, SpecialDayIn
 
+
 class ContactError(BaseModel):
     message : str
 
@@ -13,10 +14,12 @@ class Recipient(BaseModel):
     email : Optional[str]
 
 class ContactIn(BaseModel):
+    user_id: int
     recipient_id: int
     notes : str
 
 class ContactOut(BaseModel):
+    user_id: int
     recipient : Recipient
     special_days : List[SpecialDayOut]
     notes : str
@@ -29,32 +32,29 @@ class ContactsRepository:
                     result = db.execute(
                         """
                         INSERT INTO contacts
-                            (recipient_id, notes)
+                            (user_id, recipient_id, notes)
                         VALUES
-                            (%s, %s)
+                            (%s, %s, %s)
                         RETURNING *;
                         """,
-                        [contact.recipient_id, contact.notes]
+                        [contact.user_id, contact.recipient_id, contact.notes]
                     )
                     contact_record = result.fetchone()
                     recipient = self.temp_create_recipient(contact_record[1])
 
                     s_days = []
                     for day in special_days:
-                        new_sd = SpecialDaysRepository.create(None, day, contact_record[0])
+                        new_sd = SpecialDaysRepository.create(SpecialDaysRepository, day, contact_record[0])
                         if isinstance(new_sd,SpecialDayOut):
                             s_days.append(new_sd)
-
-
                     return ContactOut(
+                        user_id = contact_record[1],
                         recipient = recipient,
                         special_days = s_days,
-                        notes = contact_record[2]
+                        notes = contact_record[3]
                     )
         except Exception:
             return {"message": "hello error town"}
-
-
 
 
     def temp_create_recipient(self, id:int):

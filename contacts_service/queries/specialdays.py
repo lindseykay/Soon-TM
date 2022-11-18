@@ -37,22 +37,16 @@ class SpecialDaysRepository:
                         ]
                     )
                     query = result.fetchone()
-                    output = SpecialDayOut(
-                        id = query[0],
-                        contact_id = query[1],
-                        name = query[2],
-                        date = query[3]
-                    )
-                    return output
+                    return query_to_specialdayout(query)
         except Exception:
             return {"message": "not so special of a day huh"}
 
 
-    # def query_to_specialdayout(self, query: tuple) -> SpecialDayOut:
-    #     output = SpecialDayOut(
-    #         id = query[0],
-    #         contact_id = query[1],
-    #         name = query[2],
-    #         date = query[3]
-    #     )
-    #     return output
+def query_to_specialdayout(query: tuple) -> SpecialDayOut:
+    output = SpecialDayOut(
+        id = query[0],
+        contact_id = query[1],
+        name = query[2],
+        date = query[3]
+    )
+    return output

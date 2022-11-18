@@ -4,6 +4,7 @@ steps = [
         """
         CREATE TABLE contacts (
             id SERIAL PRIMARY KEY NOT NULL,
+            user_id INT NOT NULL,
             recipient_id INT NOT NULL,
             notes TEXT
         );
