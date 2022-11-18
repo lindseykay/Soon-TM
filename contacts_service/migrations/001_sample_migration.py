@@ -5,7 +5,6 @@ steps = [
         CREATE TABLE contacts (
             id SERIAL PRIMARY KEY NOT NULL,
             recipient_id INT NOT NULL,
-            special_days_id INT,
             notes TEXT
         );
         """,
@@ -19,6 +18,7 @@ steps = [
         """
         CREATE TABLE special_days (
             id SERIAL PRIMARY KEY NOT NULL,
+            contact_id INT NOT NULL,
             name VARCHAR(100) NOT NULL,
             date DATE NOT NULL
         );
