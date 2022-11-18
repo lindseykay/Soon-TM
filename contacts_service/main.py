@@ -1,10 +1,11 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
-from routers import contacts
+from routers import contacts, specialdays
 import os
 
 app = FastAPI()
 app.include_router(contacts.router)
+app.include_router(specialdays.router)
 
 app.add_middleware(
     CORSMiddleware,

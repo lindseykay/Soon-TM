@@ -18,3 +18,10 @@
   - Settle on git branch conventions
   - Divide into pairs and tackle building out endpoints for assigned microservices
   - Merge request #1
+
+## Nov 17, 2022
+
+- Ron/Sean - Pair programming
+  - Created a ron/seng contacts_api branch to work off of for contacts API
+  - Completed Create ContactIn, ContactOut, Create SpecialDayIn, SpecialDayOut
+  - Implemented back end where users can create multiple special days when creating one contact
