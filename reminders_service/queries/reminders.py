@@ -84,12 +84,15 @@ class ReminderRepository:
                         ]
                     )
                     query = result.fetchone()
-                    print(query)
+
                     recipient_list = []
                     for recipient in new_recipient_list:
-                        print(recipient)
                         new_recipient = RecipientRepository.create(RecipientRepository, recipient)
                         recipient_list.append(new_recipient)
+
+                    recipient_ids = [recipient.id for recipient in recipient_list]
+                    for id in recipient_ids:
+                        ReminderRecipientMappingRepository.create(ReminderRecipientMappingRepository, query[0], id)
 
                     return self.reminder_query_to_reminderout(query, recipient_list)
         except Exception:
@@ -108,19 +111,6 @@ class ReminderRepository:
             created_on= query[8],
             recipients= recipient_list
         )
-
-    # def get_recipients_by_reminder_id(self, reminder: ReminderOut) -> ReminderOut:
-    #     id = reminder.id
-    #     try:
-    #         with pool.connection() as conn:
-    #             with conn.cursor() as db:
-    #                 result = db.execute(
-    #                     """
-    #                     SELECT reminders.id,
-    #                     recipients
-    #                     FROM reminders
-    #                     """
-    #                 )
 
 class MessageRepository:
     def create(self, message: MessageIn) -> Union[MessageOut, Error]:
@@ -176,17 +166,23 @@ class RecipientRepository:
             return {"message": "No good"}
 
 
-
-                    # db.execute(
-                    #     """
-                    #     INSERT INTO reminders_recipients_mapping_table(
-                    #         reminder_id
-                    #         , recipient_id
-                    #     )
-                    #     VALUES (%s, %s)
-                    #     """,
-                    #     [
-                    #         reminder_id,
-                    #         recipient_id
-                    #     ]
-                    # )
+class ReminderRecipientMappingRepository:
+    def create(self, reminder_id: int, recipient_id: int):
+        try:
+            with pool.connection() as conn:
+                with conn.cursor() as db:
+                    db.execute(
+                        """
+                        INSERT INTO reminders_recipients_mapping_table(
+                            reminder_id
+                            , recipient_id
+                        )
+                        VALUES (%s, %s);
+                        """,
+                        [
+                            reminder_id,
+                            recipient_id
+                        ]
+                    )
+        except Exception:
+            return {"message": "Failed to insert mapping table"}
