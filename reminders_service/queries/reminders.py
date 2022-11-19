@@ -97,7 +97,7 @@ class ReminderRepository:
                     return self.reminder_query_to_reminderout(query, recipient_list)
         except Exception:
             return {"message": "No good"}
-    
+
     def reminder_query_to_reminderout(self, query: tuple, recipient_list: List[RecipientOut]) -> ReminderOut:
         return ReminderOut(
             id= query[0],
@@ -111,6 +111,77 @@ class ReminderRepository:
             created_on= query[8],
             recipients= recipient_list
         )
+
+
+    def get_all(self, user_id:int) -> Union[List[ReminderOut], Error]:
+        try:
+            with pool.connection() as conn:
+                with conn.cursor() as db:
+                    result = db.execute(
+                            """
+                            SELECT r.id,
+                                    r.user_id,
+                                    r.email_target,
+                                    r.reminder_date,
+                                    r.message_id,
+                                    r.sent,
+                                    r.sent_on,
+                                    r.recurring,
+                                    r.created_on,
+                                    re.id as recipient_id,
+                                    re.name,
+                                    re. phone,
+                                    re. email
+                            FROM reminders as r
+                            LEFT JOIN reminders_recipients_mapping_table as rrmt
+                            ON (r.id = rrmt.reminder_id)
+                            LEFT JOIN recipients as re
+                            ON (rrmt.recipient_id = re.id )
+                            WHERE r.user_id = %s
+                            ORDER BY r.id;
+                            """,
+
+                            [user_id]
+
+                    )
+
+                    query = result.fetchall()
+
+                    new_dict = {}
+                    for record in query:
+                        if record[0] not in new_dict:
+                            print("If statement ran")
+                            new_dict[record[0]] = ReminderOut(
+                                id= record[0],
+                                user_id= record[1],
+                                email_target= record[2],
+                                reminder_date= record[3],
+                                message_id= record[4],
+                                sent= record[5],
+                                sent_on= record[6],
+                                recurring= record[7],
+                                created_on= record[8],
+                                recipients= [RecipientOut(
+                                    id = record[9],
+                                    name = record[10],
+                                    phone = record[11],
+                                    email = record[12])
+                                    ]
+                            )
+
+                        else:
+                            print(new_dict[record[0]].recipients)
+                            new_dict[record[0]].recipients.append(RecipientOut(
+                                    id = record[9],
+                                    name = record[10],
+                                    phone = record[11],
+                                    email = record[12])
+                                    )
+                    return(list(new_dict.values()))
+
+
+        except Exception:
+            return {"message": "Get_all fetch failed"}
 
 class MessageRepository:
     def create(self, message: MessageIn) -> Union[MessageOut, Error]:

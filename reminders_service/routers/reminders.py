@@ -8,12 +8,13 @@ from queries.reminders import (
     ReminderIn,
     ReminderOut,
     ReminderRepository,
-    MessageRepository
+    MessageRepository,
+    Error,
 )
 
 router = APIRouter()
 
-@router.post("/reminders")
+@router.post("/reminders", response_model= Union[ReminderOut, Error])
 def create_reminder(
     reminder: ReminderIn,
     message: MessageIn,
@@ -29,3 +30,12 @@ def create_reminder(
     if new_reminder == None or new_reminder == {"message": "No good"}:
         response.status_code = 400
     return new_reminder
+
+
+@router.get("/reminders", response_model= Union[List[ReminderOut], Error])
+def get_all(
+    user_id: int,
+    response: Response,
+    repo: ReminderRepository = Depends()
+):
+    return repo.get_all(user_id)
