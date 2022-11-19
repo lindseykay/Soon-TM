@@ -102,11 +102,9 @@ class ReminderRepository:
                             [user_id]
                     )
                     query = result.fetchall()
-                    print(query)
                     new_dict = {}
                     for record in query:
                         if record[0] not in new_dict:
-                            print("if statement runs")
                             new_dict[record[0]] = ReminderOut(
                                 id= record[0],
                                 user_id= record[1],
@@ -125,7 +123,6 @@ class ReminderRepository:
                                     ]
                             )
                         else:
-                            print("else statement runs")
                             new_dict[record[0]].recipients.append(RecipientOut(
                                     id = record[9],
                                     name = record[10],
