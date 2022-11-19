@@ -3,21 +3,9 @@ from typing import List, Optional, Union
 from queries.pools import pool
 from datetime import date
 from queries.recipients import RecipientIn, RecipientOut, RecipientRepository
-
-class Error(BaseModel):
-    message: str
-
-
-class MessageIn(BaseModel):
-    template_id: Optional[int]
-    content: str
-
-
-class MessageOut(BaseModel):
-    id: int
-    template_id: Optional[int]
-    content: str
-
+from queries.messages import MessageOut
+from queries.error import Error
+from queries.reminder_recipient_mapping_repo import ReminderRecipientMappingRepository
 
 class ReminderIn(BaseModel):
     email_target: str
@@ -81,21 +69,7 @@ class ReminderRepository:
                         ReminderRecipientMappingRepository.create(ReminderRecipientMappingRepository, query[0], id)
                     return self.reminder_query_to_reminder_out(query, recipient_list)
         except Exception:
-            return {"message": "No good"}
-
-    def reminder_query_to_reminder_out(self, query: tuple, recipient_list: List[RecipientOut]) -> ReminderOut:
-        return ReminderOut(
-            id= query[0],
-            user_id= query[1],
-            email_target= query[2],
-            reminder_date= query[3],
-            message_id= query[4],
-            sent= query[5],
-            sent_on= query[6],
-            recurring= query[7],
-            created_on= query[8],
-            recipients= recipient_list
-        )
+            return {"message": "create reminder record failed"}
 
     def get_all(self, user_id:int) -> Union[List[ReminderOut], Error]:
         try:
@@ -103,7 +77,8 @@ class ReminderRepository:
                 with conn.cursor() as db:
                     result = db.execute(
                             """
-                            SELECT r.id,
+                            SELECT 
+                                    r.id,
                                     r.user_id,
                                     r.email_target,
                                     r.reminder_date,
@@ -127,9 +102,11 @@ class ReminderRepository:
                             [user_id]
                     )
                     query = result.fetchall()
+                    print(query)
                     new_dict = {}
                     for record in query:
                         if record[0] not in new_dict:
+                            print("if statement runs")
                             new_dict[record[0]] = ReminderOut(
                                 id= record[0],
                                 user_id= record[1],
@@ -148,59 +125,29 @@ class ReminderRepository:
                                     ]
                             )
                         else:
+                            print("else statement runs")
                             new_dict[record[0]].recipients.append(RecipientOut(
                                     id = record[9],
                                     name = record[10],
                                     phone = record[11],
                                     email = record[12])
                                     )
-                    return(list(new_dict.values()))
+                    returns = list(new_dict.values())
+                    return returns
         except Exception:
-            return {"message": "Get_all fetch failed"}
+            return {"message": "get_all reminder records failed"}
 
-class MessageRepository:
-    def create(self, message: MessageIn) -> Union[MessageOut, Error]:
-        try:
-            with pool.connection() as conn:
-                with conn.cursor() as db:
-                    result = db.execute(
-                        """
-                        INSERT INTO messages(
-                            template_id
-                            , content
-                        )
-                        VALUES (%s, %s)
-                        RETURNING id;
-                        """,
-                        [
-                            message.template_id,
-                            message.content
-                        ]
-                    )
-                    id = result.fetchone()[0]
-                    input = message.dict()
-                    return MessageOut(id=id, **input)
-        except Exception:
-            return {"message": "No good"}
-
-
-class ReminderRecipientMappingRepository:
-    def create(self, reminder_id: int, recipient_id: int):
-        try:
-            with pool.connection() as conn:
-                with conn.cursor() as db:
-                    db.execute(
-                        """
-                        INSERT INTO reminders_recipients_mapping_table(
-                            reminder_id
-                            , recipient_id
-                        )
-                        VALUES (%s, %s);
-                        """,
-                        [
-                            reminder_id,
-                            recipient_id
-                        ]
-                    )
-        except Exception:
-            return {"message": "Failed to insert mapping table"}
+#HELPER FUNCTIONS
+    def reminder_query_to_reminder_out(self, query: tuple, recipient_list: List[RecipientOut]) -> ReminderOut:
+        return ReminderOut(
+            id= query[0],
+            user_id= query[1],
+            email_target= query[2],
+            reminder_date= query[3],
+            message_id= query[4],
+            sent= query[5],
+            sent_on= query[6],
+            recurring= query[7],
+            created_on= query[8],
+            recipients= recipient_list
+            )

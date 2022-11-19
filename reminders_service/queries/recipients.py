@@ -1,10 +1,8 @@
 from pydantic import BaseModel
-from typing import List, Optional, Union
+from typing import Optional, Union
 from queries.pools import pool
-from datetime import date
+from queries.error import Error
 
-class Error(BaseModel):
-    message: str
 
 class RecipientIn(BaseModel):
     name: str
@@ -17,6 +15,7 @@ class RecipientOut(BaseModel):
     name: str
     phone: Optional[str]
     email: Optional[str]
+
 
 class RecipientRepository:
     def create(self, recipient: RecipientIn) -> Union[RecipientOut, Error]:
@@ -65,4 +64,4 @@ class RecipientRepository:
                     input = recipient.dict()
                     return RecipientOut(id=recipient_id, **input)
         except Exception:
-            return {"message": "No good"}
+            return {"message": "create recipient record failed"}
