@@ -2,22 +2,10 @@ from pydantic import BaseModel
 from typing import List, Optional, Union
 from queries.pools import pool
 from datetime import date
+from queries.recipients import RecipientIn, RecipientOut, RecipientRepository
 
 class Error(BaseModel):
     message: str
-
-
-class RecipientIn(BaseModel):
-    name: str
-    phone: Optional[str]
-    email: Optional[str]
-
-
-class RecipientOut(BaseModel):
-    id: int
-    name: str
-    phone: Optional[str]
-    email: Optional[str]
 
 
 class MessageIn(BaseModel):
@@ -53,7 +41,7 @@ class ReminderOut(BaseModel):
     recipients: List[RecipientOut]
 
 class ReminderRepository:
-    def create(self, reminder: ReminderIn, message: MessageOut, new_recipient_list: List[RecipientIn] = [], user_id = None) -> Union[ReminderOut, Error]:
+    def create(self, reminder: ReminderIn, message: MessageOut, recipients: List[RecipientIn] = [], user_id = None) -> Union[ReminderOut, Error]:
         try:
             with pool.connection() as conn:
                 with conn.cursor() as db:
@@ -85,17 +73,17 @@ class ReminderRepository:
                     )
                     query = result.fetchone()
                     recipient_list = []
-                    for recipient in new_recipient_list:
+                    for recipient in recipients:
                         new_recipient = RecipientRepository.create(RecipientRepository, recipient)
                         recipient_list.append(new_recipient)
                     recipient_ids = [recipient.id for recipient in recipient_list]
                     for id in recipient_ids:
                         ReminderRecipientMappingRepository.create(ReminderRecipientMappingRepository, query[0], id)
-                    return self.reminder_query_to_reminderout(query, recipient_list)
+                    return self.reminder_query_to_reminder_out(query, recipient_list)
         except Exception:
             return {"message": "No good"}
 
-    def reminder_query_to_reminderout(self, query: tuple, recipient_list: List[RecipientOut]) -> ReminderOut:
+    def reminder_query_to_reminder_out(self, query: tuple, recipient_list: List[RecipientOut]) -> ReminderOut:
         return ReminderOut(
             id= query[0],
             user_id= query[1],
@@ -108,7 +96,6 @@ class ReminderRepository:
             created_on= query[8],
             recipients= recipient_list
         )
-
 
     def get_all(self, user_id:int) -> Union[List[ReminderOut], Error]:
         try:
@@ -137,9 +124,7 @@ class ReminderRepository:
                             WHERE r.user_id = %s
                             ORDER BY r.id;
                             """,
-
                             [user_id]
-
                     )
                     query = result.fetchall()
                     new_dict = {}
@@ -195,56 +180,6 @@ class MessageRepository:
                     id = result.fetchone()[0]
                     input = message.dict()
                     return MessageOut(id=id, **input)
-        except Exception:
-            return {"message": "No good"}
-
-
-class RecipientRepository:
-    def create(self, recipient: RecipientIn) -> Union[RecipientOut, Error]:
-        try:
-            with pool.connection() as conn:
-                with conn.cursor() as db:
-                    check_exists = db.execute(
-                        """
-                        SELECT *
-                        FROM recipients
-                        WHERE recipients.name = %s
-                        AND recipients.phone = %s
-                        AND recipients.email = %s
-                        """,
-                        [
-                            recipient.name,
-                            recipient.phone,
-                            recipient.email
-                        ]
-                    )
-                    existing_recipient = check_exists.fetchone()
-                    if existing_recipient:
-                        return RecipientOut(
-                            id = existing_recipient[0],
-                            name = existing_recipient[1],
-                            phone = existing_recipient[2],
-                            email = existing_recipient[3]
-                        )
-                    result = db.execute(
-                        """
-                        INSERT INTO recipients(
-                            name
-                            , phone
-                            , email
-                        )
-                        VALUES (%s, %s, %s)
-                        RETURNING id;
-                        """,
-                        [
-                            recipient.name,
-                            recipient.phone,
-                            recipient.email,
-                        ]
-                    )
-                    recipient_id = result.fetchone()[0]
-                    input = recipient.dict()
-                    return RecipientOut(id=recipient_id, **input)
         except Exception:
             return {"message": "No good"}
 
