@@ -25,6 +25,9 @@ class ContactOut(BaseModel):
     special_days : List[SpecialDayOut]
     notes : str
 
+class ContactUpdate(BaseModel):
+    notes: str
+
 class ContactsRepository:
     def create(self, contact: ContactIn, special_days: List[SpecialDayIn])->Union[ContactOut,ContactError]:
         try:
@@ -78,17 +81,32 @@ class ContactsRepository:
         except Exception:
             return {"message": "hello Can't find all contacts"}
 
-    #  [(contact id =1,
-    #   user_id= 1,
-    #   recipient_id =1000,
-    #   note = 'Hi')
+    def get_contact(self, contact_id: int, user_id: int) -> Union[ContactOut,ContactError]:
+        try:
+            with pool.connection() as conn:
+                with conn.cursor() as db:
+                    result = db.execute(
+                        """
+                        SELECT *
+                        FROM CONTACTS
+                        WHERE user_id = %s and id = %s
+                        """,
+                        [
+                            user_id,
+                            contact_id
+                        ]
+                    )
+                    query = result.fetchone()
+                    return query_to_contactout(query)
 
-    # class ContactOut(BaseModel):
-    # user_id: int V
-    # recipient : Recipient use temp_create_recipient function
-    # special_days : List[SpecialDayOut]
-    # notes : str
 
+        except Exception:
+            return {"message": "Can't find contact"}
+
+
+
+
+#____________________HELP FUNCTIONS_________________________________
 def temp_create_recipient(id:int):
     return Recipient(
         id = id,
@@ -129,6 +147,6 @@ def query_to_specialdayout(query:tuple) -> SpecialDayOut:
     )
 
 
-
+#____________________HELP FUNCTIONS_________________________________
 
 
