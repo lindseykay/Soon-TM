@@ -1,10 +1,6 @@
 from fastapi import APIRouter, Depends, Response
 from typing import List, Optional, Union
-from queries.reminders import (
-    ReminderIn,
-    ReminderOut,
-    ReminderRepository
-)
+from queries.reminders import ReminderIn, ReminderOut, ReminderRepository
 from queries.recipients import RecipientIn
 from queries.messages import MessageIn, MessageRepository
 from queries.error import Error
