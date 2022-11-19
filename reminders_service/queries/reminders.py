@@ -84,16 +84,13 @@ class ReminderRepository:
                         ]
                     )
                     query = result.fetchone()
-
                     recipient_list = []
                     for recipient in new_recipient_list:
                         new_recipient = RecipientRepository.create(RecipientRepository, recipient)
                         recipient_list.append(new_recipient)
-
                     recipient_ids = [recipient.id for recipient in recipient_list]
                     for id in recipient_ids:
                         ReminderRecipientMappingRepository.create(ReminderRecipientMappingRepository, query[0], id)
-
                     return self.reminder_query_to_reminderout(query, recipient_list)
         except Exception:
             return {"message": "No good"}
@@ -144,13 +141,10 @@ class ReminderRepository:
                             [user_id]
 
                     )
-
                     query = result.fetchall()
-
                     new_dict = {}
                     for record in query:
                         if record[0] not in new_dict:
-                            print("If statement ran")
                             new_dict[record[0]] = ReminderOut(
                                 id= record[0],
                                 user_id= record[1],
@@ -168,9 +162,7 @@ class ReminderRepository:
                                     email = record[12])
                                     ]
                             )
-
                         else:
-                            print(new_dict[record[0]].recipients)
                             new_dict[record[0]].recipients.append(RecipientOut(
                                     id = record[9],
                                     name = record[10],
@@ -178,8 +170,6 @@ class ReminderRepository:
                                     email = record[12])
                                     )
                     return(list(new_dict.values()))
-
-
         except Exception:
             return {"message": "Get_all fetch failed"}
 
