@@ -214,6 +214,28 @@ class RecipientRepository:
         try:
             with pool.connection() as conn:
                 with conn.cursor() as db:
+                    check_exists = db.execute(
+                        """
+                        SELECT *
+                        FROM recipients
+                        WHERE recipients.name = %s
+                        AND recipients.phone = %s
+                        AND recipients.email = %s
+                        """,
+                        [
+                            recipient.name,
+                            recipient.phone,
+                            recipient.email
+                        ]
+                    )
+                    existing_recipient = check_exists.fetchone()
+                    if existing_recipient:
+                        return RecipientOut(
+                            id = existing_recipient[0],
+                            name = existing_recipient[1],
+                            phone = existing_recipient[2],
+                            email = existing_recipient[3]
+                        )
                     result = db.execute(
                         """
                         INSERT INTO recipients(
