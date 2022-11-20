@@ -1,11 +1,7 @@
 from pydantic import BaseModel
 from queries.pools import pool
 from typing import List, Optional, Union
-
-class ThemeOut(BaseModel):
-    id: int
-    name: str
-    picture_url: str
+from queries.themes import ThemesOut, ThemeRepository
 
 class PublicTemplateIn(BaseModel):
     theme_id: int
@@ -29,7 +25,7 @@ class TemplateOut(BaseModel):
     content: str
 
 class TemplatesOut(BaseModel):
-    public_templates: List[TemplateOut]
+    public_templates: ThemesOut
     user_templates: List[TemplateOut]
 
 class TemplateError(BaseModel):
@@ -125,13 +121,7 @@ class TemplateRepository:
                     )
                     query = result.fetchall()
 
-                    public_templates = [TemplateOut(
-                        id = record[0],
-                        public = record[1],
-                        theme_id = record[2],
-                        user_id = record[3],
-                        name = record[4],
-                        content = record[5]) for record in query if record[1]]
+                    public_templates = ThemeRepository.get_themes(None)
                     user_templates = [] if not user_id else [TemplateOut(
                         id = record[0],
                         public = record[1],

@@ -8,7 +8,6 @@ from queries.templates import (
     TemplatesOut,
     TemplateError,
     TemplateRepository,
-    ThemeOut
 )
 
 router = APIRouter()
