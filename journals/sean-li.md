@@ -26,3 +26,10 @@
   - Created a ron/seng contacts_api branch to work off of for contacts API
   - Completed Create ContactIn, ContactOut, Create SpecialDayIn, SpecialDayOut
   - Implemented back end where users can create multiple special days when creating one contact
+
+## Nov 18, 2022
+
+- Ron/Sean - Pair programming
+  - Completed get_all contacts endpoint (list of contacts)
+  - Completed get_contact endpoint (single contact)
+  - Started Update contact endpoint
