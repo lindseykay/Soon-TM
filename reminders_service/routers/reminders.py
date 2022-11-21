@@ -35,3 +35,15 @@ def get_all(
     if reminders == None or reminders == {"message": "get_all reminder records failed"}:
         response.status_code = 400
     return reminders
+
+
+@router.get("/reminder", response_model=Union[ReminderOut, Error])
+def get_one(
+    user_id: int,
+    reminder_id: int,
+    response: Response,
+    repo: ReminderRepository = Depends()) -> ReminderOut:
+    reminder = repo.get_one(user_id, reminder_id)
+    if reminder == None or reminder == {"message": "get_one reminder record failed"}:
+        response.status_code = 400
+    return reminder
