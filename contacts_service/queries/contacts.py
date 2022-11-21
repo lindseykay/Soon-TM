@@ -26,7 +26,9 @@ class ContactOut(BaseModel):
     notes : str
 
 class ContactUpdate(BaseModel):
-    notes: str
+    notes: Optional[str]
+
+
 
 class ContactsRepository:
     def create(self, contact: ContactIn, special_days: List[SpecialDayIn])->Union[ContactOut,ContactError]:
@@ -103,6 +105,49 @@ class ContactsRepository:
         except Exception:
             return {"message": "Can't find contact"}
 
+
+    def update_contact(self, contact_id: int, user_id: int, info: ContactUpdate) -> Union[ContactOut, ContactError]:
+        try:
+            with pool.connection() as conn:
+                with conn.cursor() as db:
+                    result = db.execute(
+                        """
+                        UPDATE contacts
+                        SET notes = COALESCE(%s,notes)
+                        WHERE user_id = %s and id=%s
+                        RETURNING *
+                        """,
+                        [
+                            info.notes,
+                            user_id,
+                            contact_id
+                        ]
+                    )
+                    query = result.fetchone()
+                    return query_to_contactout(query)
+
+        except Exception:
+            return {"message": "Can't find contact"}
+
+
+    def delete_contact(self, contact_id: int, user_id: int) -> bool:
+        try:
+            with pool.connection() as conn:
+                with conn.cursor() as db:
+                    db.execute(
+                        """
+                        DELETE
+                        FROM contacts
+                        WHERE user_id = %s and id = %s
+                        """,
+                        [
+                            user_id,
+                            contact_id
+                        ]
+                    )
+                return True
+        except Exception:
+            return False
 
 
 

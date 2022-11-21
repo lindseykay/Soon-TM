@@ -40,15 +40,23 @@ def get_contact(
     return contact
 
 
-# @router.put("/contacts/{contact_id}", response_model = Union[ContactOut, ContactError])
-# def update_contact(
-#     contact_id: int,
-#     user_id: int,
-#     info: ContactUpdate,
-#     response: Response,
-#     repo: ContactsRepository=Depends()) -> ContactOut:
-#     contact = repo.update_contact(contact_id, user_id)
-#     return contact
+@router.put("/contacts/{contact_id}", response_model = Union[ContactOut, ContactError])
+def update_contact(
+    contact_id: int,
+    user_id: int,
+    info: ContactUpdate,
+    response: Response,
+    repo: ContactsRepository=Depends()) -> ContactOut:
+    contact = repo.update_contact(contact_id, user_id, info)
+    return contact
+
+
+@router.delete("/contacts/{contact_id}", response_model = bool)
+def delete_contact(
+    contact_id: int,
+    user_id: int,
+    repo: ContactsRepository=Depends()) -> bool:
+    return repo.delete_contact(contact_id, user_id)
 
 
 

@@ -26,7 +26,7 @@
   - Completed Create ContactIn, ContactOut, Create SpecialDayIn, SpecialDayOut
   - Implemented back end where users can create multiple special days when creating one contact
 
-## Nov 17, 2022
+## Nov 18, 2022
 
 - Ron/Sean - Pair programming
   - Completed get_all contacts endpoint (list of contacts)
