@@ -1,7 +1,8 @@
 from pydantic import BaseModel
-from queries.pools import pool
+from queries.pools import pool, reminder_pool
 from typing import List, Optional, Union
 from queries.specialdays import SpecialDaysRepository, SpecialDayOut, SpecialDayIn
+
 
 
 class ContactError(BaseModel):
@@ -21,7 +22,7 @@ class ContactIn(BaseModel):
 class ContactOut(BaseModel):
     id : int
     user_id: int
-    recipient : Recipient
+    recipient : Optional[Recipient]
     special_days : List[SpecialDayOut]
     notes : str
 
@@ -46,7 +47,7 @@ class ContactsRepository:
                         [contact.user_id, contact.recipient_id, contact.notes]
                     )
                     contact_record = result.fetchone()
-                    recipient = temp_create_recipient(contact_record[1])
+                    recipient = find_recipient(contact_record[2])
 
                     s_days = []
                     for day in special_days:
@@ -152,13 +153,31 @@ class ContactsRepository:
 
 
 #____________________HELP FUNCTIONS_________________________________
-def temp_create_recipient(id:int):
-    return Recipient(
-        id = id,
-        name = "Mom",
-        phone = None,
-        email = None
-    )
+def find_recipient(id:int):
+    try:
+        with reminder_pool.connection() as conn:
+            with conn.cursor() as db:
+                print(id)
+                result = db.execute(
+                    """
+                    SELECT *
+                    FROM recipients
+                    WHERE id = %s
+                    """,
+                    [
+                        id
+                    ]
+                )
+                query = result.fetchone()
+                print(query)
+            return Recipient(
+                id = id, #Can also replace id with query[0] but we defined id above
+                name = query[1],
+                phone = query[2],
+                email = query[3]
+            )
+    except Exception:
+        return None
 
 
 def query_to_contactout(query:tuple) -> ContactOut:
@@ -174,7 +193,7 @@ def query_to_contactout(query:tuple) -> ContactOut:
             )
             sd_query = result.fetchall()
             specialdays = [query_to_specialdayout(record) for record in sd_query]
-            recipient = temp_create_recipient(query[2])
+            recipient = find_recipient(query[2])
             return ContactOut(
                 id = query[0],
                 user_id = query[1],
