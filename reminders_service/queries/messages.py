@@ -39,3 +39,27 @@ class MessageRepository:
                     return MessageOut(id=id, **input)
         except Exception:
             return {"message": "create message record failed"}
+
+    def update(self, user_id: int, reminder_id: int, message: MessageIn) -> Union[MessageOut, Error]:
+        try:
+            with pool.connection() as conn:
+                with conn.cursor() as db:
+                    result = db.execute(
+                        """
+                        UPDATE messages
+                        SET template_id = COALESCE(%s, template_id)
+                            ,   content = COALESCE(%s, content)
+                        WHERE id = %s
+                        RETURNING id
+                        """,
+                        [
+                            message.template_id,
+                            message.content,
+                            reminder_id
+                        ]
+                    )
+                    id = result.fetchone()[0]
+                    input = message.dict()
+                    return MessageOut(id=id, **input)
+        except Exception:
+            return {"message": "update message record failed"}

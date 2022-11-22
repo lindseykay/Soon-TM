@@ -65,3 +65,38 @@ class RecipientRepository:
                     return RecipientOut(id=recipient_id, **input)
         except Exception:
             return {"message": "create recipient record failed"}
+
+    def update(self, user_id: int, reminder_id: int, recipient: RecipientOut) -> Union[RecipientOut, Error]:
+        try:
+            with pool.connection() as conn:
+                with conn.cursor() as db:
+                    result = db.execute(
+                        """
+                        UPDATE recipients
+                        SET recipients.name = COALESCE(%s, recipients.name)
+                            , recipients.phone = COALESCE(%s, recipients.phone)
+                            , recipients.email = COALESCE(%s, recipients.email)
+                        FROM recipients
+                        LEFT JOIN reminders
+                        ON reminders.id = rrmt.reminder_id
+                        LEFT JOIN reminders_recipients_mapping_table as rrmt
+                        ON rrmt.recipient_id = recipients.id
+                        WHERE reminders.id = %s
+                        AND recipients.id = %s
+                        RETURNING id
+                        """,
+                        [
+                            recipient.name,
+                            recipient.phone,
+                            recipient.email,
+                            reminder_id,
+                            recipient.id
+                        ]
+                    )
+                    query = result.fetchone()
+                    print(query)
+                    input = recipient.dict()
+                    return RecipientOut(**input)
+
+        except Exception:
+            return {"message": "update recipient record failed"}

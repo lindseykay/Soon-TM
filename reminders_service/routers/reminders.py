@@ -1,8 +1,8 @@
 from fastapi import APIRouter, Depends, Response
 from typing import List, Optional, Union
-from queries.reminders import ReminderIn, ReminderOut, ReminderRepository
-from queries.recipients import RecipientIn
-from queries.messages import MessageIn, MessageRepository
+from queries.reminders import ReminderIn, ReminderOut, ReminderUpdate, ReminderRepository
+from queries.recipients import RecipientIn, RecipientOut, RecipientRepository
+from queries.messages import MessageIn, MessageOut, MessageRepository
 from queries.error import Error
 
 router = APIRouter()
@@ -29,15 +29,14 @@ def create_reminder(
 def get_all(
     user_id: int,
     response: Response,
-    repo: ReminderRepository = Depends()
-):
+    repo: ReminderRepository = Depends()) -> List[ReminderOut]:
     reminders = repo.get_all(user_id)
     if reminders == None or reminders == {"message": "get_all reminder records failed"}:
         response.status_code = 400
     return reminders
 
 
-@router.get("/reminder", response_model=Union[ReminderOut, Error])
+@router.get("/reminder/{reminder_id}", response_model=Union[ReminderOut, Error])
 def get_one(
     user_id: int,
     reminder_id: int,
@@ -47,3 +46,38 @@ def get_one(
     if reminder == None or reminder == {"message": "get_one reminder record failed"}:
         response.status_code = 400
     return reminder
+
+@router.put("/reminder/{reminder_id}", response_model=Union[ReminderOut, Error])
+def update_reminder(
+    user_id: int,
+    reminder_id: int,
+    reminder: ReminderUpdate,
+    recipients: List[RecipientOut],
+    response: Response,
+    reminder_repo: ReminderRepository = Depends()) -> ReminderOut:
+    new_reminder = reminder_repo.update(user_id, reminder_id, reminder, recipients)
+    if new_reminder == None or new_reminder == {"message": "update reminder record failed"}:
+        response.status_code = 400
+    return new_reminder
+
+@router.put("/reminder/{reminder_id}/message", response_model=Union[MessageOut, Error])
+def update_message(
+    user_id: int,
+    reminder_id: int,
+    message: MessageIn,
+    response: Response,
+    repo: MessageRepository = Depends()):
+    return repo.update(user_id, reminder_id, message)
+
+@router.put("/reminder/{reminder_id}/recipients", response_model=Union[List[RecipientOut], Error])
+def update_recipients(
+    user_id: int,
+    reminder_id: int,
+    recipients: List[RecipientOut],
+    response: Response,
+    repo: RecipientRepository = Depends()):
+    recipient_list = []
+    for recipient in recipients:
+        updated_recipient = repo.update(user_id, reminder_id, recipient)
+        recipient_list.append(updated_recipient)
+    return recipient_list

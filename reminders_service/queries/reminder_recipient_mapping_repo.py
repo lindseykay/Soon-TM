@@ -20,3 +20,19 @@ class ReminderRecipientMappingRepository:
                     )
         except Exception:
             return {"message": "create reminder recipient record failed"}
+
+    def delete(self, reminder_id: int):
+        try:
+            with pool.connection() as conn:
+                with conn.cursor() as db:
+                    db.execute(
+                        """
+                        DELETE FROM reminders_recipients_mapping_table
+                        WHERE reminder_id = %s
+                        """,
+                        [
+                            reminder_id
+                        ]
+                    )
+        except Exception:
+            return {"message": "delete reminder recipients record failed"}
