@@ -205,7 +205,10 @@ class ReminderRepository:
             except Exception:
                 return {"message": "get_one reminder record failed"}
 
-    def update(self, user_id: int, reminder_id: int, reminder: ReminderOut, recipients: List[RecipientOut]) -> Union[ReminderOut, Error]:
+    def update(self, user_id: int, reminder_id: int, reminder: ReminderUpdate) -> Union[ReminderUpdate, Error]:
+            print("userid", user_id)
+            print("reminder id" , reminder_id)
+            print( "reminder", reminder)
             try:
                 with pool.connection() as conn:
                     with conn.cursor() as db:
@@ -217,7 +220,7 @@ class ReminderRepository:
                                 , recurring = COALESCE(%s, recurring)
                             WHERE id = %s
                             AND user_id = %s
-                            RETURNING *
+                            RETURNING email_target, reminder_date, recurring
                             """,
                             [
                                 reminder.email_target,
@@ -229,18 +232,19 @@ class ReminderRepository:
                         )
                         query = result.fetchone()
                         print(query)
-                        recipient_list = []
-                        for recipient in recipients:
-                            print("RECIPIENT::::" , recipient)
-                            updated_recipient = RecipientRepository.update(RecipientRepository, recipient.id, recipient)
-                            print("UPDATED RECIPIENT::::", updated_recipient)
-                            recipient_list.append(updated_recipient)
-                        recipient_ids = [recipient.id for recipient in recipient_list]
-                        ReminderRecipientMappingRepository.delete(reminder_id)
-                        print("RECIPIENT LIST::::", recipient_list)
-                        for id in recipient_ids:
-                            ReminderRecipientMappingRepository.create(ReminderRecipientMappingRepository, query[0], id)
-                        return self.reminder_query_to_reminder_out(query, recipient_list)
+                        # recipient_list = []
+                        # for recipient in recipients:
+                        #     print("RECIPIENT::::" , recipient)
+                        #     updated_recipient = RecipientRepository.update(RecipientRepository, recipient.id, recipient)
+                        #     print("UPDATED RECIPIENT::::", updated_recipient)
+                        #     recipient_list.append(updated_recipient)
+                        # recipient_ids = [recipient.id for recipient in recipient_list]
+                        # ReminderRecipientMappingRepository.delete(reminder_id)
+                        # print("RECIPIENT LIST::::", recipient_list)
+                        # for id in recipient_ids:
+                        #     ReminderRecipientMappingRepository.create(ReminderRecipientMappingRepository, query[0], id)
+                        # return self.reminder_query_to_reminder_out(query, recipient_list)
+                        return ReminderUpdate(email_target = query[0], reminder_date = query[1], recurring = query[2])
             except Exception:
                 return {"message": "update reminder record failed"}
 

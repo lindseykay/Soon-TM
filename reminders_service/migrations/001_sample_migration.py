@@ -43,7 +43,7 @@ steps = [
         """,
         # "Down" SQL statement
         """
-        DROP TABLE reminders_recipients_mapping_table;
+        DROP TABLE recipients_mapping_table;
         """
     ],
     [
