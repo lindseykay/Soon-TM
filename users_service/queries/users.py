@@ -1,5 +1,5 @@
 from pydantic import BaseModel
-from typing import List, Optional, Union
+from typing import Optional, Union
 from queries.pools import pool
 
 class UserError(BaseModel):

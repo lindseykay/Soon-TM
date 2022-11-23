@@ -1,6 +1,6 @@
 from pydantic import BaseModel
 from queries.pools import pool
-from typing import List, Optional, Union
+from typing import List, Optional
 
 class TemplateOut(BaseModel):
     id: int
@@ -10,9 +10,11 @@ class TemplateOut(BaseModel):
     name: str
     content: str
 
+
 class ThemeIn(BaseModel):
     name: str
     picture_url: str
+
 
 class ThemeOut(BaseModel):
     id: int
@@ -20,8 +22,10 @@ class ThemeOut(BaseModel):
     picture_url: str
     templates: List[TemplateOut]
 
+
 class ThemesOut(BaseModel):
     themes: List[ThemeOut]
+
 
 class ThemeRepository:
     def create_public_themes(self, themes: List[ThemeIn]) -> bool:
@@ -30,13 +34,12 @@ class ThemeRepository:
                 with conn.cursor() as db:
                     names = [theme.name for theme in themes]
                     picture_urls = [theme.picture_url for theme in themes]
-
                     db.execute(
                         """
                         INSERT INTO themes
                             (name, picture_url)
                         VALUES
-                            (unnest(cast(%s as text[])), unnest(cast(%s as text[])))
+                            (UNNEST(CAST(%s AS TEXT[])), UNNEST(CAST(%s AS TEXT[])))
                         """,
                         [
                             names,
@@ -55,7 +58,8 @@ class ThemeRepository:
                         """
                         SELECT *
                         FROM themes th
-                        LEFT JOIN templates te on th.id = te.theme_id
+                        LEFT JOIN templates AS te
+                        ON th.id = te.theme_id
                         ORDER BY th.id
                         """
                     )
@@ -86,7 +90,6 @@ class ThemeRepository:
                                         name = record[7],
                                         content = record[8]
                                     ))
-
                     return ThemesOut(
                         themes = list(tdict.values())
                     )

@@ -1,8 +1,8 @@
 from fastapi import APIRouter, Depends, Response
-from typing import List, Optional, Union
+from typing import List, Union
 from queries.reminders import ReminderIn, ReminderOut, ReminderUpdate, ReminderRepository
-from queries.recipients import RecipientIn, RecipientOut, RecipientRepository
-from queries.messages import MessageIn, MessageOut, MessageRepository
+from queries.recipients import RecipientIn
+from queries.messages import MessageIn, MessageRepository
 from queries.error import Error
 from queries.reminder_recipient_mapping_repo import ReminderRecipientMappingRepository
 
@@ -25,7 +25,6 @@ def create_reminder(
         response.status_code = 400
     return new_reminder
 
-
 @router.get("/reminders", response_model= Union[List[ReminderOut], Error])
 def get_all(
     user_id: int,
@@ -35,7 +34,6 @@ def get_all(
     if reminders == None or reminders == {"message": "get_all reminder records failed"}:
         response.status_code = 400
     return reminders
-
 
 @router.get("/reminder/{reminder_id}", response_model=Union[ReminderOut, Error])
 def get_one(

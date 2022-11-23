@@ -3,7 +3,6 @@ from typing import Optional, Union
 from queries.pools import pool
 from queries.error import Error
 
-
 class MessageIn(BaseModel):
     template_id: Optional[int]
     content: str

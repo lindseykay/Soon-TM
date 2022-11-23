@@ -1,5 +1,5 @@
 from fastapi import APIRouter, Depends, Response
-from typing import List, Optional, Union
+from typing import List, Union
 from queries.templates import (
     PublicTemplateIn,
     TemplateIn,
@@ -22,7 +22,6 @@ def create_public_templates(
     new_public_templates = repo.create_public_templates(templates)
     return new_public_templates
 
-
 @router.post("/templates", response_model = Union[TemplateOut,TemplateError])
 def create_template(
     template: TemplateIn,
@@ -33,7 +32,6 @@ def create_template(
     new_template = repo.create_user_template(template, user_id)
     return new_template
 
-
 @router.get("/templates", response_model = Union[TemplatesOut,TemplateError])
 def get_all_templates(
     response: Response,
@@ -42,7 +40,6 @@ def get_all_templates(
     ) -> TemplatesOut:
     all_templates = repo.get_all(user_id)
     return all_templates
-
 
 @router.get("/templates/{template_id}", response_model = Union[TemplateOut,TemplateError])
 def get_template(
@@ -54,7 +51,6 @@ def get_template(
     template = repo.get_template(template_id, user_id)
     return template
 
-
 @router.put("/templates/{template_id}", response_model = Union[TemplateOut,TemplateError])
 def update_template(
     template_id: int,
@@ -65,7 +61,6 @@ def update_template(
     ) -> TemplateOut:
     updated_template = repo.update_template(template_id, user_id, info)
     return updated_template
-
 
 @router.delete("/templates/{template_id}", response_model = bool)
 def delete_template(

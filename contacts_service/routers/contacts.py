@@ -1,5 +1,5 @@
 from fastapi import APIRouter, Depends, Response
-from typing import List, Optional, Union
+from typing import List, Union
 from queries.contacts import (
     ContactUpdate,
     ContactIn,
@@ -20,7 +20,6 @@ def create_contact(
     new_contact = repo.create(contact, special_days)
     return new_contact
 
-
 @router.get("/contacts", response_model = Union[List[ContactOut],ContactError])
 def get_all_contacts(
     user_id: int,
@@ -28,7 +27,6 @@ def get_all_contacts(
     repo: ContactsRepository=Depends()) -> List[ContactOut]:
     contacts_list = repo.get_all(user_id)
     return contacts_list
-
 
 @router.get("/contacts/{contact_id}", response_model = Union[ContactOut, ContactError])
 def get_contact(
@@ -38,7 +36,6 @@ def get_contact(
     repo: ContactsRepository=Depends()) -> ContactOut:
     contact = repo.get_contact(contact_id, user_id)
     return contact
-
 
 @router.put("/contacts/{contact_id}", response_model = Union[ContactOut, ContactError])
 def update_contact(
@@ -50,17 +47,9 @@ def update_contact(
     contact = repo.update_contact(contact_id, user_id, info)
     return contact
 
-
 @router.delete("/contacts/{contact_id}", response_model = bool)
 def delete_contact(
     contact_id: int,
     user_id: int,
     repo: ContactsRepository=Depends()) -> bool:
     return repo.delete_contact(contact_id, user_id)
-
-
-
-
-
-
-

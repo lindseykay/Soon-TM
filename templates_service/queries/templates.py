@@ -8,13 +8,16 @@ class PublicTemplateIn(BaseModel):
     name: str
     content: str
 
+
 class TemplateIn(BaseModel):
     name: str
     content: str
 
+
 class TemplateUpdate(BaseModel):
     name: Optional[str]
     content: Optional[str]
+
 
 class TemplateOut(BaseModel):
     id: int
@@ -24,12 +27,15 @@ class TemplateOut(BaseModel):
     name: str
     content: str
 
+
 class TemplatesOut(BaseModel):
     public_templates: ThemesOut
     user_templates: List[TemplateOut]
 
+
 class TemplateError(BaseModel):
     message: str
+
 
 class TemplateRepository:
     def create_public_templates(self, templates: List[PublicTemplateIn]) -> Union[List[TemplateOut],TemplateError]:
@@ -39,13 +45,12 @@ class TemplateRepository:
                     themes = [template.theme_id for template in templates]
                     names = [template.name for template in templates]
                     contents = [template.content for template in templates]
-
                     result = db.execute(
                         """
                         INSERT INTO templates
                             (public, theme_id, name, content)
                         VALUES
-                            (%s, unnest(cast(%s as int[])), unnest(cast(%s as text[])), unnest(cast(%s as text[])))
+                            (%s, UNNEST(CAST(%s AS INT[])), UNNEST(CAST(%s AS TEXT[])), UNNEST(CAST(%s AS TEXT[])))
                         RETURNING *;
                         """,
                         [
@@ -56,7 +61,6 @@ class TemplateRepository:
                         ]
                     )
                     query = result.fetchall()
-
                     output = [TemplateOut(
                         id = record[0],
                         public = record[1],
@@ -65,7 +69,6 @@ class TemplateRepository:
                         name = record[4],
                         content = record[5]) for record in query]
                     return output
-
         except Exception:
             return {"message": "My disappointment is immeasurable and my day is ruined"}
 
@@ -89,8 +92,6 @@ class TemplateRepository:
                         ]
                     )
                     record = result.fetchone()
-                    print(record)
-
                     output = TemplateOut(
                         id = record[0],
                         public = record[1],
@@ -100,7 +101,6 @@ class TemplateRepository:
                         content = record[5]
                     )
                     return output
-
         except Exception:
             return {"message": "My disappointment is immeasurable and my day is ruined"}
 
@@ -120,7 +120,6 @@ class TemplateRepository:
                         ]
                     )
                     query = result.fetchall()
-
                     public_templates = ThemeRepository.get_themes(None)
                     user_templates = [] if not user_id else [TemplateOut(
                         id = record[0],
@@ -129,12 +128,10 @@ class TemplateRepository:
                         user_id = record[3],
                         name = record[4],
                         content = record[5]) for record in query if not record[1]]
-
                     return TemplatesOut(
                         public_templates = public_templates,
                         user_templates = user_templates
                     )
-
         except Exception:
             return {"message": "My disappointment is immeasurable and my day is ruined"}
 
@@ -154,7 +151,6 @@ class TemplateRepository:
                         ]
                     )
                     record = result.fetchone()
-
                     return TemplateOut(
                         id = record[0],
                         public = record[1],
@@ -186,7 +182,6 @@ class TemplateRepository:
                         ]
                     )
                     record = result.fetchone()
-
                     return TemplateOut(
                         id = record[0],
                         public = record[1],
@@ -202,7 +197,6 @@ class TemplateRepository:
         try:
             if not user_id:
                 return False
-
             with pool.connection() as conn:
                 with conn.cursor() as db:
                     db.execute(

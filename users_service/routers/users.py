@@ -20,7 +20,6 @@ def create_user(
         response.status_code = 400
     return new_user
 
-
 @router.get("/users/{user_id}", response_model=Union[UserOut,UserError])
 def get_user(
     user_id: int,
@@ -30,7 +29,6 @@ def get_user(
     if user == None or user == {"message": "Tough luck"}:
         response.status_code = 400
     return user
-
 
 @router.put("/users/{user_id}", response_model=Union[UserOut,UserError])
 def update_user(

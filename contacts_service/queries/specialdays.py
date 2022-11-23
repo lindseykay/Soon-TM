@@ -1,21 +1,24 @@
 from pydantic import BaseModel
 from queries.pools import pool
-from typing import List, Optional, Union
+from typing import Union
 from datetime import date
 
 class SpecialDayError(BaseModel):
     message : str
+
 
 class SpecialDayIn(BaseModel):
     contact_id : int
     name : str
     date : date
 
+
 class SpecialDayOut(BaseModel):
     id: int
     contact_id : int
     name : str
     date : date
+
 
 class SpecialDaysRepository:
     def create(self, specialday: SpecialDayIn, contact_id: int = None) -> Union[SpecialDayOut,SpecialDayError]:

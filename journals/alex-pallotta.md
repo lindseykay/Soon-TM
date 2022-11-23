@@ -12,3 +12,20 @@
     - Structured docker-compose YAML file
     - Finished put request for users microservice
     - Migration files for all APIs
+
+## Nov 21, 2022
+- Worked with Linsey on the following:
+    - Worked on the update functionality for recipients
+    - Worked on the update functionality for reminders
+
+## Nov 22, 2022
+Accomplishments
+    -Update recipient mapping table to be functional
+    -Router for create recipient functional
+    -Updated recipient table to include user_id
+    -Added get_message method
+    -Added message out parameter to all recipient
+    -Updated mapping table repo
+    -Created get all recipients by user endpoint
+    -Created delete mapping table associated with reminder ID endpoint
+    -Completed merge of all microservices

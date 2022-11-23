@@ -3,10 +3,9 @@ from queries.pools import pool, reminder_pool
 from typing import List, Optional, Union
 from queries.specialdays import SpecialDaysRepository, SpecialDayOut, SpecialDayIn
 
-
-
 class ContactError(BaseModel):
     message : str
+
 
 class Recipient(BaseModel):
     id : int
@@ -14,10 +13,12 @@ class Recipient(BaseModel):
     phone : Optional[str]
     email : Optional[str]
 
+
 class ContactIn(BaseModel):
     user_id: int
     recipient_id: int
     notes : str
+
 
 class ContactOut(BaseModel):
     id : int
@@ -26,9 +27,9 @@ class ContactOut(BaseModel):
     special_days : List[SpecialDayOut]
     notes : str
 
+
 class ContactUpdate(BaseModel):
     notes: Optional[str]
-
 
 
 class ContactsRepository:
@@ -92,7 +93,7 @@ class ContactsRepository:
                         """
                         SELECT *
                         FROM CONTACTS
-                        WHERE user_id = %s and id = %s
+                        WHERE user_id = %s AND id = %s
                         """,
                         [
                             user_id,
@@ -115,7 +116,7 @@ class ContactsRepository:
                         """
                         UPDATE contacts
                         SET notes = COALESCE(%s,notes)
-                        WHERE user_id = %s and id=%s
+                        WHERE user_id = %s AND id=%s
                         RETURNING *
                         """,
                         [
@@ -139,7 +140,7 @@ class ContactsRepository:
                         """
                         DELETE
                         FROM contacts
-                        WHERE user_id = %s and id = %s
+                        WHERE user_id = %s AND id = %s
                         """,
                         [
                             user_id,
@@ -151,13 +152,11 @@ class ContactsRepository:
             return False
 
 
-
 #____________________HELP FUNCTIONS_________________________________
 def find_recipient(id:int):
     try:
         with reminder_pool.connection() as conn:
             with conn.cursor() as db:
-                print(id)
                 result = db.execute(
                     """
                     SELECT *
@@ -169,7 +168,6 @@ def find_recipient(id:int):
                     ]
                 )
                 query = result.fetchone()
-                print(query)
             return Recipient(
                 id = id, #Can also replace id with query[0] but we defined id above
                 name = query[1],
@@ -178,7 +176,6 @@ def find_recipient(id:int):
             )
     except Exception:
         return None
-
 
 def query_to_contactout(query:tuple) -> ContactOut:
     with pool.connection() as conn:
@@ -210,7 +207,4 @@ def query_to_specialdayout(query:tuple) -> SpecialDayOut:
         date = query[3]
     )
 
-
 #____________________HELP FUNCTIONS_________________________________
-
-

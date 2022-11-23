@@ -3,7 +3,6 @@ from typing import Optional, Union, List
 from queries.pools import pool
 from queries.error import Error
 
-
 class RecipientIn(BaseModel):
     name: str
     phone: Optional[str]

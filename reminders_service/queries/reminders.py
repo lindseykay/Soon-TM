@@ -127,7 +127,6 @@ class ReminderRepository:
                                     email = record[12])
                                     ]
                             )
-                            
                         else:
                             new_dict[record[0]].recipients.append(RecipientOut(
                                     id = record[9],
@@ -168,9 +167,10 @@ class ReminderRepository:
                             WHERE r.user_id = %s
                             AND r.id = %s;
                             """,
-
-                            [user_id,
-                            reminder_id]
+                            [
+                                user_id,
+                                reminder_id
+                            ]
                         )
                         query = result.fetchall()
                         new_dict = {}
@@ -226,24 +226,10 @@ class ReminderRepository:
                             ]
                         )
                         query = result.fetchone()
-                        print(query)
-                        recipient_list = []
-                        # for recipient in recipients:
-                        #     print("RECIPIENT::::" , recipient)
-                        #     updated_recipient = RecipientRepository.update(RecipientRepository, recipient.id, recipient)
-                        #     print("UPDATED RECIPIENT::::", updated_recipient)
-                        #     recipient_list.append(updated_recipient)
-                        # recipient_ids = [recipient.id for recipient in recipient_list]
-                        # ReminderRecipientMappingRepository.delete(reminder_id)
-                        # print("RECIPIENT LIST::::", recipient_list)
-                        # for id in recipient_ids:
-                        #     ReminderRecipientMappingRepository.create(ReminderRecipientMappingRepository, query[0], id)
-                        # return self.reminder_query_to_reminder_out(query, recipient_list)
                         return ReminderUpdate(email_target = query[0], reminder_date = query[1], recurring = query[2])
             except Exception:
                 return {"message": "update reminder record failed"}
 
-#delete reminder, message, mapping table records
     def delete(self, reminder_id: int) -> bool:
         try:
             with pool.connection() as conn:

@@ -4,7 +4,7 @@ steps = [
         """
         CREATE TABLE templates (
             id SERIAL PRIMARY KEY NOT NULL,
-            public boolean NOT NULL,
+            public BOOLEAN NOT NULL,
             theme_id INT,
             user_id INT,
             name VARCHAR(100) NOT NULL,
