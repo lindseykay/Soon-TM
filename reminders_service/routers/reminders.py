@@ -4,6 +4,7 @@ from queries.reminders import ReminderIn, ReminderOut, ReminderUpdate, ReminderR
 from queries.recipients import RecipientIn, RecipientOut, RecipientRepository
 from queries.messages import MessageIn, MessageOut, MessageRepository
 from queries.error import Error
+from queries.reminder_recipient_mapping_repo import ReminderRecipientMappingRepository
 
 router = APIRouter()
 
@@ -59,3 +60,12 @@ def update_reminder(
     if new_reminder == None or new_reminder == {"message": "update reminder record failed"}:
         response.status_code = 400
     return new_reminder
+
+@router.put("/reminder/{reminder_id}/recipients", response_model= bool)
+def update_recipient_list(
+    user_id: int,
+    reminder_id: int,
+    recipients: List[int],
+    response: Response,
+    repo: ReminderRecipientMappingRepository = Depends()) -> bool:
+    return repo.update(reminder_id, recipients)

@@ -8,7 +8,7 @@ from queries.error import Error
 router = APIRouter()
 
 
-@router.put("/reminder/{reminder_id}/recipients", response_model=Union[List[RecipientOut], Error])
+@router.put("/recipients", response_model=Union[List[RecipientOut], Error])
 def update_recipients(
     user_id: int,
     reminder_id: int,
@@ -20,3 +20,13 @@ def update_recipients(
         updated_recipient = repo.update(user_id, reminder_id, recipient)
         recipient_list.append(updated_recipient)
     return recipient_list
+
+@router.post("/recipients", response_model=Union[int, Error])
+def create(
+    user_id: int,
+    recipient: RecipientIn,
+    response: Response,
+    repo: RecipientRepository = Depends()):
+    return repo.create(user_id, recipient).id
+
+# @router

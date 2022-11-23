@@ -64,3 +64,24 @@ class MessageRepository:
                     return MessageIn(template_id=query[0], content = query[1])
         except Exception:
             return {"message": "update message record failed"}
+
+    def get_one(self, message_id: int) -> Union[MessageOut, Error]:
+        try:
+            with pool.connection() as conn:
+                with conn.cursor() as db:
+                    result = db.execute(
+                        """
+                        SELECT *
+                        FROM messages
+                        WHERE id = %s
+                        """,
+                        [message_id]
+                    )
+                    query = result.fetchone()
+                    return MessageOut(
+                            id= query[0],
+                            template_id= query[1],
+                            content= query[2]
+                    )
+        except Exception:
+            return {"message": "get message record failed"}        

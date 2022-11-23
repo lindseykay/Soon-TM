@@ -8,17 +8,18 @@ class RecipientIn(BaseModel):
     name: str
     phone: Optional[str]
     email: Optional[str]
+    user_id: Optional[int]
 
 
 class RecipientOut(BaseModel):
-    id: int
-    name: str
+    id: Optional[int]
+    name: Optional[str]
     phone: Optional[str]
     email: Optional[str]
 
 
 class RecipientRepository:
-    def create(self, recipient: RecipientIn) -> Union[RecipientOut, Error]:
+    def create(self, user_id: int, recipient: RecipientIn) -> Union[RecipientOut, Error]:
         try:
             with pool.connection() as conn:
                 with conn.cursor() as db:
@@ -29,11 +30,13 @@ class RecipientRepository:
                         WHERE recipients.name = %s
                         AND recipients.phone = %s
                         AND recipients.email = %s
+                        AND recipients.user_id = %s
                         """,
                         [
                             recipient.name,
                             recipient.phone,
-                            recipient.email
+                            recipient.email,
+                            user_id
                         ]
                     )
                     existing_recipient = check_exists.fetchone()
@@ -50,18 +53,21 @@ class RecipientRepository:
                             name
                             , phone
                             , email
+                            , user_id
                         )
-                        VALUES (%s, %s, %s)
+                        VALUES (%s, %s, %s, %s)
                         RETURNING id;
                         """,
                         [
                             recipient.name,
                             recipient.phone,
                             recipient.email,
+                            user_id
                         ]
                     )
                     recipient_id = result.fetchone()[0]
                     input = recipient.dict()
+                    input.pop("user_id")
                     return RecipientOut(id=recipient_id, **input)
         except Exception:
             return {"message": "create recipient record failed"}
@@ -93,7 +99,6 @@ class RecipientRepository:
                             reminder_id,
                         ]
                     )
-                    print("IS THIS RESULT PRINTING????????????", result)
                     query = result.fetchone()
                     return RecipientOut(
                         id = query[0],
@@ -101,8 +106,7 @@ class RecipientRepository:
                         phone = query[2],
                         email = query[3]
                     )
-
-
-
         except Exception:
             return {"message": "update recipient record failed"}
+
+    # def get_all(self, )

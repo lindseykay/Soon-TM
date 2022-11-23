@@ -43,7 +43,7 @@ steps = [
         """,
         # "Down" SQL statement
         """
-        DROP TABLE recipients_mapping_table;
+        DROP TABLE reminders_recipients_mapping_table;
         """
     ],
     [
@@ -53,7 +53,8 @@ steps = [
             id SERIAL PRIMARY KEY NOT NULL,
             name VARCHAR(50) NOT NULL,
             phone VARCHAR(20),
-            email VARCHAR(64)
+            email VARCHAR(64),
+            user_id INT
         );
         """,
         # "Down" SQL statement
