@@ -69,3 +69,10 @@ def update_recipient_list(
     response: Response,
     repo: ReminderRecipientMappingRepository = Depends()) -> bool:
     return repo.update(reminder_id, recipients)
+
+@router.delete("/reminder/{reminder_id}", response_model= bool)
+def delete(
+    reminder_id: int,
+    response: Response,
+    repo: ReminderRepository = Depends()):
+    return repo.delete(reminder_id)

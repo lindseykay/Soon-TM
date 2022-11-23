@@ -109,4 +109,24 @@ class RecipientRepository:
         except Exception:
             return {"message": "update recipient record failed"}
 
-    # def get_all(self, )
+    def get_all_by_user(self, user_id: int) -> Union[List[RecipientOut], Error]:
+        try:
+            with pool.connection() as conn:
+                with conn.cursor() as db:
+                    result = db.execute(
+                        """
+                        SELECT *
+                        FROM recipients
+                        WHERE user_id = %s
+                        """,
+                        [user_id]
+                    )
+                    query = result.fetchall()
+                    return [RecipientOut(
+                        id = record[0],
+                        name = record[1],
+                        phone = record[2],
+                        email = record[3]
+                    ) for record in query]
+        except Exception:
+            return {"message": "get_all_by_user recipient record failed"}

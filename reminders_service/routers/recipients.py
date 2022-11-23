@@ -10,8 +10,8 @@ router = APIRouter()
 
 @router.put("/recipients", response_model=Union[List[RecipientOut], Error])
 def update_recipients(
-    user_id: int,
     reminder_id: int,
+    user_id: int,
     recipients: List[RecipientOut],
     response: Response,
     repo: RecipientRepository = Depends()):
@@ -29,4 +29,9 @@ def create(
     repo: RecipientRepository = Depends()):
     return repo.create(user_id, recipient).id
 
-# @router
+@router.get("/recipients", response_model=Union[List[RecipientOut], Error])
+def get_all_by_user(
+    user_id: int,
+    response: Response,
+    repo: RecipientRepository = Depends()):
+    return repo.get_all_by_user(user_id)

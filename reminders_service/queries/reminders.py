@@ -243,6 +243,38 @@ class ReminderRepository:
             except Exception:
                 return {"message": "update reminder record failed"}
 
+#delete reminder, message, mapping table records
+    def delete(self, reminder_id: int) -> bool:
+        try:
+            with pool.connection() as conn:
+                with conn.cursor() as db:
+                    result = db.execute(
+                        """
+                        DELETE FROM reminders
+                        WHERE id = %s
+                        RETURNING message_id
+                        """,
+                        [reminder_id]
+                    )
+                    message_id = result.fetchone()[0]
+                    db.execute(
+                        """
+                        DELETE FROM messages
+                        WHERE id = %s
+                        """,
+                        [message_id]
+                    )
+                    db.execute(
+                        """
+                        DELETE FROM reminders_recipients_mapping_table
+                        WHERE reminder_id = %s
+                        """,
+                        [reminder_id]
+                    )
+                    return True
+        except Exception:
+            return False
+
 #HELPER FUNCTIONS
     def reminder_query_to_reminder_out(self, query: tuple, recipient_list: List[RecipientOut], message: MessageOut) -> ReminderOut:
         return ReminderOut(
