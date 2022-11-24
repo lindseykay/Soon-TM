@@ -10,6 +10,23 @@ from queries.templates import (
     TemplateRepository,
 )
 
+from jwtdown_fastapi.authentication import Authenticator
+import os
+
+class MyAuthenticator(Authenticator):
+    async def get_account_data(self,username: str,accounts):
+        pass
+    def get_account_getter(self,accounts):
+        pass
+    def get_hashed_password(self, account):
+        pass
+    def get_account_data_for_cookie(self, account):
+        pass
+
+authenticator = MyAuthenticator(os.environ["SIGNING_KEY"])
+
+
+
 router = APIRouter()
 
 ### FOR CREATION OF PUBLIC TEMPLATES, API ENDPOINT NOT TO BE CALLED ON FRONT END
@@ -17,6 +34,7 @@ router = APIRouter()
 def create_public_templates(
     templates: List[PublicTemplateIn],
     response: Response,
+    account_data: dict = Depends(authenticator.get_current_account_data),
     repo: TemplateRepository = Depends()
     ) -> List[TemplateOut]:
     new_public_templates = repo.create_public_templates(templates)
@@ -27,6 +45,7 @@ def create_template(
     template: TemplateIn,
     user_id: int,
     response: Response,
+    account_data: dict = Depends(authenticator.get_current_account_data),
     repo: TemplateRepository = Depends()
     ) -> TemplateOut:
     new_template = repo.create_user_template(template, user_id)
@@ -57,6 +76,7 @@ def update_template(
     user_id: int,
     info: TemplateUpdate,
     response: Response,
+    account_data: dict = Depends(authenticator.get_current_account_data),
     repo: TemplateRepository = Depends()
     ) -> TemplateOut:
     updated_template = repo.update_template(template_id, user_id, info)
@@ -67,6 +87,7 @@ def delete_template(
     template_id: int,
     user_id: int,
     response: Response,
+    account_data: dict = Depends(authenticator.get_current_account_data),
     repo: TemplateRepository = Depends()
     ) -> bool:
     deleted_flag = repo.delete_template(template_id, user_id)

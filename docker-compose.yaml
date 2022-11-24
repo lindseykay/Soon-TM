@@ -44,6 +44,7 @@ services:
       context: users_service
       dockerfile: Dockerfile.dev
     environment:
+      SIGNING_KEY: ghostbusters
       DATABASE_URL: postgresql://postgres:password@db:5432/accounts
       WAIT_HOSTS: db:5432
       PORT: 8000
@@ -56,6 +57,7 @@ services:
       context: reminders_service
       dockerfile: Dockerfile.dev
     environment:
+      SIGNING_KEY: ghostbusters
       DATABASE_URL: postgresql://postgres:password@db:5432/reminders
       WAIT_HOSTS: db:5432
       PORT: 8001
@@ -68,6 +70,7 @@ services:
       context: contacts_service
       dockerfile: Dockerfile.dev
     environment:
+      SIGNING_KEY: ghostbusters
       DATABASE_URL: postgresql://postgres:password@db:5432/contacts
       WAIT_HOSTS: db:5432
       PORT: 8002
@@ -80,6 +83,7 @@ services:
       context: templates_service
       dockerfile: Dockerfile.dev
     environment:
+      SIGNING_KEY: ghostbusters
       DATABASE_URL: postgresql://postgres:password@db:5432/templates
       WAIT_HOSTS: db:5432
       PORT: 8003

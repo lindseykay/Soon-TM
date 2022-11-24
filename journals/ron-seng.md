@@ -32,3 +32,34 @@
   - Completed get_all contacts endpoint (list of contacts)
   - Completed get_contact endpoint (single contact)
   - Started Update contact endpoint
+
+## Nov 21, 2022
+
+- Ron/Seng - Pair programming
+- Implement actual data crossing to grab recipient data from reminders db into contacts microservice
+
+## Nov 22, 2022
+
+- Group programming
+
+  - Update recipient mapping table to be functional
+
+  - Router for create recipient functional
+
+  - Updated recipient table to include user_id
+
+  - Added get_message method
+
+  - Added message out parameter to all recipient
+
+  - Updated mapping table repo
+
+  - Created get all recipients by user endpoint
+
+  - Created delete mapping table associated with reminder ID endpoint
+
+  - Completed merge of all microservices
+
+## Nov 23, 2022
+
+    -Implemented AUTH on all microservice endpoints that need it

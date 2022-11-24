@@ -2,6 +2,9 @@ from pydantic import BaseModel
 from typing import Optional, Union
 from queries.pools import pool
 
+class DuplicateAccountError(BaseModel):
+    pass
+
 class UserError(BaseModel):
     message: str
 
@@ -22,8 +25,11 @@ class UserOut(BaseModel):
     email: str
     name: str
 
+class UserOutWithPassword(UserOut):
+    hashed_password: str
+
 class UserRepository:
-    def create(self, user: UserIn) -> Union[UserOut,UserError]:
+    def create(self, user: UserIn, hashed_password: str) -> Union[UserOut,UserError]:
         try:
             with pool.connection() as conn:
                 with conn.cursor() as db:
@@ -37,7 +43,7 @@ class UserRepository:
                         """,
                         [
                             user.username,
-                            user.password,
+                            hashed_password,
                             user.email,
                             user.name
                         ]
@@ -49,7 +55,7 @@ class UserRepository:
         except Exception:
             return {"message": "We'll get em next time"}
 
-    def get(self, user_id: int) -> Union[UserOut,UserError]:
+    def get_by_userid(self, user_id: int) -> Union[UserOut,UserError]:
         try:
             with pool.connection() as conn:
                 with conn.cursor() as db:
@@ -65,6 +71,33 @@ class UserRepository:
                     )
                     query = result.fetchone()
                     return self.user_query_to_userout(query)
+        except Exception:
+            return {"message": "Tough luck"}
+
+    def get_by_username(self, username: str) -> Union[UserOutWithPassword,UserError]:
+        try:
+            with pool.connection() as conn:
+                with conn.cursor() as db:
+                    result = db.execute(
+                        """
+                        SELECT id, username, email, name, password
+                        FROM users
+                        WHERE username = %s;
+                        """,
+                        [
+                            username
+                        ]
+                    )
+                    query = result.fetchone()
+                    print("QUERYYY:", query)
+                    return UserOutWithPassword(
+                        id = query[0],
+                        username = query[1],
+                        email = query[2],
+                        name = query[3],
+                        hashed_password = query[4]
+                    )
+
         except Exception:
             return {"message": "Tough luck"}
 

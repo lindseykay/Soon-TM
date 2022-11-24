@@ -5,6 +5,20 @@ from queries.recipients import RecipientIn
 from queries.messages import MessageIn, MessageRepository
 from queries.error import Error
 from queries.reminder_recipient_mapping_repo import ReminderRecipientMappingRepository
+from jwtdown_fastapi.authentication import Authenticator
+import os
+
+class MyAuthenticator(Authenticator):
+    async def get_account_data(self, username: str, accounts):
+        pass
+    def get_account_getter(self,accounts):
+        pass
+    def get_hashed_password(self, account):
+        pass
+    def get_account_data_for_cookie(self, account):
+        pass
+
+authenticator = MyAuthenticator(os.environ["SIGNING_KEY"])
 
 router = APIRouter()
 
@@ -29,6 +43,7 @@ def create_reminder(
 def get_all(
     user_id: int,
     response: Response,
+    account_data: dict = Depends(authenticator.get_current_account_data),
     repo: ReminderRepository = Depends()) -> List[ReminderOut]:
     reminders = repo.get_all(user_id)
     if reminders == None or reminders == {"message": "get_all reminder records failed"}:
@@ -40,6 +55,7 @@ def get_one(
     user_id: int,
     reminder_id: int,
     response: Response,
+    account_data: dict = Depends(authenticator.get_current_account_data),
     repo: ReminderRepository = Depends()) -> ReminderOut:
     reminder = repo.get_one(user_id, reminder_id)
     if reminder == None or reminder == {"message": "get_one reminder record failed"}:
@@ -53,6 +69,7 @@ def update_reminder(
     reminder: ReminderUpdate,
     # recipients: List[RecipientOut],
     response: Response,
+    account_data: dict = Depends(authenticator.get_current_account_data),
     reminder_repo: ReminderRepository = Depends()) -> ReminderUpdate:
     new_reminder = reminder_repo.update(user_id, reminder_id, reminder) #, recipients)
     if new_reminder == None or new_reminder == {"message": "update reminder record failed"}:
@@ -65,6 +82,7 @@ def update_recipient_list(
     reminder_id: int,
     recipients: List[int],
     response: Response,
+    account_data: dict = Depends(authenticator.get_current_account_data),
     repo: ReminderRecipientMappingRepository = Depends()) -> bool:
     return repo.update(reminder_id, recipients)
 
@@ -72,5 +90,6 @@ def update_recipient_list(
 def delete(
     reminder_id: int,
     response: Response,
+    account_data: dict = Depends(authenticator.get_current_account_data),
     repo: ReminderRepository = Depends()):
     return repo.delete(reminder_id)

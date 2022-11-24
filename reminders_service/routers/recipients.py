@@ -3,6 +3,21 @@ from typing import List, Union
 from queries.recipients import RecipientIn, RecipientOut, RecipientRepository
 from queries.error import Error
 
+from jwtdown_fastapi.authentication import Authenticator
+import os
+
+class MyAuthenticator(Authenticator):
+    async def get_account_data(self, username: str, accounts):
+        pass
+    def get_account_getter(self,accounts):
+        pass
+    def get_hashed_password(self, account):
+        pass
+    def get_account_data_for_cookie(self, account):
+        pass
+
+authenticator = MyAuthenticator(os.environ["SIGNING_KEY"])
+
 router = APIRouter()
 
 @router.put("/recipients", response_model=Union[List[RecipientOut], Error])
@@ -11,6 +26,7 @@ def update_recipients(
     user_id: int,
     recipients: List[RecipientOut],
     response: Response,
+    account_data: dict = Depends(authenticator.get_current_account_data),
     repo: RecipientRepository = Depends()):
     recipient_list = []
     for recipient in recipients:
@@ -30,5 +46,6 @@ def create(
 def get_all_by_user(
     user_id: int,
     response: Response,
+    account_data: dict = Depends(authenticator.get_current_account_data),
     repo: RecipientRepository = Depends()):
     return repo.get_all_by_user(user_id)
