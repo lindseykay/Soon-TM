@@ -63,6 +63,9 @@ def update_user(
     response: Response,
     account_data: dict = Depends(authenticator.get_current_account_data),
     repo: UserRepository = Depends()) -> UserOut:
+    if user.password:
+        hashed_password = authenticator.hash_password(user.password)
+        user.password = hashed_password
     user = repo.update(user_id, user)
     if user == None or user == {"message": "Skill diff"}:
         response.status_code = 400

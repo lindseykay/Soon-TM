@@ -45,6 +45,7 @@ def get_all(
     response: Response,
     account_data: dict = Depends(authenticator.get_current_account_data),
     repo: ReminderRepository = Depends()) -> List[ReminderOut]:
+    print("accountDATA:::",account_data, dir(account_data))
     reminders = repo.get_all(user_id)
     if reminders == None or reminders == {"message": "get_all reminder records failed"}:
         response.status_code = 400
