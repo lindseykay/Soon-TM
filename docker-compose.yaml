@@ -91,3 +91,15 @@ services:
       - "8003:8000"
     volumes:
       - ./templates_service:/app
+  email_service:
+    build:
+      context: email_service
+      dockerfile: Dockerfile.dev
+    environment:
+      DATABASE_URL: postgresql://postgres:password@db:5432/reminders
+      WAIT_HOSTS: db:5432
+      PORT: 7999
+    ports:
+      - "7999:8000"
+    volumes:
+      - ./email_service:/app
