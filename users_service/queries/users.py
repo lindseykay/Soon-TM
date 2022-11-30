@@ -89,7 +89,6 @@ class UserRepository:
                         ]
                     )
                     query = result.fetchone()
-                    print("QUERYYY:", query)
                     return UserOutWithPassword(
                         id = query[0],
                         username = query[1],

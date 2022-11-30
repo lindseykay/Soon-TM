@@ -60,7 +60,6 @@ class ReminderRepository:
                     for recipient in recipients:
                         new_recipient = RecipientRepository.create(RecipientRepository, recipient, user_id)
                         recipient_list.append(new_recipient)
-                    print(recipient_list)
                     recipient_ids = [recipient.id for recipient in recipient_list]
                     for id in recipient_ids:
                         ReminderRecipientMappingRepository.create(ReminderRecipientMappingRepository, query[0], id)
