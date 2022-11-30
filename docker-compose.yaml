@@ -99,6 +99,7 @@ services:
       DATABASE_URL: postgresql://postgres:password@db:5432/reminders
       WAIT_HOSTS: db:5432
       PORT: 7999
+      EMAIL_PASSWORD: $EMAIL_PASSWORD
     ports:
       - "7999:8000"
     volumes:
