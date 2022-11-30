@@ -34,43 +34,39 @@ def create_contact(
     repo: ContactsRepository=Depends(),
     account_data: dict = Depends(authenticator.get_current_account_data),
     special_days: List[SpecialDayIn] = []) -> ContactOut:
-    new_contact = repo.create(contact, special_days)
+    new_contact = repo.create(account_data['id'],contact, special_days)
     return new_contact
 
 @router.get("/contacts", response_model = Union[List[ContactOut],ContactError])
 def get_all_contacts(
-    user_id: int,
     response: Response,
     account_data: dict = Depends(authenticator.get_current_account_data),
     repo: ContactsRepository=Depends()) -> List[ContactOut]:
-    contacts_list = repo.get_all(user_id)
+    contacts_list = repo.get_all(account_data['id'])
     return contacts_list
 
 @router.get("/contacts/{contact_id}", response_model = Union[ContactOut, ContactError])
 def get_contact(
     contact_id: int,
-    user_id: int,
     response: Response,
     account_data: dict = Depends(authenticator.get_current_account_data),
     repo: ContactsRepository=Depends()) -> ContactOut:
-    contact = repo.get_contact(contact_id, user_id)
+    contact = repo.get_contact(contact_id, account_data['id'])
     return contact
 
 @router.put("/contacts/{contact_id}", response_model = Union[ContactOut, ContactError])
 def update_contact(
     contact_id: int,
-    user_id: int,
     info: ContactUpdate,
     response: Response,
     account_data: dict = Depends(authenticator.get_current_account_data),
     repo: ContactsRepository=Depends()) -> ContactOut:
-    contact = repo.update_contact(contact_id, user_id, info)
+    contact = repo.update_contact(contact_id, account_data['id'], info)
     return contact
 
 @router.delete("/contacts/{contact_id}", response_model = bool)
 def delete_contact(
     contact_id: int,
-    user_id: int,
     account_data: dict = Depends(authenticator.get_current_account_data),
     repo: ContactsRepository=Depends()) -> bool:
-    return repo.delete_contact(contact_id, user_id)
+    return repo.delete_contact(contact_id, account_data['id'])

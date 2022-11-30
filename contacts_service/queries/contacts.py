@@ -15,7 +15,6 @@ class Recipient(BaseModel):
 
 
 class ContactIn(BaseModel):
-    user_id: int
     recipient_id: int
     notes : str
 
@@ -33,7 +32,7 @@ class ContactUpdate(BaseModel):
 
 
 class ContactsRepository:
-    def create(self, contact: ContactIn, special_days: List[SpecialDayIn])->Union[ContactOut,ContactError]:
+    def create(self, user_id: int, contact: ContactIn, special_days: List[SpecialDayIn])->Union[ContactOut,ContactError]:
         try:
             with pool.connection() as conn:
                 with conn.cursor() as db:
@@ -45,7 +44,7 @@ class ContactsRepository:
                             (%s, %s, %s)
                         RETURNING *;
                         """,
-                        [contact.user_id, contact.recipient_id, contact.notes]
+                        [user_id, contact.recipient_id, contact.notes]
                     )
                     contact_record = result.fetchone()
                     recipient = find_recipient(contact_record[2])

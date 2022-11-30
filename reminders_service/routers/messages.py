@@ -22,10 +22,8 @@ router = APIRouter()
 
 @router.put("/reminders/{reminder_id}/messages", response_model=Union[MessageIn, Error])
 def update_message(
-    user_id: int,
     reminder_id: int,
     message: MessageIn,
     response: Response,
-    account_data: dict = Depends(authenticator.get_current_account_data),
     repo: MessageRepository = Depends()):
-    return repo.update(user_id, reminder_id, message)
+    return repo.update(reminder_id, message)

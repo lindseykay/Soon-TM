@@ -39,7 +39,7 @@ class MessageRepository:
         except Exception:
             return {"message": "create message record failed"}
 
-    def update(self, user_id: int, reminder_id: int, message: MessageIn) -> Union[MessageIn, Error]:
+    def update(self, reminder_id: int, message: MessageIn) -> Union[MessageIn, Error]:
         try:
             with pool.connection() as conn:
                 with conn.cursor() as db:
@@ -55,7 +55,6 @@ class MessageRepository:
                             message.template_id,
                             message.content,
                             reminder_id,
-
                         ]
                     )
                     query = result.fetchone()

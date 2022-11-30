@@ -1,5 +1,5 @@
 from fastapi import APIRouter, Depends, Response
-from typing import List, Union
+from typing import List, Union, Optional
 from queries.reminders import ReminderIn, ReminderOut, ReminderUpdate, ReminderRepository
 from queries.recipients import RecipientIn
 from queries.messages import MessageIn, MessageRepository
@@ -28,62 +28,58 @@ def create_reminder(
     message: MessageIn,
     recipients: List[RecipientIn],
     response: Response,
+    account_data: Optional[dict] = Depends(authenticator.try_get_current_account_data),
     reminder_repo: ReminderRepository = Depends(),
-    message_repo: MessageRepository = Depends(),
-    user_id = None):
+    message_repo: MessageRepository = Depends()):
     new_message = message_repo.create(message)
     if new_message == None or new_message == {"message": "create message record failed"}:
         response.status_code = 400
-    new_reminder = reminder_repo.create(reminder, new_message, recipients, user_id)
+    if account_data:
+        new_reminder = reminder_repo.create(reminder, new_message, recipients, account_data['id'])
+    else:
+        new_reminder = reminder_repo.create(reminder, new_message, recipients, None)
     if new_reminder == None or new_reminder == {"message": "create reminder record failed"}:
         response.status_code = 400
     return new_reminder
 
 @router.get("/reminders", response_model= Union[List[ReminderOut], Error])
 def get_all(
-    user_id: int,
     response: Response,
     account_data: dict = Depends(authenticator.get_current_account_data),
     repo: ReminderRepository = Depends()) -> List[ReminderOut]:
-    print("accountDATA:::",account_data, dir(account_data))
-    reminders = repo.get_all(user_id)
+    reminders = repo.get_all(account_data['id'])
     if reminders == None or reminders == {"message": "get_all reminder records failed"}:
         response.status_code = 400
     return reminders
 
 @router.get("/reminder/{reminder_id}", response_model=Union[ReminderOut, Error])
 def get_one(
-    user_id: int,
     reminder_id: int,
     response: Response,
     account_data: dict = Depends(authenticator.get_current_account_data),
     repo: ReminderRepository = Depends()) -> ReminderOut:
-    reminder = repo.get_one(user_id, reminder_id)
+    reminder = repo.get_one(account_data['id'], reminder_id)
     if reminder == None or reminder == {"message": "get_one reminder record failed"}:
         response.status_code = 400
     return reminder
 
 @router.put("/reminder/{reminder_id}", response_model=Union[ReminderUpdate, Error])
 def update_reminder(
-    user_id: int,
     reminder_id: int,
     reminder: ReminderUpdate,
-    # recipients: List[RecipientOut],
     response: Response,
     account_data: dict = Depends(authenticator.get_current_account_data),
     reminder_repo: ReminderRepository = Depends()) -> ReminderUpdate:
-    new_reminder = reminder_repo.update(user_id, reminder_id, reminder) #, recipients)
+    new_reminder = reminder_repo.update(account_data['id'], reminder_id, reminder)
     if new_reminder == None or new_reminder == {"message": "update reminder record failed"}:
         response.status_code = 400
     return new_reminder
 
 @router.put("/reminder/{reminder_id}/recipients", response_model= bool)
 def update_recipient_list(
-    user_id: int,
     reminder_id: int,
     recipients: List[int],
     response: Response,
-    account_data: dict = Depends(authenticator.get_current_account_data),
     repo: ReminderRecipientMappingRepository = Depends()) -> bool:
     return repo.update(reminder_id, recipients)
 
@@ -93,4 +89,4 @@ def delete(
     response: Response,
     account_data: dict = Depends(authenticator.get_current_account_data),
     repo: ReminderRepository = Depends()):
-    return repo.delete(reminder_id)
+    return repo.delete(reminder_id, account_data['id'])

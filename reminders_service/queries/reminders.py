@@ -10,10 +10,7 @@ from queries.reminder_recipient_mapping_repo import ReminderRecipientMappingRepo
 class ReminderIn(BaseModel):
     email_target: str
     reminder_date: date
-    sent: bool
-    sent_on: Optional[date]
     recurring: bool
-    created_on: date
 
 
 class ReminderOut(BaseModel):
@@ -45,12 +42,9 @@ class ReminderRepository:
                             , email_target
                             , reminder_date
                             , message_id
-                            , sent
-                            , sent_on
-                            , recurring
-                            , created_on)
+                            , recurring)
                         VALUES
-                            (%s, %s, %s, %s, %s, %s, %s, %s)
+                            (%s, %s, %s, %s, %s)
                         RETURNING *;
                         """,
                         [
@@ -58,17 +52,15 @@ class ReminderRepository:
                             reminder.email_target,
                             reminder.reminder_date,
                             message.id,
-                            reminder.sent,
-                            reminder.sent_on,
-                            reminder.recurring,
-                            reminder.created_on
+                            reminder.recurring
                         ]
                     )
                     query = result.fetchone()
                     recipient_list = []
                     for recipient in recipients:
-                        new_recipient = RecipientRepository.create(RecipientRepository, user_id, recipient)
+                        new_recipient = RecipientRepository.create(RecipientRepository, recipient, user_id)
                         recipient_list.append(new_recipient)
+                    print(recipient_list)
                     recipient_ids = [recipient.id for recipient in recipient_list]
                     for id in recipient_ids:
                         ReminderRecipientMappingRepository.create(ReminderRecipientMappingRepository, query[0], id)
@@ -230,7 +222,7 @@ class ReminderRepository:
             except Exception:
                 return {"message": "update reminder record failed"}
 
-    def delete(self, reminder_id: int) -> bool:
+    def delete(self, reminder_id: int, user_id: int) -> bool:
         try:
             with pool.connection() as conn:
                 with conn.cursor() as db:
@@ -238,9 +230,13 @@ class ReminderRepository:
                         """
                         DELETE FROM reminders
                         WHERE id = %s
+                        AND user_id = %s
                         RETURNING message_id
                         """,
-                        [reminder_id]
+                        [
+                            reminder_id,
+                            user_id
+                        ]
                     )
                     message_id = result.fetchone()[0]
                     db.execute(

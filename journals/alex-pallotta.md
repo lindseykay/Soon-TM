@@ -36,3 +36,18 @@ Accomplishments
 ## Nov 23, 2022
 
     -Implemented AUTH on all microservice endpoints that need it
+
+## Nov 28, 2022
+
+    - Started email microservice
+    - fixed auth bugs to contain hashed passwords for user updates
+    - Finished scheduler microservice
+      - Completed reminder compiler ( it allows you to pull a reminder id and then pull the recipients and messages related to that reminder id to be sent out)
+
+## Nov 29, 2022
+
+-Refactored reminder compiler function to use more one SQL table which reduced our code by half
+
+-Refactored reminder’s microservice auth
+-Refactored contacts microservice auth
+-Refactored templates microservice auth
