@@ -18,7 +18,9 @@ class RecipientOut(BaseModel):
 
 
 class RecipientRepository:
-    def create(self, user_id: int, recipient: RecipientIn) -> Union[RecipientOut, Error]:
+    def create(self, recipient: RecipientIn, user_id: int = None) -> Union[RecipientOut, Error]:
+        print("HELOOOO", user_id)
+        print("RECIPINET", recipient)
         try:
             with pool.connection() as conn:
                 with conn.cursor() as db:
