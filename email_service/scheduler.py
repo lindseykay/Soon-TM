@@ -41,13 +41,34 @@ def reminder_compiler():
                         })
                 return dict
     except Exception:
-        return print("BAAAD", flush=True)
+        return print("Reminder compiler failed", flush=True)
+
+def mark_complete():
+    try:
+        with pool.connection() as conn:
+            with conn.cursor() as db:
+                db.execute(
+                    """
+                    UPDATE reminders
+                    SET sent = true
+                        , sent_on = %s
+                    WHERE reminder_date = %s
+                    AND sent = false
+                    """,
+                    [
+                        date.today(),
+                        date.today()
+                    ]
+                )
+    except Exception:
+        return print("Could not mark sent", flush=True)
 
 def job():
     x = reminder_compiler()
     try:
         y = formatter(x)
         send_emails(y)
+        mark_complete()
     except Exception:
         print("You have no reminders or crashed")
 
@@ -55,7 +76,7 @@ def job():
 
 def compiler_scheduler():
     schedule.every().day.at("14:00:00").do(job)
-
+    schedule.every().day.at("15:00:00").do(job)
 
     while True:
         schedule.run_pending()
