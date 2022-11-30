@@ -36,3 +36,10 @@ Accomplishments
 ## Nov 23, 2022
 
     -Implemented AUTH on all microservice endpoints that need it
+
+
+## Nov 29, 2022
+
+- "sent" field required when reminder object is submitted
+should that be the case? Null == false? Remove NOT NULL from table creation?
+- 

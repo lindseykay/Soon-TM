@@ -23,14 +23,13 @@ router = APIRouter()
 @router.put("/recipients", response_model=Union[List[RecipientOut], Error])
 def update_recipients(
     reminder_id: int,
-    user_id: int,
     recipients: List[RecipientOut],
     response: Response,
     account_data: dict = Depends(authenticator.get_current_account_data),
     repo: RecipientRepository = Depends()):
     recipient_list = []
     for recipient in recipients:
-        updated_recipient = repo.update(user_id, reminder_id, recipient)
+        updated_recipient = repo.update(account_data['id'], reminder_id, recipient)
         recipient_list.append(updated_recipient)
     return recipient_list
 
@@ -44,8 +43,7 @@ def create(
 
 @router.get("/recipients", response_model=Union[List[RecipientOut], Error])
 def get_all_by_user(
-    user_id: int,
     response: Response,
     account_data: dict = Depends(authenticator.get_current_account_data),
     repo: RecipientRepository = Depends()):
-    return repo.get_all_by_user(user_id)
+    return repo.get_all_by_user(account_data['id'])
