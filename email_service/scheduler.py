@@ -2,6 +2,7 @@ import time
 import schedule
 from pools import pool
 from datetime import date
+from emailer import formatter, send_emails
 
 def reminder_compiler():
     try:
@@ -42,10 +43,19 @@ def reminder_compiler():
     except Exception:
         return print("BAAAD", flush=True)
 
+def job():
+    x = reminder_compiler()
+    try:
+        y = formatter(x)
+        send_emails(y)
+    except Exception:
+        print("You have no reminders or crashed")
+
 #   ----SCHEDULER----
 
 def compiler_scheduler():
-    schedule.every().day.at("08:00:00").do(reminder_compiler)
+    schedule.every().day.at("14:00:00").do(job)
+
 
     while True:
         schedule.run_pending()

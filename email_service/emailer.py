@@ -4,8 +4,6 @@ import ssl
 from datetime import date
 from email.message import EmailMessage
 
-
-
 def formatter(scheduled_reminders):
     result = []
     for k, v in scheduled_reminders.items():
@@ -16,10 +14,6 @@ def formatter(scheduled_reminders):
             body += f'{chr(10)}"{reminder["message"]}"{chr(10)}{chr(10)}{chr(10)}'
         result.append((k, body))
     return result
-
-
-
-
 
 def send_emails(emails):
     for email in emails:
@@ -40,8 +34,10 @@ def send_emails(emails):
 
         # Add SSL (layer of security)
         context = ssl.create_default_context()
-
+        try:
         # Log in and send the email
-        with smtplib.SMTP_SSL('smtp.gmail.com', 465, context=context) as smtp:
-            smtp.login(email_sender, email_password)
-            smtp.sendmail(email_sender, email_receiver, em.as_string())
+            with smtplib.SMTP_SSL('smtp.gmail.com', 465, context=context) as smtp:
+                smtp.login(email_sender, email_password)
+                smtp.sendmail(email_sender, email_receiver, em.as_string())
+        except Exception:
+            continue
