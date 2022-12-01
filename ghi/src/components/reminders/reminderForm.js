@@ -45,6 +45,20 @@ function ReminderForm() {
         setMessage("")
     }
 
+    function tomorrow() {
+        let nextDay = new Date();
+        nextDay.setDate(nextDay.getDate() + 1);
+
+        let month = nextDay.getMonth() + 1;
+        let day = nextDay.getDate();
+        let year = nextDay.getFullYear();
+
+        if (month < 10) { month = "0" + month }
+        if (day < 10) { day = "0" + day }
+
+        return year + '-' + month + '-' + day;
+    }
+
     return (
         <>
             <div className="outer-container"></div>
@@ -117,12 +131,13 @@ function ReminderForm() {
                         <input required placeholder="When do you want to receive this?"
                             type="date"
                             name="reminder-date"
+                            min={tomorrow()}
                             className="form-option"
                             value={reminderDate}
                             onChange={e=>setReminderDate(e.target.value)}/>
                     </div>
                     <div className="form-input">
-                        <label htmlFor="message">Message</label><br/>
+                        <label htmlFor="message">Message:</label><br/>
                         <textarea required placeholder="Your reminder message"
                             name="message"
                             className="form-option"
