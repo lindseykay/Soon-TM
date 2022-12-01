@@ -1,6 +1,11 @@
 @import url('https://fonts.googleapis.com/css?family=Montserrat:100,100i,200,200i,300,300i,400,400i,500,500i,600,600i,700,700i,800,800i,900,900i');
 @import url('https://fonts.googleapis.com/css?family=Poppins:400,500,600,700,800,900');
 
+:root {
+  --nblue: #81A4CD;
+  --nrose: #e0cccc;
+}
+
 body,
 html {
   height: 100%;
@@ -18,7 +23,144 @@ body {
   background-color: #81A4CD;
 }
 
+/* ================================
+  SCROLL BAR CHANGES
+================================ */
+
+/* width */
+::-webkit-scrollbar {
+  width: 1vw;
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+  background: rgba(226, 232, 238, 0);
+}
+
+/* Handle */
+::-webkit-scrollbar-thumb {
+  background: rgba(129, 164, 205, 0.8);
+  border-radius: 5vh;
+  border: 2px solid rgb(226, 232, 238);
+}
+
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(129, 164, 205, 1);
+}
 
 /* ====================================
-REMINDER FORM
+  REMINDERS
 ==================================== */
+
+.outer-container {
+  position: fixed;
+  width: 90vh;
+  height: 87vh;
+  min-width: 30vw;
+  left: 50%;
+  top: 50%;
+  margin-top: -43.5vh;
+  margin-left: -45vh;
+  background-image: url(./assets/frog.png);
+  background-size: 100% auto;
+  background-repeat: no-repeat;
+  background-position-y: 20%;
+  border-radius: 25vh;
+  filter: hue-rotate(150deg);
+  box-shadow: 0px 0px 16px 4px rgba(255, 255, 255, 0.25);
+}
+
+.reminder-form-container {
+  position: fixed;
+  width: 60vh;
+  min-width: 20vw;
+  left: 50%;
+  margin-left: -30vh;
+  top: 30%;
+  color: black;
+  background-color: white;
+}
+
+.reminder-form-container label {
+  font-size: 2.25vh;
+  font-weight: 500;
+}
+
+.reminder-form-container .form-input {
+  padding: 0.75vh 0 0.5vh 0;
+}
+
+.reminder-form-container .form-option {
+  width: 97%;
+  border: 2px solid black;
+  border-radius: 0.5vh;
+  padding: 0.5vh;
+  font-size: 1.75vh;
+  color: black;
+  margin: 0.25vh 0 0.25vh 0;
+  resize: none;
+  min-height: 2vh;
+}
+
+.reminder-form-container .form-option:hover {
+  background-color: rgba(208, 224, 243, 0.342);
+  box-shadow: 0px 0px 4px 2px #b5d3f556;
+}
+
+.reminder-form-container button {
+  float: right;
+  margin: 0.5vh 0.1vw 0 0.1vw;
+  font-size: 1.75vh;
+  border: 1px solid black;
+  border-radius: 1.5vh;
+  background-color: #b5d3f5;
+  padding: 0.3vh 1vh;
+}
+
+.reminder-form-container .form-return-button {
+  background-color: rgb(221, 221, 221);
+}
+
+.reminder-form-container button:hover {
+  color: white;
+  background-color: rgb(129, 164, 205);
+}
+
+.reminder-form-container .recipient {
+  display: inline-block;
+  position: relative;
+  margin: 0.5vh 0.5vw 0.5vh 0.1vw;
+  font-size: 1.75vh;
+  border: 1px solid black;
+  border-radius: 1.5vh;
+  background-color: #b5d3f5;
+  width: fit-content;
+  padding: 0.3vh 1vh 0.3vh 1vh;
+}
+
+.recipient .delete-mark {
+  position: absolute;
+  top: -0.65vh;
+  right: -0.8vh;
+  height: 1.75vh;
+  width: 1.75vh;
+  text-align: center;
+  background-color: rgb(114, 114, 114);
+  border-radius: 5vh;
+  color: white;
+  box-shadow: 0px 0px 4px 2px #b5d3f556;
+}
+
+.recipient .delete-mark:hover {
+  color: black;
+  background-color: white;
+  border: 1px solid black;
+}
+
+.delete-mark .x-mark {
+  position: absolute;
+  top: -0.4vh;
+  left: 0.5vh;
+  font-size: 1.4vh;
+}
