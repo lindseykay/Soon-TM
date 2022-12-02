@@ -44,7 +44,6 @@ async def create_user(
     return AccountToken(account=new_user, **token.dict())
 
 
-
 @router.get("/users/{user_id}", response_model=Union[UserOut,UserError])
 def get_user(
     user_id: int,
@@ -55,10 +54,9 @@ def get_user(
         response.status_code = 400
     return user
 
-@router.put("/users/{user_id}", response_model=Union[UserOut,UserError])
 
+@router.put("/users/{user_id}", response_model=Union[UserOut,UserError])
 def update_user(
-    user_id: int,
     user: UserUpdate,
     response: Response,
     account_data: dict = Depends(authenticator.get_current_account_data),
@@ -66,7 +64,20 @@ def update_user(
     if user.password:
         hashed_password = authenticator.hash_password(user.password)
         user.password = hashed_password
-    user = repo.update(user_id, user)
+    user = repo.update(account_data["id"], user)
     if user == None or user == {"message": "Skill diff"}:
         response.status_code = 400
     return user
+
+
+@router.get("/token", response_model=AccountToken | None)
+async def get_token(
+    request: Request,
+    account: UserOut = Depends(authenticator.try_get_current_account_data)
+) -> AccountToken | None:
+    if account and authenticator.cookie_name in request.cookies:
+        return {
+            "access_token": request.cookies[authenticator.cookie_name],
+            "token_type": "Bearer",
+            "account": account,
+        }

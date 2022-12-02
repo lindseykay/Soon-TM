@@ -61,4 +61,17 @@
 
 ## Nov 23, 2022
 
-    -Implemented AUTH on all microservice endpoints that need it
+  - Implemented AUTH on all microservice endpoints that need it
+
+## Nov 28, 2022
+  - Minor bug fix relating to updated user accounts having unhashed passwords
+  - Pair programmed with Lindsey to get started on emailer and email formatters
+
+## Nov 29, 2022
+  - Successfully completed emailer with SMTPlib and the formatter
+  - Merged emailer and formatter with scheduler and compilers
+  - Tested functionality and confirmed success!
+
+## Nov 30, 2022
+  - Began React frontend work, starting with reminder form component
+  - Stylized reminder form
