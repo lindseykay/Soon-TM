@@ -1,7 +1,8 @@
 import { useState } from 'react'
+import { useToken } from '../hooks/useToken'
 
 function ReminderForm() {
-    const [anonFlag, setAnonFlag] = useState(true)
+    const [token,,,,,userInfo] = useToken()
     const [emailTarget, setEmailTarget] = useState("")
     const [recipientName, setRecipientName] = useState("")
     const [recipientPhone, setRecipientPhone] = useState("")
@@ -37,12 +38,45 @@ function ReminderForm() {
         setRecipientList(newList)
     }
 
-    function formSubmission(event) {
+    async function formSubmission(event) {
         event.preventDefault()
-        setEmailTarget("")
-        setRecipientList([])
-        setReminderDate("")
-        setMessage("")
+
+        if ((emailTarget.length === 0 && !token) || message.length === 0 || recipientList.length === 0 || reminderDate === "") {
+            alert("Please fill out all parts of the form!")
+        } else {
+            const url = `${process.env.REACT_APP_REMINDERS_HOST}/reminders/`;
+            const body = JSON.stringify({
+                reminder: {
+                    "email_target": token ? userInfo.email : emailTarget,
+                    "reminder_date": reminderDate,
+                    "recurring": false
+                },
+                message: {
+                    "template_id": null,
+                    "content": message
+                },
+                recipients: recipientList.map(obj => {
+                    obj.user_id = token ? userInfo.id : null
+                    return obj
+                })
+            })
+
+            const response = await fetch(url, {
+                method: 'post',
+                body: body,
+                headers: {
+                    "Authorization": `Bearer ${token}`,
+                    "Content-Type": "application/json"
+                }
+            })
+            if(response.ok) {
+                setRecipientFormShow(2)
+                setEmailTarget("")
+                setRecipientList([])
+                setReminderDate("")
+                setMessage("")
+            }
+        }
     }
 
     function tomorrow() {
@@ -63,18 +97,20 @@ function ReminderForm() {
         <>
             <div className="outer-container"></div>
             <div className="reminder-form-container">
+                {recipientFormShow !== 2 &&
                 <form>
-                    {anonFlag &&
+                    {!token &&
                     <div className="form-input">
                         <label htmlFor="target-email">Your email:</label><br/>
                         <input required placeholder="Your own email address"
                             type="text"
                             name="target-email"
                             className="form-option"
+                            maxLength={64}
                             value={emailTarget}
                             onChange={e=>setEmailTarget(e.target.value)}/>
                     </div>}
-                    <div className="form-input">
+                    <div className="form-input-bg">
                         {recipientFormShow === 0 &&
                         <>
                             <label htmlFor="recipients">To whom:</label><br/>
@@ -94,6 +130,9 @@ function ReminderForm() {
                                         </div>
                                     )
                                 })}
+                                {recipientList.length === 0 &&
+                                "Click here to add recipients"
+                                }
                             </div>
                         </>
                         }
@@ -104,29 +143,32 @@ function ReminderForm() {
                                 type="text"
                                 className="form-option"
                                 autoComplete='ofasdasdasdasdasdasdasdf'
+                                maxLength={50}
                                 value={recipientName}
                                 onChange={e=>setRecipientName(e.target.value)}/>
                             <input placeholder="Phone"
                                 type="text"
                                 className="form-option"
+                                maxLength={20}
                                 autoComplete='ofasdasdasdasdasdasdasdf'
                                 value={recipientPhone}
                                 onChange={e=>setRecipientPhone(e.target.value)}/>
                             <input placeholder="Email"
                                 type="text"
                                 className="form-option"
+                                maxLength={64}
                                 autoComplete='ofasdasdasdasdasdasdasdf'
                                 value={recipientEmail}
                                 onChange={e=>setRecipientEmail(e.target.value)}/>
                             <br/>
                             <button onClick={submitRecipient}>Add recipient</button>
-                            {!anonFlag &&
+                            {token &&
                             <button>Add from contacts</button>}
                             <button className="form-return-button" onClick={e=>setRecipientFormShow(0)}>Return</button>
                         </>
                         }
                     </div>
-                    <div className="form-input">
+                    <div className="form-input-bg">
                         <label htmlFor="reminder-date">Remind me on:</label><br/>
                         <input required placeholder="When do you want to receive this?"
                             type="date"
@@ -136,7 +178,7 @@ function ReminderForm() {
                             value={reminderDate}
                             onChange={e=>setReminderDate(e.target.value)}/>
                     </div>
-                    <div className="form-input">
+                    <div className="form-input-bg">
                         <label htmlFor="message">Message:</label><br/>
                         <textarea required placeholder="Your reminder message"
                             name="message"
@@ -146,7 +188,13 @@ function ReminderForm() {
                             rows="5"></textarea>
                     </div>
                     <button onClick={e=>formSubmission(e)}>Submit reminder</button>
-                </form>
+                </form>}
+                {recipientFormShow === 2 &&
+                <>
+                    <div className='success-message'>Your reminder has been successfully saved!</div>
+                    <button className='new-reminder' onClick={e=>setRecipientFormShow(0)}>Create new reminder</button>
+                </>
+                }
             </div>
         </>
     )
