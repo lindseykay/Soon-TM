@@ -1,8 +1,8 @@
-@import url('https://fonts.googleapis.com/css?family=Montserrat:100,100i,200,200i,300,300i,400,400i,500,500i,600,600i,700,700i,800,800i,900,900i');
-@import url('https://fonts.googleapis.com/css?family=Poppins:400,500,600,700,800,900');
+@import url("https://fonts.googleapis.com/css?family=Montserrat:100,100i,200,200i,300,300i,400,400i,500,500i,600,600i,700,700i,800,800i,900,900i");
+@import url("https://fonts.googleapis.com/css?family=Poppins:400,500,600,700,800,900");
 
 :root {
-  --nblue: #81A4CD;
+  --nblue: #81a4cd;
   --nrose: #e0cccc;
 }
 
@@ -16,11 +16,11 @@ html {
 }
 
 body {
-  font-family: 'Montserrat', sans-serif;
+  font-family: "Montserrat", sans-serif;
   font-weight: 300;
   line-height: 1.7;
   color: #000000;
-  background-color: #81A4CD;
+  background-color: #81a4cd;
 }
 
 main {
@@ -52,7 +52,6 @@ main {
 ::-webkit-scrollbar-thumb:hover {
   background: rgba(129, 164, 205, 1);
 }
-
 
 /* ====================================
   NAV BAR
@@ -206,7 +205,7 @@ main {
   border: 1px solid black;
   border-radius: 5vh;
   background-color: #dfecfc;
-  height: 9vh
+  height: 9vh;
 }
 
 .reminder-form-container .new-reminder {
@@ -217,12 +216,11 @@ main {
   margin-left: -8vw;
 }
 
-
 /* ====================================
   LANDING PAGE
 ==================================== */
 
-.landing-page-welcome{
+.landing-page-welcome {
   position: fixed;
   width: 60vh;
   min-width: 20vw;
@@ -237,7 +235,7 @@ main {
 
 .create-reminder-button button {
   border-radius: 12px;
-  background-color: #E4959E;
+  background-color: #e4959e;
   border: none;
   color: white;
   padding: 15px 32px;
@@ -248,7 +246,7 @@ main {
 }
 
 .create-reminder-button button:hover {
-  filter: brightness(97%)
+  filter: brightness(97%);
 }
 
 .phone img {
@@ -279,4 +277,27 @@ main {
 .inactive {
   text-decoration: none;
   color: gray;
+}
+
+/* ====================================
+  nav-bar and landing-container(landing page button to toggle to login/signup)
+==================================== */
+
+.nav-bar {
+  position: absolute;
+  font-size: 1.8vh;
+  font-weight: 300;
+  padding: 1.5vh;
+  text-align: right;
+  width: 94%;
+  color: black;
+  height: 9vh;
+}
+
+.landing-container {
+  font-size: 1.8vh;
+  font-weight: 300;
+  width: 94%;
+  color: black;
+  height: 9vh;
 }

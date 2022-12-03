@@ -78,3 +78,14 @@
 -Refactored reminder’s microservice auth
 -Refactored contacts microservice auth
 -Refactored templates microservice auth
+
+## Nov 30, 2022
+
+- Add code ability to change boolean from false to true for message sent
+- Revisit wireframe to outline a plan for front end
+
+## Dec 1, 2022
+
+- Implemented useToken.js
+- Implemented code logic for certain website functionalities to be available for logged in users vs anonymous users
+- Implemented loginwidget.js to toggle back and forth for users to sign up or sign in
