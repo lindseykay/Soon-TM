@@ -1,8 +1,8 @@
-@import url('https://fonts.googleapis.com/css?family=Montserrat:100,100i,200,200i,300,300i,400,400i,500,500i,600,600i,700,700i,800,800i,900,900i');
-@import url('https://fonts.googleapis.com/css?family=Poppins:400,500,600,700,800,900');
+@import url("https://fonts.googleapis.com/css?family=Montserrat:100,100i,200,200i,300,300i,400,400i,500,500i,600,600i,700,700i,800,800i,900,900i");
+@import url("https://fonts.googleapis.com/css?family=Poppins:400,500,600,700,800,900");
 
 :root {
-  --nblue: #81A4CD;
+  --nblue: #81a4cd;
   --nrose: #e0cccc;
 }
 
@@ -16,11 +16,11 @@ html {
 }
 
 body {
-  font-family: 'Montserrat', sans-serif;
+  font-family: "Montserrat", sans-serif;
   font-weight: 300;
   line-height: 1.7;
   color: #000000;
-  background-color: #81A4CD;
+  background-color: #81a4cd;
 }
 
 /* ================================
@@ -48,7 +48,6 @@ body {
 ::-webkit-scrollbar-thumb:hover {
   background: rgba(129, 164, 205, 1);
 }
-
 
 /* ====================================
   NAV BAR
@@ -202,7 +201,7 @@ body {
   border: 1px solid black;
   border-radius: 5vh;
   background-color: #dfecfc;
-  height: 9vh
+  height: 9vh;
 }
 
 .reminder-form-container .new-reminder {
@@ -211,4 +210,27 @@ body {
   width: 16vw;
   left: 50%;
   margin-left: -8vw;
+}
+
+/* ====================================
+  nav-bar and landing-container(landing page button to toggle to login/signup)
+==================================== */
+
+.nav-bar {
+  position: absolute;
+  font-size: 1.8vh;
+  font-weight: 300;
+  padding: 1.5vh;
+  text-align: right;
+  width: 94%;
+  color: black;
+  height: 9vh;
+}
+
+.landing-container {
+  font-size: 1.8vh;
+  font-weight: 300;
+  width: 94%;
+  color: black;
+  height: 9vh;
 }
