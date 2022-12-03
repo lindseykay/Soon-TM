@@ -1,7 +1,13 @@
+import { useState, useEffect } from 'react'
 import { BrowserRouter, Routes, Route} from 'react-router-dom';
 import ReminderForm from './reminders/reminderForm';
 import { AuthProvider, useToken } from './hooks/useToken'
 import NavBar from './Nav';
+import UserDashboard from './user_dashboard/userDashboard';
+import ReminderDashboard from './user_dashboard/reminderDashboard';
+import ContactDashboard from './user_dashboard/contactDashboard';
+import TemplateDashboard from './user_dashboard/templateDashboard';
+
 
 function GetToken() {
     // Get token from JWT cookie (if already logged in)
@@ -19,7 +25,11 @@ function App() {
         <main>
           <Routes>
             <Route path="/" element={<></>}/>
-            <Route path="home" element={<></>}/>
+            <Route path="home" element={<UserDashboard/>}>
+              <Route path="reminders" element={<ReminderDashboard/>}/>
+              <Route path="contacts" element={<ContactDashboard/>}/>
+              <Route path="templates" element={<TemplateDashboard/>}/>
+            </Route>
             <Route path="reminders">
               <Route path="new" element={<ReminderForm/>}/>
               <Route path=":id" element={<></>}/>

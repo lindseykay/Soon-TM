@@ -35,7 +35,6 @@ def update_recipients(
 
 @router.post("/recipients", response_model=Union[int, Error])
 def create(
-    user_id: int,
     recipient: RecipientIn,
     response: Response,
     account_data: Optional[dict] = Depends(authenticator.try_get_current_account_data),

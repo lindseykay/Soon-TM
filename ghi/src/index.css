@@ -212,3 +212,24 @@ body {
   left: 50%;
   margin-left: -8vw;
 }
+
+/* ====================================
+  DASHBOARD
+==================================== */
+
+.active-now {
+  color: white;
+  background-color: red;
+  text-decoration: none;
+}
+
+.dashboard-tabs {
+  width: fit-content;
+  margin: 1vw;
+  padding: 0.5vh;
+}
+
+.inactive {
+  text-decoration: none;
+  color: gray;
+}
