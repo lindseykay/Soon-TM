@@ -1,6 +1,9 @@
 import { BrowserRouter, Routes, Route} from 'react-router-dom';
 import ReminderForm from './reminders/reminderForm';
-import { AuthProvider, useToken } from './hooks/useToken'
+import LandingPage from './landingPage';
+import ContactBook from './contacts/contactsBook';
+import { AuthProvider, useToken } from './hooks/useToken';
+
 import NavBar from './Nav';
 
 function GetToken() {
@@ -18,7 +21,7 @@ function App() {
         <NavBar/>
         <main>
           <Routes>
-            <Route path="/" element={<></>}/>
+            <Route path="/" element={<LandingPage/>}/>
             <Route path="home" element={<></>}/>
             <Route path="reminders">
               <Route path="new" element={<ReminderForm/>}/>
@@ -30,7 +33,7 @@ function App() {
               <Route path=":id" element={<></>}/>
             </Route>
             <Route path="contacts">
-              <Route index element={<></>}/>
+              <Route index element={<ContactBook/>}/>
               <Route path="new" element={<></>}/>
               <Route path=":id" element={<></>}/>
             </Route>
