@@ -23,6 +23,10 @@ body {
   background-color: #81A4CD;
 }
 
+main {
+  overflow-y: auto;
+}
+
 /* ================================
   SCROLL BAR CHANGES
 ================================ */
@@ -211,6 +215,49 @@ body {
   width: 16vw;
   left: 50%;
   margin-left: -8vw;
+}
+
+
+/* ====================================
+  LANDING PAGE
+==================================== */
+
+.landing-page-welcome{
+  position: fixed;
+  width: 60vh;
+  min-width: 20vw;
+  left: 50%;
+  margin-left: -30vh;
+  top: 15%;
+  color: white;
+  font-size: 4vh;
+  font-weight: bolder;
+  text-align: center;
+}
+
+.create-reminder-button button {
+  border-radius: 12px;
+  background-color: #E4959E;
+  border: none;
+  color: white;
+  padding: 15px 32px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 2vh;
+}
+
+.create-reminder-button button:hover {
+  filter: brightness(97%)
+}
+
+.phone img {
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+  height: 60vh;
+  max-width: 100%;
+  max-height: 100%;
 }
 
 /* ====================================
