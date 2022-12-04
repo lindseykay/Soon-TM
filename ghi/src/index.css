@@ -316,9 +316,9 @@ main {
 
 /* The Modal (background) */
 .modal {
-  display: block; /* Hidden by default */
-  position: fixed; /* Stay in place */
-  z-index: 1; /* Sit on top */
+  display: block;
+  position: fixed;
+  z-index: 1;
   left: 0;
   top: 0;
   width: 100%; /* Full width */
@@ -339,7 +339,8 @@ main {
 
 /* The Close Button */
 .close {
-  color: #aaa;
+  background-color: #e4959e;
+  color: white;
   float: right;
   font-size: 28px;
   font-weight: bold;
@@ -347,7 +348,24 @@ main {
 
 .close:hover,
 .close:focus {
-  color: black;
+  filter: brightness(95%);
   text-decoration: none;
   cursor: pointer;
+}
+
+
+.update-button {
+  border-radius: 12px;
+  background-color: #e4959e;
+  border: none;
+  color: white;
+  padding: 10px 20px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 1vh;
+}
+
+.update-button:hover {
+  filter: brightness(90%);
 }

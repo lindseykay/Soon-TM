@@ -11,10 +11,29 @@ function SettingsDashboard() {
     const [name, setName] = useState("")
     const [email, setEmail] = useState("")
     const [password, setPassword] = useState("")
-
     const [nameModalOpen, setNameModalOpen] = useState(false)
     const [passwordModalOpen, setPasswordModalOpen] = useState(false)
 
+
+    async function preventBlankPassword(event){
+        event.preventDefault()
+        if (password.length === 0){
+            alert("Please provide an updated password")
+        }
+        else {
+            update(password, userInfo.email, name)
+        }
+    }
+
+    async function preventBlankName(event){
+        event.preventDefault()
+        if (name.length === 0){
+            alert("Please provide an updated name")
+        }
+        else {
+            update(password, userInfo.email, name)
+        }
+    }
     return (
     <>
         {userInfo &&
@@ -24,7 +43,7 @@ function SettingsDashboard() {
         </div>
         <div>
             name: {userInfo.name}
-            <button onClick={(e) => setNameModalOpen(true)}>Update</button>
+            <button className="update-button" onClick={(e) => setNameModalOpen(true)}>Update</button>
         </div>
 
         { nameModalOpen &&
@@ -34,20 +53,20 @@ function SettingsDashboard() {
             <div>
                 Upon submission, you will be automatically logged out and redirected to the home page.
             </div>
-            <input
-            placeholder={userInfo.name}
-            type ="text"
-            value = {name}
-            onChange={(e) => setName(e.target.value)}
-            />
-            <button onClick={(e) => update(password, userInfo.email, name)}>Update Name</button>
-
+                <input
+                placeholder={userInfo.name}
+                type ="text"
+                value = {name}
+                onChange={(e) => setName(e.target.value)}
+                />
+                <button className="update-button" onClick={e=>preventBlankName(e)}>Update Name</button>
             </div>
         </div>
         }
 
         <div>
-            Email: {userInfo.email} <button>Update</button>
+            Email: {userInfo.email}
+            {/* <button className="update-button">Update</button> */}
         </div>
 
 
@@ -55,7 +74,7 @@ function SettingsDashboard() {
 
         <div>
             password: ********
-            <button onClick={(e) => setPasswordModalOpen(true)}>Update</button>
+            <button className="update-button" onClick={(e) => setPasswordModalOpen(true)}>Update</button>
         </div>
 
 
@@ -67,11 +86,11 @@ function SettingsDashboard() {
                 </div>
                 <button className="close" onClick={(e) => setPasswordModalOpen(false)}>x</button>
                 <input
-            type ="text"
-            value = {password}
-            onChange={(e) => setPassword(e.target.value)}
-            />
-            <button onClick={(e) => update(password, userInfo.email, name)}>Update Password</button>
+                    type ="text"
+                    value = {password}
+                    onChange={(e) => setPassword(e.target.value)}
+                />
+                <button className="update-button" onClick={e=>preventBlankPassword(e)}>Update Password</button>
             </div>
         </div>
         }
