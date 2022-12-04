@@ -15,6 +15,8 @@ function ReminderDashboard(props){
     useEffect(() => {
         if (token && !props.reminderList){
             newReminders()
+        } else if (props.reminderList) {
+            filterReminders(0)
         }
     }, [token])
 
