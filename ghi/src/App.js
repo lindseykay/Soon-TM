@@ -1,5 +1,5 @@
-import { useState } from 'react'
-import { BrowserRouter, Routes, Route} from 'react-router-dom';
+import { useEffect, useState } from 'react'
+import { BrowserRouter, Routes, Route, useNavigate, Outlet } from 'react-router-dom';
 import ReminderForm from './reminders/reminderForm';
 import LandingPage from './landingPage';
 import ContactBook from './contacts/contactsBook';
@@ -17,6 +17,25 @@ function GetToken() {
     return null
 }
 
+//Route protection
+function AuthRoute ({children}) {
+    const [token] = useToken()
+    const [counter, setCounter] = useState(0)
+    const navigate = useNavigate()
+
+    useEffect(()=>{
+      if (!token && counter < 1) {
+        setCounter(counter+1)
+      } else if (!token && counter >= 1) {
+        navigate('/')
+      }
+    },[token])
+
+    if (token) {
+      return children ? children : <Outlet />
+    }
+}
+
 function App() {
   const [reminderList, setReminderList] = useState()
 
@@ -28,7 +47,11 @@ function App() {
         <div className="main-display">
           <Routes>
             <Route path="/" element={<LandingPage/>}/>
-            <Route path="home" element={<UserDashboard/>}>
+            <Route path="home" element={
+              <AuthRoute>
+                <UserDashboard/>
+              </AuthRoute>
+              }>
               <Route path="reminders" element={<ReminderDashboard reminderList={reminderList} refreshReminders={setReminderList}/>}/>
               <Route path="contacts" element={<ContactDashboard/>}/>
               <Route path="templates" element={<TemplateDashboard/>}/>

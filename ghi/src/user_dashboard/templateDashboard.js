@@ -1,6 +1,6 @@
 function TemplateDashboard(){
     return(
-        <p>Hi this is template Dashboard</p>
+        <div>hi</div>
     )
 }
 

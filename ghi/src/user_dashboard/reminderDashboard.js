@@ -22,32 +22,52 @@ function ReminderDashboard(props){
         let today = new Date()
         today = today.toISOString().split('T')[0]
 
+        const buttons = document.querySelectorAll('.reminder-tabs')
+        for (let node of buttons) {
+            node.classList.remove("selected-tab")
+        }
+
+        const button = document.querySelector(`#reminder-tab-${val}`)
         if (val === 0 ){
             const list = rlist.filter(obj => obj.reminder_date === today)
             setFilteredReminders(list)
+            button.classList.add("selected-tab")
         }
         if (val === 1 ){
             const list = rlist.filter(obj => obj.reminder_date > today)
             setFilteredReminders(list)
+            button.classList.add("selected-tab")
         }
         if (val === 2 ){
             const list = rlist.filter(obj => obj.reminder_date < today)
             setFilteredReminders(list)
+            button.classList.add("selected-tab")
         }
     }
 
     return(
         <>
-            <button onClick={e => filterReminders(0)}>Today's reminders</button>
-            <button onClick={e => filterReminders(1)}>Scheduled Reminders</button>
-            <button onClick={e => filterReminders(2)}>Past Reminders</button>
-            {
-                filteredReminders.map(reminder => {
-                    return(
-                        <li key = {reminder.id}>{reminder.message.content}{reminder.reminder_date}</li>
-                    )
-                })
-            }
+            <button className='reminder-tabs' id='reminder-tab-0' onClick={e => filterReminders(0)}>Today's reminders</button>
+            <button className='reminder-tabs' id='reminder-tab-1' onClick={e => filterReminders(1)}>Scheduled Reminders</button>
+            <button className='reminder-tabs' id='reminder-tab-2' onClick={e => filterReminders(2)}>Past Reminders</button>
+            <div className='reminder-list-box'>
+                {
+                    filteredReminders.map(reminder => {
+                        return(
+                            <div className="reminder" key={reminder.id}>
+                                <div className='heading'>Message for: &nbsp;
+                                    {reminder.recipients.reduce((a,b)=> a+`, ${b.name}`,"").substring(2).toUpperCase()}</div>
+                                <div className='content'> {reminder.message.content}</div>
+                                <div className='footer'>Sending on: {reminder.reminder_date}
+                                    <span className='update-options'>
+                                        <span>edit</span> | <span>delete</span>
+                                    </span>
+                                </div>
+                            </div>
+                        )
+                    })
+                }
+            </div>
         </>
     )
 }

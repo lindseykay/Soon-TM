@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import { useToken } from '../hooks/useToken'
-import { NavLink } from "react-router-dom"
+import { NavLink, useLocation } from "react-router-dom"
 
 function ReminderForm(props) {
     const [token,,,,,userInfo] = useToken()
@@ -12,6 +12,20 @@ function ReminderForm(props) {
     const [message, setMessage] = useState("")
     const [recipientFormShow, setRecipientFormShow] = useState(0)
     const [recipientList, setRecipientList] = useState([])
+    const [savedID, setSavedID] = useState()
+    const location = useLocation()
+    const { recName, recPhone, recEmail, recID } = location["state"] ? location.state : {name:"",phone:"",email:"",id:""}
+    if (!savedID && savedID !== recID) {
+        let recipient = {
+            name: recName,
+            phone: recPhone,
+            email: recEmail
+        }
+        let rlist = recipientList
+        rlist.push(recipient)
+        setRecipientList(rlist)
+        setSavedID(recID)
+    }
 
     const submitRecipient = () => {
         let recipient = {
@@ -112,7 +126,7 @@ function ReminderForm(props) {
                             value={emailTarget}
                             onChange={e=>setEmailTarget(e.target.value)}/>
                     </div>}
-                    <div className="form-input-bg">
+                    <div className="form-input">
                         {recipientFormShow === 0 &&
                         <>
                             <label htmlFor="recipients">To whom:</label><br/>
@@ -170,7 +184,7 @@ function ReminderForm(props) {
                         </>
                         }
                     </div>
-                    <div className="form-input-bg">
+                    <div className="form-input">
                         <label htmlFor="reminder-date">Remind me on:</label><br/>
                         <input required placeholder="When do you want to receive this?"
                             type="date"
@@ -180,7 +194,7 @@ function ReminderForm(props) {
                             value={reminderDate}
                             onChange={e=>setReminderDate(e.target.value)}/>
                     </div>
-                    <div className="form-input-bg">
+                    <div className="form-input">
                         <label htmlFor="message">Message:</label><br/>
                         <textarea required placeholder="Your reminder message"
                             name="message"

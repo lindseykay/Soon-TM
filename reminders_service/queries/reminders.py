@@ -93,7 +93,7 @@ class ReminderRepository:
                             LEFT JOIN recipients as re
                             ON (rrmt.recipient_id = re.id )
                             WHERE r.user_id = %s
-                            ORDER BY r.id;
+                            ORDER BY r.reminder_date ASC;
                             """,
                             [user_id]
                     )
