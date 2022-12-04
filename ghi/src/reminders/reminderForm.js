@@ -1,7 +1,8 @@
 import { useState } from 'react'
 import { useToken } from '../hooks/useToken'
+import { NavLink } from "react-router-dom"
 
-function ReminderForm() {
+function ReminderForm(props) {
     const [token,,,,,userInfo] = useToken()
     const [emailTarget, setEmailTarget] = useState("")
     const [recipientName, setRecipientName] = useState("")
@@ -75,6 +76,7 @@ function ReminderForm() {
                 setRecipientList([])
                 setReminderDate("")
                 setMessage("")
+                props.refreshReminders()
             }
         }
     }
@@ -193,6 +195,7 @@ function ReminderForm() {
                 <>
                     <div className='success-message'>Your reminder has been successfully saved!</div>
                     <button className='new-reminder' onClick={e=>setRecipientFormShow(0)}>Create new reminder</button>
+                    <NavLink to="/home/reminders">Reminder Dashboard Temp Link</NavLink>
                 </>
                 }
             </div>
