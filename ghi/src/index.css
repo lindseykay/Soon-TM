@@ -446,6 +446,7 @@ body {
   font-weight: 300;
   color: #383838;
   overflow: auto;
+  overflow-wrap: break-word;
 }
 
 .reminder .heading {
