@@ -75,3 +75,19 @@
 ## Nov 30, 2022
   - Began React frontend work, starting with reminder form component
   - Stylized reminder form
+
+## Dec 1, 2022
+  - Added front end authentication. Login and logout functionality working as intended
+  - Connected reminder form with backend. Reminders can now be created from front end
+
+## Dec 2, 2022
+  - Pair programmed with Alex on reminders and contacts dashboard
+  - Reminder dashboard now shows list of reminders, but needs refactoring so that list refreshes when a new reminder is created
+  - Initial start on contact creation form
+  - Need styling for reminder dashboard page
+
+## Dec 3, 2022
+  - Alex & I completed a contacts dashboard with a list view and create contact functionality. Each contact has a link that redirects to creating a new reminder and auto populates the recipient field with contact info. Still needs styling
+  - Reminder hook refactored. When a new reminder is created, reminder dashboard will auto update to reflect
+  - Reminder dashboard styled with css, accounting for scaling
+  - Added route protection (currently just for dashboard pages but easy enough to add to any route). If there is no token, the user will automatically be bounced back to landing page when trying to access an authorized only page
