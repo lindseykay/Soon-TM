@@ -124,21 +124,36 @@ export function useToken() {
     return false;
   }
 
-  async function update(username, password, email, name) {
+  async function update(password, email, name) {
     const url = `${process.env.REACT_APP_ACCOUNTS_HOST}/users/`;
+    // if (password === ""){
+    //   var body = JSON.stringify({
+    //     email,
+    //     name
+    //   })
+    // } else {
+    //    body = JSON.stringify({
+    //     password,
+    //     email,
+    //     name
+    //   })
+    // };
+
+
     const response = await fetch(url, {
-      method: "patch",
+      method: "put",
+      credentials: "include",
       body: JSON.stringify({
-        password,
-        email,
-        name
+        password: password ? password : null,
+        email: email,
+        name: name ? name : null
       }),
       headers: {
         "Content-Type": "application/json",
       },
     });
     if (response.ok) {
-      await login(username, password);
+      await logout();
     }
     return false;
   }

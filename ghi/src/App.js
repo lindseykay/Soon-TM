@@ -10,6 +10,7 @@ import UserDashboard from './user_dashboard/userDashboard';
 import ReminderDashboard from './user_dashboard/reminderDashboard';
 import ContactDashboard from './user_dashboard/contactDashboard';
 import TemplateDashboard from './user_dashboard/templateDashboard';
+import SettingsDashboard from './user_dashboard/settingsDashboard';
 
 
 function GetToken() {
@@ -32,6 +33,7 @@ function App() {
               <Route path="reminders" element={<ReminderDashboard/>}/>
               <Route path="contacts" element={<ContactDashboard/>}/>
               <Route path="templates" element={<TemplateDashboard/>}/>
+              <Route path="settings" element={<SettingsDashboard/>} />
             </Route>
             <Route path="reminders">
               <Route path="new" element={<ReminderForm/>}/>
@@ -43,7 +45,7 @@ function App() {
               <Route path=":id" element={<></>}/>
             </Route>
             <Route path="contacts">
-              <Route index element={<ContactBook/>}/>
+              {/* <Route index element={<ContactBook/>}/> */}
               <Route path="new" element={<></>}/>
               <Route path=":id" element={<></>}/>
             </Route>

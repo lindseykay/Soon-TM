@@ -22,6 +22,9 @@ function UserDashboard() {
             <NavLink to="/home/templates" className={({isActive}) => (isActive ? "active-now": "inactive")}>
                 <div className="dashboard-tabs">templates</div>
             </NavLink>
+            <NavLink to="/home/settings" className={({isActive}) => (isActive ? "active-now": "inactive")}>
+                <div className="dashboard-tabs">settings</div>
+            </NavLink>
         </div>
         <Outlet/>
         </>

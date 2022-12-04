@@ -1,5 +1,6 @@
 import { useToken } from "./hooks/useToken";
 import LoginWidget from "./loginWidget";
+import { NavLink } from "react-router-dom";
 
 import React from "react";
 import { stack as Menu } from "react-burger-menu";
@@ -27,9 +28,9 @@ function NavBar() {
         <a className="menu-item" href="/">
           My Contacts
         </a>
-        <a className="menu-item" href="/">
-          Settings
-        </a>
+        <NavLink to="/home/settings" className={({isActive}) => (isActive ? "active-now": "inactive")}>
+                <div className="dashboard-tabs">settings</div>
+        </NavLink>
       </Menu>
     </div>
   );
