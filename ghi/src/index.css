@@ -368,7 +368,7 @@ body {
 .dashboard-tabs {
   display: inline-block;
   width: fit-content;
-  font-size: 2vh;
+  font-size: max(2.2vh,16px);
 }
 
 .active-now {
@@ -405,6 +405,7 @@ body {
   border: 1px solid black;
   color: rgb(172, 172, 172);
   background-color: rgb(255, 255, 255);
+  font-size: max(2vh,14px);
 }
 
 .selected-tab {
@@ -431,16 +432,17 @@ body {
   background-color: #ebd9da;
   padding: 1vh 2vh;
   box-shadow: 2px 2px 2px 1px #e4959e27;
-  font-size: 1.75vh;
+  font-size: max(1.75vh,12px);
   font-weight: 400;
   color: black;
+  max-height: 20vh;
 }
 
 .reminder .content {
   background-color: white;
   border-radius: 1vh;
   padding: 0.5vh;
-  height: 8.5vh;
+  height: 50%;
   font-weight: 300;
   color: #383838;
   overflow: auto;
@@ -454,7 +456,10 @@ body {
 }
 
 .reminder .footer {
-  margin-top: 1vh;
+  margin-top: 0.75vh;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .reminder .update-options {
