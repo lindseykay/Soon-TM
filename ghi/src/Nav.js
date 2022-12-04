@@ -1,6 +1,5 @@
 import { useToken } from "./hooks/useToken";
 import LoginWidget from "./loginWidget";
-
 import React from "react";
 import { stack as Menu } from "react-burger-menu";
 import "./Sidebar.css"; // Decide with team if we want to implement this into index.css to clean up directory

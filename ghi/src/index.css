@@ -3,7 +3,7 @@
 
 :root {
   --nblue: #81a4cd;
-  --nrose: #e0cccc;
+  --nrose: #e4959e;
 }
 
 body,
@@ -23,8 +23,11 @@ body {
   background-color: #81a4cd;
 }
 
-main {
-  overflow-y: auto;
+.main-display {
+  position: absolute;
+  top: 10vh;
+  left: max(5vw,10vh);
+  right: max(5vw,10vh);
 }
 
 /* ================================
@@ -262,21 +265,45 @@ main {
   DASHBOARD
 ==================================== */
 
-.active-now {
+.dash-greeting {
+  font-size: 4vh;
+  font-weight: 700;
+  margin: 1.5vh 0;
   color: white;
-  background-color: red;
-  text-decoration: none;
 }
 
 .dashboard-tabs {
+  display: inline-block;
   width: fit-content;
-  margin: 1vw;
-  padding: 0.5vh;
+  font-size: 2vh;
+  font-weight: 600;
+}
+
+.active-now {
+  color: white;
+  background-color: #e7cccf;
+  text-decoration: none;
+  padding: 0.75vh 1vh;
+  margin-right: 0.1vw;
+  border-radius: 1vh 1vh 0 0;
+  border-top: 2px solid black;
+  border-right: 2px solid black;
+  border-left: 2px solid black;
 }
 
 .inactive {
   text-decoration: none;
-  color: gray;
+  background-color: rgb(255, 255, 255);
+  color: rgb(214, 179, 179);
+  padding: 0.75vh 1vh;
+  margin-right: 0.05vw;
+  border-radius: 1vh 1vh 0 0;
+}
+
+.sub-display {
+  border: 2px solid black;
+  background-color: #e7cccf;
+  height: 70vh;
 }
 
 /* ====================================

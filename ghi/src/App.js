@@ -1,10 +1,9 @@
-import { useState, useEffect } from 'react'
+import { useState } from 'react'
 import { BrowserRouter, Routes, Route} from 'react-router-dom';
 import ReminderForm from './reminders/reminderForm';
 import LandingPage from './landingPage';
 import ContactBook from './contacts/contactsBook';
 import { AuthProvider, useToken } from './hooks/useToken';
-
 import NavBar from './Nav';
 import UserDashboard from './user_dashboard/userDashboard';
 import ReminderDashboard from './user_dashboard/reminderDashboard';
@@ -19,22 +18,23 @@ function GetToken() {
 }
 
 function App() {
+  const [reminderList, setReminderList] = useState()
 
   return (
     <AuthProvider>
       <BrowserRouter>
         <GetToken/>
         <NavBar/>
-        <main>
+        <div className="main-display">
           <Routes>
             <Route path="/" element={<LandingPage/>}/>
             <Route path="home" element={<UserDashboard/>}>
-              <Route path="reminders" element={<ReminderDashboard/>}/>
+              <Route path="reminders" element={<ReminderDashboard reminderList={reminderList} refreshReminders={setReminderList}/>}/>
               <Route path="contacts" element={<ContactDashboard/>}/>
               <Route path="templates" element={<TemplateDashboard/>}/>
             </Route>
             <Route path="reminders">
-              <Route path="new" element={<ReminderForm/>}/>
+              <Route path="new" element={<ReminderForm refreshReminders={setReminderList}/>}/>
               <Route path=":id" element={<></>}/>
             </Route>
             <Route path="templates">
@@ -43,12 +43,12 @@ function App() {
               <Route path=":id" element={<></>}/>
             </Route>
             <Route path="contacts">
-              <Route index element={<ContactBook/>}/>
+              <Route index element={<></>}/>
               <Route path="new" element={<></>}/>
               <Route path=":id" element={<></>}/>
             </Route>
           </Routes>
-        </main>
+        </div>
       </BrowserRouter>
     </AuthProvider>
   )
