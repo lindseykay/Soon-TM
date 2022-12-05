@@ -2,6 +2,7 @@ import { useToken } from "./hooks/useToken";
 import LoginWidget from "./loginWidget";
 import React from "react";
 import { stack as Menu } from "react-burger-menu";
+import { NavLink } from "react-router-dom"
 
 function NavBar() {
   const [token, , logout] = useToken();
@@ -15,18 +16,27 @@ function NavBar() {
         </>
       )}
       <Menu>
-        <a className="menu-item" href="/">
-          Home
-        </a>
-        <a className="menu-item" href="/">
-          My Reminders
-        </a>
-        <a className="menu-item" href="/">
-          My Contacts
-        </a>
-        <a className="menu-item" href="/">
-          Settings
-        </a>
+        <div className="menu-container">
+          <NavLink className="menu-item" to="/">
+            home
+          </NavLink>
+          {token &&
+            <>
+              <NavLink className="menu-item" to="/home/reminders/">
+                reminders
+              </NavLink>
+              <NavLink className="menu-item" to="/home/contacts/">
+                contacts
+              </NavLink>
+              <NavLink className="menu-item" to="/home/templates/">
+                templates
+              </NavLink>
+            </>
+          }
+          <NavLink className="menu-item" to="/reminders/new/">
+            create a new reminder
+          </NavLink>
+        </div>
       </Menu>
     </div>
   );

@@ -219,14 +219,13 @@ body {
   position: fixed;
   width: 4.5vh;
   height: 3vh;
-  left: 3vh;
+  left: 3.5vh;
   top: 3vh;
 }
 
 /* Color/shape of burger icon bars */
 .bm-burger-bars {
-  background: #373a47;
-  box-shadow: 0px 0px 8px 2px rgba(255, 255, 255, 0.2);
+  background: #ffffff;
 }
 
 /* Color/shape of burger icon bars on hover*/
@@ -236,6 +235,7 @@ body {
 
 /* Position and sizing of clickable cross button */
 .bm-cross-button {
+  display: none;
   height: 2vh;
   width: 2vh;
 }
@@ -245,37 +245,39 @@ body {
   background: #ffffff;
 }
 
+.bm-menu-wrap {
+  position: fixed;
+  height: 100%;
+}
+
 /* General sidebar styles */
 .bm-menu {
-  position: fixed;
-  top: 0;
-  height: 90vh;
   background: #e4959e;
-  padding: 10em 3.5em 0;
-  font-size: 0.7em;
+  font-size: 18px;
+  font-weight: 600;
+  box-shadow: 0px 0px 16px 2px rgba(0, 0, 0, 0.2);
 }
 
-/* Morph shape necessary with bubble or elastic.  Utilizing stack animation so this is optional for this project*/
-.bm-morph-shape {
-  fill: #b5d3f5;
+.menu-container {
+  position: fixed;
+  margin-top: 3vh;
+  width: 300px;
 }
 
-/* Wrapper for item list */
-.bm-item-list {
-  color: #b8b7ad;
-  padding: 2em;
+.menu-item {
+  display: block;
+  text-decoration: none;
+  color: white;
+  padding: 1.5vh 25px 1.5vh 20px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
-/* Individual item */
-.bm-item {
-  display: inline-block;
+.menu-item:hover {
+  color: #e4959e;
+  background-color: white;
 }
-
-/* Styling of overlay */
-.bm-overlay {
-  background: rgba(0, 0, 0, 0.3);
-}
-
 
 /* ====================================
   REMINDERS
@@ -589,6 +591,12 @@ body {
   padding: 0.75vh 1vh;
   margin-right: 0.1vw;
   border-radius: 1vh 1vh 0 0;
+}
+
+.inactive:hover {
+  font-weight: 600;
+  color: white;
+  background-color: #e7cccf;
 }
 
 .sub-display {
