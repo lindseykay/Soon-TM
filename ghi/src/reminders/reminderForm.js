@@ -111,107 +111,116 @@ function ReminderForm(props) {
 
     return (
         <>
-            <div className="outer-container"></div>
-            <div className="reminder-form-container">
-                {recipientFormShow !== 2 &&
-                <form>
-                    {!token &&
-                    <div className="form-input">
-                        <label htmlFor="target-email">Your email:</label><br/>
-                        <input required placeholder="Your own email address"
-                            type="text"
-                            name="target-email"
-                            className="form-option"
-                            maxLength={64}
-                            value={emailTarget}
-                            onChange={e=>setEmailTarget(e.target.value)}/>
-                    </div>}
-                    <div className="form-input">
-                        {recipientFormShow === 0 &&
-                        <>
-                            <label htmlFor="recipients">To whom:</label><br/>
-                            <div placeholder= "Click to add recipients"
-                                name="recipients"
-                                className="form-option"
-                                onClick={e=>setRecipientFormShow(1)}>
-                                {recipientList.map((recipient, idx) => {
-                                    return (
-                                        <div className='recipient'
-                                            key={recipient.name+idx}>
-                                            {recipient.name}
-                                            <div className='delete-mark'
-                                                onClick={e=>removeRecipient(e,idx)}>
-                                                <div className='x-mark'>x</div>
-                                            </div>
-                                        </div>
-                                    )
-                                })}
-                                {recipientList.length === 0 &&
-                                "Click here to add recipients"
-                                }
-                            </div>
-                        </>
-                        }
-                        {recipientFormShow === 1 &&
-                        <>
-                            <label>To whom:</label><br/>
-                            <input required placeholder="Name"
+            <div className="phone-container">
+                <div className="reminder-form-container">
+                    {recipientFormShow !== 2 &&
+                    <form>
+                        {!token &&
+                        <div className="form-input">
+                            <label htmlFor="target-email">your email:</label><br/>
+                            <input required placeholder="your own email address"
                                 type="text"
-                                className="form-option"
-                                autoComplete='ofasdasdasdasdasdasdasdf'
-                                maxLength={50}
-                                value={recipientName}
-                                onChange={e=>setRecipientName(e.target.value)}/>
-                            <input placeholder="Phone"
-                                type="text"
-                                className="form-option"
-                                maxLength={20}
-                                autoComplete='ofasdasdasdasdasdasdasdf'
-                                value={recipientPhone}
-                                onChange={e=>setRecipientPhone(e.target.value)}/>
-                            <input placeholder="Email"
-                                type="text"
+                                name="target-email"
                                 className="form-option"
                                 maxLength={64}
-                                autoComplete='ofasdasdasdasdasdasdasdf'
-                                value={recipientEmail}
-                                onChange={e=>setRecipientEmail(e.target.value)}/>
-                            <br/>
-                            <button onClick={submitRecipient}>Add recipient</button>
-                            {token &&
-                            <button>Add from contacts</button>}
-                            <button className="form-return-button" onClick={e=>setRecipientFormShow(0)}>Return</button>
-                        </>
-                        }
-                    </div>
-                    <div className="form-input">
-                        <label htmlFor="reminder-date">Remind me on:</label><br/>
-                        <input required placeholder="When do you want to receive this?"
-                            type="date"
-                            name="reminder-date"
-                            min={tomorrow()}
-                            className="form-option"
-                            value={reminderDate}
-                            onChange={e=>setReminderDate(e.target.value)}/>
-                    </div>
-                    <div className="form-input">
-                        <label htmlFor="message">Message:</label><br/>
-                        <textarea required placeholder="Your reminder message"
-                            name="message"
-                            className="form-option"
-                            value={message}
-                            onChange={e=>setMessage(e.target.value)}
-                            rows="5"></textarea>
-                    </div>
-                    <button onClick={e=>formSubmission(e)}>Submit reminder</button>
-                </form>}
-                {recipientFormShow === 2 &&
-                <>
-                    <div className='success-message'>Your reminder has been successfully saved!</div>
-                    <button className='new-reminder' onClick={e=>setRecipientFormShow(0)}>Create new reminder</button>
-                    <NavLink to="/home/reminders">Reminder Dashboard Temp Link</NavLink>
-                </>
-                }
+                                value={emailTarget}
+                                onChange={e=>setEmailTarget(e.target.value)}/>
+                        </div>}
+                        <div className="form-input">
+                            {recipientFormShow === 0 &&
+                            <>
+                                <label htmlFor="recipients">to whom:</label><br/>
+                                <div placeholder= "click to add recipients"
+                                    name="recipients"
+                                    className="form-option"
+                                    onClick={e=>setRecipientFormShow(1)}>
+                                    {recipientList.map((recipient, idx) => {
+                                        return (
+                                            <div className='recipient'
+                                                key={recipient.name+idx}>
+                                                {recipient.name}
+                                                <div className='delete-mark'
+                                                    onClick={e=>removeRecipient(e,idx)}>
+                                                    <div className='x-mark'>x</div>
+                                                </div>
+                                            </div>
+                                        )
+                                    })}
+                                    {recipientList.length === 0 &&
+                                    "click here to add recipients"
+                                    }
+                                </div>
+                            </>
+                            }
+                            {recipientFormShow === 1 &&
+                            <>
+                                <label>To whom:</label><br/>
+                                <input required placeholder="name"
+                                    type="text"
+                                    className="form-option"
+                                    autoComplete='ofasdasdasdasdasdasdasdf'
+                                    maxLength={50}
+                                    value={recipientName}
+                                    onChange={e=>setRecipientName(e.target.value)}/>
+                                <input placeholder="phone number (optional)"
+                                    type="text"
+                                    className="form-option"
+                                    maxLength={20}
+                                    autoComplete='ofasdasdasdasdasdasdasdf'
+                                    value={recipientPhone}
+                                    onChange={e=>setRecipientPhone(e.target.value)}/>
+                                <input placeholder="email (optional)"
+                                    type="text"
+                                    className="form-option"
+                                    maxLength={64}
+                                    autoComplete='ofasdasdasdasdasdasdasdf'
+                                    value={recipientEmail}
+                                    onChange={e=>setRecipientEmail(e.target.value)}/>
+                                <br/>
+                                <button onClick={submitRecipient}>add recipient</button>
+                                {token &&
+                                <button>add from contacts</button>}
+                                <button className="form-return-button" onClick={e=>setRecipientFormShow(0)}>return</button>
+                            </>
+                            }
+                        </div>
+                        <div className="form-input">
+                            <label htmlFor="reminder-date">remind me on:</label><br/>
+                            <input required placeholder="when do you want to receive this?"
+                                type="date"
+                                name="reminder-date"
+                                min={tomorrow()}
+                                className="form-option"
+                                value={reminderDate}
+                                onChange={e=>setReminderDate(e.target.value)}/>
+                        </div>
+                        <div className="form-input">
+                            <label htmlFor="message">message:</label><br/>
+                            <textarea required placeholder="your reminder message"
+                                name="message"
+                                className="form-option"
+                                value={message}
+                                onChange={e=>setMessage(e.target.value)}
+                                rows="5"></textarea>
+                        </div>
+                        <button onClick={e=>formSubmission(e)}>submit reminder</button>
+                    </form>}
+                    {recipientFormShow === 2 &&
+                    <>
+                        <div className='success-message'>Your reminder has been successfully saved!</div>
+                        <button className='new-reminder' onClick={e=>setRecipientFormShow(0)}>Create new reminder</button>
+                        <NavLink to="/home/reminders">Reminder Dashboard Temp Link</NavLink>
+                    </>
+                    }
+                </div>
+            </div>
+            <div className='reminder-instructions'>
+                making reminders
+                <div className='instruction-item'>Step 1: xyz</div>
+                <div className='instruction-item'>Step 2: xyz</div>
+                <div className='instruction-item'>Step 3: xyz</div>
+                <div className='instruction-item'>Step 4: xyz</div>
+                <div className='instruction-item'>Step 5: xyz</div>
             </div>
         </>
     )

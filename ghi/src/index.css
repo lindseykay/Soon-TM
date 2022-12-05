@@ -283,42 +283,38 @@ body {
   REMINDERS
 ==================================== */
 
-.outer-container {
-  position: fixed;
-  width: 90vh;
-  height: 80vh;
+.phone-container {
+  position: absolute;
+  width: 65vh;
+  height: max(90vh, 500px);
   min-width: 30vw;
-  left: 50%;
-  top: 50%;
-  margin-top: -40vh;
-  margin-left: -45vh;
-  background-image: url(./assets/frog.png);
-  background-size: 100% auto;
+  left: max(23vw,25vh);
+  margin-left: min(-30vh,-15vw);
+  top: -2vh;
+  background-image: url('./assets/empty-phone.png');
+  background-size: 100% 100%;
   background-repeat: no-repeat;
-  background-position-y: 17%;
-  border-radius: 25vh;
-  filter: hue-rotate(150deg);
-  /* box-shadow: 0px 0px 16px 4px rgba(255, 255, 255, 0.25); */
 }
 
 .reminder-form-container {
-  position: fixed;
-  width: 60vh;
-  min-width: 20vw;
-  left: 50%;
-  margin-left: -30vh;
-  top: 30%;
+  position: absolute;
+  width: 50vh;
+  min-width: 23.1vw;
+  left: max(7vh,3.3vw);
+  top: max(10vh, 4vw);
   color: black;
 }
 
 .reminder-form-container label {
   font-size: max(2.2vh,16px);
   font-weight: 500;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .reminder-form-container .form-input {
   padding: 0.75vh 0 0.5vh 0;
-  background-color: white;
 }
 
 .reminder-form-container .form-option {
@@ -415,6 +411,20 @@ body {
   width: 16vw;
   left: 50%;
   margin-left: -8vw;
+}
+
+.reminder-instructions {
+  position: absolute;
+  left: max(45vw,65vh);
+  top: 3vh;
+  width: max(38vw, 60vh);
+  font-size: max(2.8vh, 22px);
+  font-weight: 600;
+  color: white;
+}
+
+.reminder-instructions .instruction-item {
+  margin: 1.5vh 0 1.5vh 1.5vw;
 }
 
 /* ====================================
