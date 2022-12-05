@@ -87,5 +87,11 @@
 ## Dec 1, 2022
 
 - Implemented useToken.js
-- Implemented code logic for certain website functionalities to be available for logged in users vs anonymous users
+- Implemented code logic for certain website endpoints to be available for logged in users vs anonymous users
 - Implemented loginwidget.js to toggle back and forth for users to sign up or sign in
+
+## Dec 4, 2022
+
+- Wrote deleteReminder.js function that allows for deletion of specific reminder based off the reminder id. Exported it into the reminderDashboard to be used with onClick event when "delete" is clicked on the website. Still need to implement a hook to automatically update page to showcase the list of reminders after one is deleted.
+
+- Added hamburger menu bar
