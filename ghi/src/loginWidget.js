@@ -93,7 +93,6 @@ function LoginWidget() {
             <button
               className="form-submit"
               onClick={(e) => {
-                console.log(mode)
                 mode === 0
                   ? login(userName, password)
                   : signup(userName, password, email, name);

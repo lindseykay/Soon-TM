@@ -209,13 +209,12 @@ function ReminderForm(props) {
                     <>
                         <div className='success-message'>Your reminder has been successfully saved!</div>
                         <button className='new-reminder' onClick={e=>setRecipientFormShow(0)}>Create new reminder</button>
-                        <NavLink to="/home/reminders">Reminder Dashboard Temp Link</NavLink>
                     </>
                     }
                 </div>
             </div>
             <div className='reminder-instructions'>
-                making reminders
+                using soonTM reminders
                 <div className='instruction-item'>Step 1: xyz</div>
                 <div className='instruction-item'>Step 2: xyz</div>
                 <div className='instruction-item'>Step 3: xyz</div>

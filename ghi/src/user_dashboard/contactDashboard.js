@@ -3,6 +3,7 @@ import CreateContact from '../contacts/createContact'
 import { useToken } from '../hooks/useToken'
 import { getContacts } from '../dataLoadFunctions'
 import { Link } from 'react-router-dom'
+import ContactBook from '../contacts/contactsBook'
 
 function ContactDashboard(){
     const [token,,,,,userInfo] = useToken()
@@ -23,10 +24,11 @@ function ContactDashboard(){
 
     return(
         <>
+            <ContactBook contacts={contactsList}/>
             {!showCreationForm &&
             <button onClick={e=>setShowCreationForm(true)}>Add new contact</button>
             }
-            {!showCreationForm &&
+            {/* {!showCreationForm &&
             contactsList.map(contact => {
                 return (
                     <div key={contact.id}>
@@ -40,7 +42,7 @@ function ContactDashboard(){
                     </div>
                 )
             })
-            }
+            } */}
             {showCreationForm &&
                 <CreateContact
                     refreshContacts={setCounter}
