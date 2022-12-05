@@ -57,25 +57,225 @@ body {
 }
 
 /* ====================================
-  NAV BAR
+  NAVIGATION AND HEADER BAR
 ==================================== */
 
-.login-widget-container {
+.nav-bar .login-button {
   position: fixed;
-  right: 1vw;
-  top: 1vh;
+  top: 3vh;
+  right: 2vw;
+  height: 3.5vh;
+  padding: 0 1.5vh 0 1.5vh;
+  font-size: max(1.75vh,12px);
+  color: white;
+  border-radius: 1.5vh;
+  border: 0px;
+  background-color: #e4959e;
+  text-align: center;
+}
+
+.nav-bar .login-button:hover {
+  background-color: white;
+  color: #e4959e;
+  box-shadow: 0px 0px 8px 2px rgba(228, 149, 158, 0.6);
+}
+
+.nav-bar .logout-button {
+  position: fixed;
+  top: 3vh;
+  right: 2vw;
+  height: 3.5vh;
+  padding: 0 1.5vh 0 1.5vh;
+  font-size: max(1.75vh,12px);
+  color: white;
+  border-radius: 1.5vh;
+  border: 0px;
+  background-color: #e4959e;
+  text-align: center;
+}
+
+.nav-bar .logout-button:hover {
+  background-color: white;
+  color: #e4959e;
+  box-shadow: 0px 0px 8px 2px rgba(228, 149, 158, 0.6);
+}
+
+.login-widget-container {
+  z-index: 99;
+  position: fixed;
+  right: 2vw;
+  top: 3vh;
+  width: max(20vw,30vh);
+  background-color: #e7cccf;
+  padding: 1vh 0.75vw 1vh 0.75vw;
+  border-radius: 1vh;
+}
+
+.login-widget-tab {
+  display: inline;
+  border: 0px;
+  border-radius: 0.5vh;
+  width: fit-content;
+  padding: 0.5vh 2vw;
+  margin-right: 0.75vw;
+  margin-bottom: 0.25vh;
+  font-size: max(1.75vh,12px);
+  font-weight: 500;
+  color: #cca5aa;
+  background-color: #f5edee;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.login-widget-tab:hover {
+  background-color: white;
+  color: #e4959e;
+  box-shadow: 0px 0px 8px 2px rgba(228, 149, 158, 0.6);
+}
+
+.selected-tab {
+  background-color: #e4959e;
+  color: white;
+  font-weight: 600;
+}
+
+.login-widget-container .form-input {
+  width: 100%;
+  margin: 0.75vh 0 0.75vh 0;
 }
 
 .login-widget-container .form-option {
-  border: 2px solid black;
+  border: 0px;
   border-radius: 0.5vh;
-  padding: 0.5vh;
-  font-size: 1.75vh;
+  padding: 0.5vh 0 0.5vh 1vh;
+  font-size: max(1.75vh,12px);
   color: black;
-  margin: 0.25vh 0 0.25vh 0;
-  resize: none;
   min-height: 2vh;
+  width: 96.25%;
 }
+
+.login-widget-container .show-pass {
+  display: inline-block;
+  margin-top: 0.75vh;
+  width: 50%;
+  font-size: max(1.5vh,10px);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.login-widget-container .show-pass input {
+  float: left;
+}
+
+.login-widget-container .form-submit {
+  float: right;
+  border: 0px;
+  border-radius: 0.5vh;
+  width: fit-content;
+  padding: 0.5vh 1vw;
+  margin: 0.5vh 0.35vw 0.25vh 0;
+  font-size: max(1.75vh,12px);
+  background-color: #e4959e;
+  color: white;
+  font-weight: 600;
+}
+
+.login-widget-container .form-submit:hover {
+  background-color: white;
+  color: #e4959e;
+  box-shadow: 0px 0px 8px 2px rgba(228, 149, 158, 0.6);
+}
+
+.login-widget-container .delete-mark {
+  position: absolute;
+  top: -1.2vh;
+  right: -1.2vh;
+  height: 2.75vh;
+  width: 2.75vh;
+  text-align: center;
+  background-color: #e4959e;
+  border-radius: 5vh;
+  color: white;
+}
+
+.login-widget-container .delete-mark:hover {
+  color: black;
+  background-color: white;
+  border: 1px solid black;
+}
+
+.login-widget-container .delete-mark .x-mark {
+  position: absolute;
+  top: -0.7vh;
+  left: 0.8vh;
+  font-size: 2.2vh;
+  font-weight: 600;
+}
+
+/* Position and sizing of burger button */
+.bm-burger-button {
+  position: fixed;
+  width: 4.5vh;
+  height: 3vh;
+  left: 3vh;
+  top: 3vh;
+}
+
+/* Color/shape of burger icon bars */
+.bm-burger-bars {
+  background: #373a47;
+  box-shadow: 0px 0px 8px 2px rgba(255, 255, 255, 0.2);
+}
+
+/* Color/shape of burger icon bars on hover*/
+.bm-burger-bars-hover {
+  background: #fbfbfb;
+}
+
+/* Position and sizing of clickable cross button */
+.bm-cross-button {
+  height: 2vh;
+  width: 2vh;
+}
+
+/* Color/shape of close button cross */
+.bm-cross {
+  background: #ffffff;
+}
+
+/* General sidebar styles */
+.bm-menu {
+  position: fixed;
+  top: 0;
+  height: 90vh;
+  background: #e4959e;
+  padding: 10em 3.5em 0;
+  font-size: 0.7em;
+}
+
+/* Morph shape necessary with bubble or elastic.  Utilizing stack animation so this is optional for this project*/
+.bm-morph-shape {
+  fill: #b5d3f5;
+}
+
+/* Wrapper for item list */
+.bm-item-list {
+  color: #b8b7ad;
+  padding: 2em;
+}
+
+/* Individual item */
+.bm-item {
+  display: inline-block;
+}
+
+/* Styling of overlay */
+.bm-overlay {
+  background: rgba(0, 0, 0, 0.3);
+}
+
 
 /* ====================================
   REMINDERS
@@ -110,7 +310,7 @@ body {
 }
 
 .reminder-form-container label {
-  font-size: 2.25vh;
+  font-size: max(2.2vh,16px);
   font-weight: 500;
 }
 
@@ -124,7 +324,7 @@ body {
   border: 2px solid black;
   border-radius: 0.5vh;
   padding: 0.5vh;
-  font-size: 1.75vh;
+  font-size: max(1.75vh,12px);
   color: black;
   margin: 0.25vh 0 0.25vh 0;
   resize: none;
@@ -139,7 +339,7 @@ body {
 .reminder-form-container button {
   float: right;
   margin: 0.5vh 0.1vw 0 0.1vw;
-  font-size: 1.75vh;
+  font-size: max(1.75vh,12px);
   border: 1px solid black;
   border-radius: 1.5vh;
   background-color: #b5d3f5;
@@ -159,7 +359,7 @@ body {
   display: inline-block;
   position: relative;
   margin: 0.5vh 0.5vw 0.5vh 0.1vw;
-  font-size: 1.75vh;
+  font-size: max(1.75vh,12px);
   border: 1px solid black;
   border-radius: 1.5vh;
   background-color: #b5d3f5;
@@ -186,7 +386,7 @@ body {
   border: 1px solid black;
 }
 
-.delete-mark .x-mark {
+.recipient .delete-mark .x-mark {
   position: absolute;
   top: -0.4vh;
   left: 0.5vh;
@@ -195,7 +395,7 @@ body {
 
 .reminder-form-container .success-message {
   position: absolute;
-  font-size: 2.2vh;
+  font-size: max(2.2vh,16px);
   font-weight: 600;
   padding: 1.5vh;
   text-align: center;
@@ -230,7 +430,7 @@ body {
 }
 
 .contact-form-container label {
-  font-size: 2.25vh;
+  font-size: max(2.2vh,16px);
   font-weight: 500;
 }
 
@@ -243,7 +443,7 @@ body {
   border: 2px solid black;
   border-radius: 0.5vh;
   padding: 0.5vh;
-  font-size: 1.75vh;
+  font-size: max(1.75vh,12px);
   color: black;
   margin: 0.25vh 0 0.25vh 0;
   resize: none;
@@ -258,7 +458,7 @@ body {
 .contact-form-container button {
   float: right;
   margin: 0.5vh 0.1vw 0 0.1vw;
-  font-size: 1.75vh;
+  font-size: max(1.75vh,12px);
   border: 1px solid black;
   border-radius: 1.5vh;
   background-color: #b5d3f5;
@@ -278,7 +478,7 @@ body {
   display: inline-block;
   position: relative;
   margin: 0.5vh 0.5vw 0.5vh 0.1vw;
-  font-size: 1.75vh;
+  font-size: max(1.75vh,12px);
   border: 1px solid black;
   border-radius: 1.5vh;
   background-color: #b5d3f5;
@@ -324,7 +524,7 @@ body {
   margin-left: -30vh;
   top: 15%;
   color: white;
-  font-size: 4vh;
+  font-size: max(4vh,24px);
   font-weight: bolder;
   text-align: center;
 }
@@ -338,7 +538,7 @@ body {
   text-align: center;
   text-decoration: none;
   display: inline-block;
-  font-size: 2vh;
+  font-size: max(2vh,14px);
 }
 
 .create-reminder-button button:hover {
@@ -359,7 +559,7 @@ body {
 ==================================== */
 
 .dash-greeting {
-  font-size: 4vh;
+  font-size: max(4vh,24px);
   font-weight: 700;
   margin: 1.5vh 0;
   color: white;
@@ -466,27 +666,4 @@ body {
 .reminder .update-options {
   float: right;
   right: 0;
-}
-
-/* ====================================
-  nav-bar and landing-container(landing page button to toggle to login/signup)
-==================================== */
-
-.nav-bar {
-  position: absolute;
-  font-size: 1.8vh;
-  font-weight: 300;
-  padding: 1.5vh;
-  text-align: right;
-  width: 94%;
-  color: black;
-  height: 9vh;
-}
-
-.landing-container {
-  font-size: 1.8vh;
-  font-weight: 300;
-  width: 94%;
-  color: black;
-  height: 9vh;
 }
