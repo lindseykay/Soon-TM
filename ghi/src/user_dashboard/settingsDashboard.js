@@ -34,6 +34,8 @@ function SettingsDashboard() {
             update(password, userInfo.email, name)
         }
     }
+
+
     return (
     <>
         {userInfo &&

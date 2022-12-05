@@ -126,20 +126,6 @@ export function useToken() {
 
   async function update(password, email, name) {
     const url = `${process.env.REACT_APP_ACCOUNTS_HOST}/users/`;
-    // if (password === ""){
-    //   var body = JSON.stringify({
-    //     email,
-    //     name
-    //   })
-    // } else {
-    //    body = JSON.stringify({
-    //     password,
-    //     email,
-    //     name
-    //   })
-    // };
-
-
     const response = await fetch(url, {
       method: "put",
       credentials: "include",
