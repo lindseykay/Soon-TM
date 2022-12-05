@@ -1,9 +1,11 @@
 import { useState } from 'react';
 import { Link } from 'react-router-dom'
+import { CreateContact } from './createContact'
 import './contactBook.css'
 
 function ContactBook(props) {
     const [pageNum, setPageNum] = useState(1)
+    const [showCreationForm, setShowCreationForm] = useState(false)
 
     const nextPageFlip = (event) => {
         const page = document.querySelector(`#page-${pageNum}`);
@@ -95,7 +97,9 @@ function ContactBook(props) {
                                             )
                                         })}
                                     </div>
-                                    <div className='page-number'>page {idx+1}</div>
+                                    <div className='page-number'>
+                                        page {idx+1}
+                                    </div>
                                 </div>
                             )
                         })
@@ -103,6 +107,20 @@ function ContactBook(props) {
                     </div>
                 </div>
             </div>
+            {!showCreationForm &&
+                <div
+                    className='show-contact-form'
+                    onClick={e=>{
+                        e.stopPropagation()
+                        setShowCreationForm(true)
+                    }}>add contact</div>
+            }
+            {showCreationForm &&
+                <CreateContact
+                    refreshContacts={props.setCounter}
+                    counter={props.counter}
+                    showForm={setShowCreationForm}/>
+            }
         </>
     )
 }

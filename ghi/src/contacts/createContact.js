@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import { useToken } from '../hooks/useToken'
 
-function CreateContact(props){
+export function CreateContact(props){
     const [token,,,,,userInfo] = useToken()
     const [recipientName, setRecipientName] = useState("")
     const [recipientPhone, setRecipientPhone] = useState("")
