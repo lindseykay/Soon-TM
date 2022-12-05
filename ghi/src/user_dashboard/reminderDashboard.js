@@ -6,6 +6,7 @@ import deleteReminder from "../deleteReminder";
 function ReminderDashboard(props) {
   const [token] = useToken();
   const [filteredReminders, setFilteredReminders] = useState([]);
+  const [counter, setCounter] = useState(0)
 
   const newReminders = async () => {
     const reminders = await getReminders(token);
@@ -20,6 +21,12 @@ function ReminderDashboard(props) {
       filterReminders(0);
     }
   }, [token]);
+
+  useEffect(() => {
+    if (token) {
+      newReminders()
+    }
+  },[counter])
 
   function filterReminders(val, rlist = props.reminderList) {
     let today = new Date();
@@ -73,7 +80,6 @@ function ReminderDashboard(props) {
       </button>
       <div className="reminder-list-box">
         {filteredReminders.map((reminder) => {
-          console.log("REMINDER", reminder);
           return (
             <div className="reminder" key={reminder.id}>
               <div className="heading">
@@ -91,7 +97,10 @@ function ReminderDashboard(props) {
                   <span
                     className="delete-tab"
                     id="delete-tab"
-                    onClick={() => deleteReminder(reminder.id, token)}
+                    onClick={(e) => {
+                      deleteReminder(reminder.id, token)
+                      setCounter(counter+1)
+                      }}
                   >
                     delete
                   </span>

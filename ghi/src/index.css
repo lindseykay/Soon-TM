@@ -711,8 +711,9 @@ body {
   right: 0;
 }
 
-
-
+.reminder .update-options span:hover {
+  color: white;
+}
 
 
 

@@ -9,7 +9,6 @@ async function getReminders(token) {
     });
     if (response.ok) {
       const data = await response.json();
-      console.log("RONRONRONRONRON:", data);
       return data;
     }
   } catch (e) {
