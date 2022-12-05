@@ -18,6 +18,9 @@ function UserDashboard() {
                 <NavLink to="/home/templates" className={({isActive}) => (isActive ? "active-now": "inactive")}>
                     templates
                 </NavLink>
+                {/* <NavLink to="/home/settings" className={({isActive}) => (isActive ? "active-now": "inactive")}>
+                    settings
+                </NavLink> */}
             </div>
             <div className='sub-display'>
                 {token &&

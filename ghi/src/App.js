@@ -9,6 +9,7 @@ import UserDashboard from './user_dashboard/userDashboard';
 import ReminderDashboard from './user_dashboard/reminderDashboard';
 import ContactDashboard from './user_dashboard/contactDashboard';
 import TemplateDashboard from './user_dashboard/templateDashboard';
+import SettingsDashboard from './user_dashboard/settingsDashboard';
 
 
 function GetToken() {
@@ -55,6 +56,7 @@ function App() {
               <Route path="reminders" element={<ReminderDashboard reminderList={reminderList} refreshReminders={setReminderList}/>}/>
               <Route path="contacts" element={<ContactDashboard/>}/>
               <Route path="templates" element={<TemplateDashboard/>}/>
+              <Route path="settings" element={<SettingsDashboard/>} />
             </Route>
             <Route path="reminders">
               <Route path="new" element={<ReminderForm refreshReminders={setReminderList}/>}/>

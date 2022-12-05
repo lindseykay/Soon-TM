@@ -11,7 +11,7 @@ function LandingPage(){
                     </Link>
             </div>
             <div className='phone'>
-                <img src={require("./assets/full-phone.png")} />
+                <img src={require("./assets/phone-landing-page.png")} />
 
             </div>
         </div>

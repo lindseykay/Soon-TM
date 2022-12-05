@@ -29,7 +29,7 @@ class HttpError(BaseModel):
 
 router = APIRouter()
 
-@router.post("/users", response_model=AccountToken)
+@router.post("/users/", response_model=AccountToken)
 async def create_user(
     user: UserIn,
     request: Request,
@@ -44,18 +44,18 @@ async def create_user(
     return AccountToken(account=new_user, **token.dict())
 
 
-@router.get("/users/{user_id}", response_model=Union[UserOut,UserError])
+@router.get("/users/", response_model=Union[UserOut,UserError])
 def get_user(
-    user_id: int,
     response: Response,
+    account_data: dict = Depends(authenticator.get_current_account_data),
     repo: UserRepository = Depends()) -> UserOut:
-    user = repo.get_by_userid(user_id)
+    user = repo.get_by_userid(account_data["id"])
     if user == None or user == {"message": "Tough luck"}:
         response.status_code = 400
     return user
 
 
-@router.put("/users/{user_id}", response_model=Union[UserOut,UserError])
+@router.put("/users/", response_model=Union[UserOut,UserError])
 def update_user(
     user: UserUpdate,
     response: Response,

@@ -31,6 +31,9 @@ function NavBar() {
               <NavLink className="menu-item" to="/home/templates/">
                 templates
               </NavLink>
+              <NavLink className="menu-item" to="/home/settings/">
+                settings
+              </NavLink>
             </>
           }
           <NavLink className="menu-item" to="/reminders/new/">

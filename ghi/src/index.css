@@ -553,7 +553,7 @@ body {
 ==================================== */
 
 .landing-page-welcome {
-  position: fixed;
+  position: absolute;
   width: 60vh;
   min-width: 20vw;
   left: 50%;
@@ -583,6 +583,7 @@ body {
 
 .phone img {
   display: block;
+  padding-top: 4vh;
   margin-left: auto;
   margin-right: auto;
   height: 60vh;
@@ -708,4 +709,71 @@ body {
 .reminder .update-options {
   float: right;
   right: 0;
+}
+
+
+
+
+
+
+
+/* ====================================
+  USER SETTINGS
+==================================== */
+
+
+/* The Modal (background) */
+.modal {
+  display: block;
+  position: fixed;
+  z-index: 1;
+  left: 0;
+  top: 0;
+  width: 100%; /* Full width */
+  height: 100%; /* Full height */
+  overflow: auto; /* Enable scroll if needed */
+  background-color: rgb(0,0,0); /* Fallback color */
+  background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
+}
+
+/* Modal Content/Box */
+.modal-content {
+  background-color: #fefefe;
+  margin: 15% auto; /* 15% from the top and centered */
+  padding: 20px;
+  border: 1px solid #888;
+  width: 80%; /* Could be more or less, depending on screen size */
+}
+
+/* The Close Button */
+.close {
+  background-color: #e4959e;
+  color: white;
+  float: right;
+  font-size: 28px;
+  font-weight: bold;
+}
+
+.close:hover,
+.close:focus {
+  filter: brightness(95%);
+  text-decoration: none;
+  cursor: pointer;
+}
+
+
+.update-button {
+  border-radius: 12px;
+  background-color: #e4959e;
+  border: none;
+  color: white;
+  padding: 10px 20px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 1vh;
+}
+
+.update-button:hover {
+  filter: brightness(90%);
 }
