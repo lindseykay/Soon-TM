@@ -12,7 +12,7 @@ async function deleteReminder(reminderId, token) {
       return data;
     }
   } catch (e) {
-    return [];
+    return false;
   }
 }
 

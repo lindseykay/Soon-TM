@@ -95,90 +95,93 @@ export function CreateContact(props){
     }
 
     return(
-        <div className='contact-form-container'>
-            <form>
-                <label>Add contact</label><br/>
-                <div className="form-input">
-                    <input required placeholder="Name"
-                        type="text"
-                        className="form-option"
-                        autoComplete='ofasdasdasdasdasdasdasdf'
-                        maxLength={50}
-                        value={recipientName}
-                        onChange={e=>setRecipientName(e.target.value)}/>
-                </div>
-                <div className="form-input">
-                    <input placeholder="Phone"
-                        type="text"
-                        className="form-option"
-                        maxLength={20}
-                        autoComplete='ofasdasdasdasdasdasdasdf'
-                        value={recipientPhone}
-                        onChange={e=>setRecipientPhone(e.target.value)}/>
-                </div>
-                <div className="form-input">
-                    <input placeholder="Email"
-                        type="text"
-                        className="form-option"
-                        maxLength={64}
-                        autoComplete='ofasdasdasdasdasdasdasdf'
-                        value={recipientEmail}
-                        onChange={e=>setRecipientEmail(e.target.value)}/>
-                </div>
-                <div className="form-input">
-                    <textarea placeholder="Notes"
-                        name="message"
-                        className="form-option"
-                        value={note}
-                        onChange={e=>setNote(e.target.value)}
-                        rows="5"></textarea>
-                </div>
-                <div className="form-input">
-                    {specialDayShow === 0 &&
-                    <>
-                        <div className="form-option"
-                        onClick={e=>setSpecialDayShow(1)}>
-                        {specialDays.map((specialday, idx) => {
-                            return (
-                                <div className='contact'
-                                    key={specialday.name+idx}>
-                                    {specialday.name}
-                                    <div className='delete-mark'
-                                        onClick={e=>removeSpecialDay(e,idx)}>
-                                        <div className='x-mark'>x</div>
-                                    </div>
-                                </div>
-                            )
-                        })}
-                        {specialDays.length === 0 &&
-                        "Click here to add special days"
-                        }
-                        </div>
-                    </>
-                    }
-                    {specialDayShow === 1 &&
-                    <>
-                        <input placeholder="Name"
+        <>
+            <div className='dim-background' onClick={e=>props.showForm(false)}></div>
+            <div className='contact-form-container'>
+                <form>
+                    <label>Add contact</label><br/>
+                    <div className="form-input">
+                        <input required placeholder="Name"
                             type="text"
                             className="form-option"
                             autoComplete='ofasdasdasdasdasdasdasdf'
-                            value={specialDayName}
-                            onChange={e=>setSpecialDayName(e.target.value)}/>
-                        <input placeholder="Date"
-                            type="date"
+                            maxLength={50}
+                            value={recipientName}
+                            onChange={e=>setRecipientName(e.target.value)}/>
+                    </div>
+                    <div className="form-input">
+                        <input placeholder="Phone"
+                            type="text"
                             className="form-option"
+                            maxLength={20}
                             autoComplete='ofasdasdasdasdasdasdasdf'
-                            value={specialDayDate}
-                            onChange={e=>setSpecialDayDate(e.target.value)}/>
-                        <button onClick={e=>submitSpecialDay()}>Add special day</button>
-                        <button className="form-return-button" onClick={e=>setSpecialDayShow(0)}>return</button>
-                    </>
-                    }
-                </div>
-                <button onClick={e=>props.showForm(false)}>Return</button>
-                <button onClick={e=>createContact(e)}>Submit</button>
-            </form>
-        </div>
+                            value={recipientPhone}
+                            onChange={e=>setRecipientPhone(e.target.value)}/>
+                    </div>
+                    <div className="form-input">
+                        <input placeholder="Email"
+                            type="text"
+                            className="form-option"
+                            maxLength={64}
+                            autoComplete='ofasdasdasdasdasdasdasdf'
+                            value={recipientEmail}
+                            onChange={e=>setRecipientEmail(e.target.value)}/>
+                    </div>
+                    <div className="form-input">
+                        {specialDayShow === 0 &&
+                        <>
+                            <div className="form-option"
+                            onClick={e=>setSpecialDayShow(1)}>
+                            {specialDays.map((specialday, idx) => {
+                                return (
+                                    <div className='contact'
+                                        key={specialday.name+idx}>
+                                        {specialday.name}
+                                        <div className='delete-mark'
+                                            onClick={e=>removeSpecialDay(e,idx)}>
+                                            <div className='x-mark'>x</div>
+                                        </div>
+                                    </div>
+                                )
+                            })}
+                            {specialDays.length === 0 &&
+                            "Click here to add special days"
+                            }
+                            </div>
+                        </>
+                        }
+                        {specialDayShow === 1 &&
+                        <>
+                            <input placeholder="Name"
+                                type="text"
+                                className="form-option"
+                                autoComplete='ofasdasdasdasdasdasdasdf'
+                                value={specialDayName}
+                                onChange={e=>setSpecialDayName(e.target.value)}/>
+                            <input placeholder="Date"
+                                type="date"
+                                className="form-option"
+                                autoComplete='ofasdasdasdasdasdasdasdf'
+                                value={specialDayDate}
+                                onChange={e=>setSpecialDayDate(e.target.value)}/>
+                            <button onClick={e=>submitSpecialDay()}>Add special day</button>
+                            <button className="form-return-button" onClick={e=>setSpecialDayShow(0)}>return</button>
+                        </>
+                        }
+                    </div>
+                    <div className="form-input">
+                        <textarea placeholder="Notes"
+                            name="message"
+                            className="form-option"
+                            value={note}
+                            onChange={e=>setNote(e.target.value)}
+                            rows="5"></textarea>
+                    </div>
+                    <button onClick={e=>createContact(e)}>Submit</button>
+                    <button onClick={e=>props.showForm(false)}>Return</button>
+                </form>
+            </div>
+        </>
     )
 }
 

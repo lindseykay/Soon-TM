@@ -1,9 +1,12 @@
 import { useState } from 'react';
 import { Link } from 'react-router-dom'
 import { CreateContact } from './createContact'
+import { deleteContact } from '../dataLoadFunctions';
+import { useToken } from '../hooks/useToken'
 import './contactBook.css'
 
 function ContactBook(props) {
+    const [token] = useToken()
     const [pageNum, setPageNum] = useState(1)
     const [showCreationForm, setShowCreationForm] = useState(false)
 
@@ -21,15 +24,13 @@ function ContactBook(props) {
     }
 
     const prevPageFlip = (event) => {
-        const page = document.querySelector(`#page-${pageNum}`);
+        let page = document.querySelector(`#page-${pageNum-1}`);
+        page.classList.remove('flipped')
         page.classList.remove('bordered-left')
         page.classList.add('bordered-right')
         page.previousElementSibling.classList.remove('flipped')
         page.previousElementSibling.classList.remove('bordered-left')
         page.previousElementSibling.classList.add('bordered-right')
-        page.previousElementSibling.previousElementSibling.classList.remove('flipped')
-        page.previousElementSibling.previousElementSibling.classList.remove('bordered-left')
-        page.previousElementSibling.previousElementSibling.classList.add('bordered-right')
         if (pageNum >= 3) {
             setPageNum(pageNum-2)
         }
@@ -85,10 +86,21 @@ function ContactBook(props) {
                                                             recID: contact.recipient_id
                                                             }}>
                                                             <img src={require('../assets/paper-plane.png')}
+                                                                className="send-icon"
                                                                 alt="send-icon"
                                                                 title='send reminder'
                                                                 />
                                                         </Link>
+                                                        <img src={require('../assets/trash.png')}
+                                                            className="trash-icon"
+                                                            alt="send-icon"
+                                                            title='delete contact'
+                                                            onClick={e=>{
+                                                                e.stopPropagation()
+                                                                deleteContact(contact.contact_id, token)
+                                                                props.setCounter(props.counter+1)
+                                                            }}
+                                                            />
                                                     </div>
                                                     <div className='contact-phone'><span>phone: </span>{contact.phone}</div>
                                                     <div className='contact-email'><span>email: </span>{contact.email}</div>
@@ -104,17 +116,25 @@ function ContactBook(props) {
                             )
                         })
                         }
+                        {!showCreationForm &&
+                            <div
+                                className='show-contact-form'
+                                onClick={e=>{
+                                    e.stopPropagation()
+                                    setShowCreationForm(true)
+                                }}>add contact</div>
+                        }
                     </div>
+                    {/* {!showCreationForm &&
+                        <div
+                            className='show-contact-form'
+                            onClick={e=>{
+                                e.stopPropagation()
+                                setShowCreationForm(true)
+                            }}>add contact</div>
+                    } */}
                 </div>
             </div>
-            {!showCreationForm &&
-                <div
-                    className='show-contact-form'
-                    onClick={e=>{
-                        e.stopPropagation()
-                        setShowCreationForm(true)
-                    }}>add contact</div>
-            }
             {showCreationForm &&
                 <CreateContact
                     refreshContacts={props.setCounter}
