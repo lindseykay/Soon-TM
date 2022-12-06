@@ -65,6 +65,11 @@ function ContactBook(props) {
                     <div id="pages" className="pages">
                         <div className='right-flip'></div>
                         <div className='left-flip'></div>
+                        {sortedList.length === 0 &&
+                            <div className='page bordered-right'>
+                                <div className='contact-instruction'>click add contacts below to get started</div>
+                            </div>
+                        }
                         {listGroupsOfN(sortedList,3).map((groupOf3,idx) => {
                             return (
                                 <div className={`page bordered-${(idx+1)%2 ? 'right' : 'left'}`}
@@ -125,14 +130,6 @@ function ContactBook(props) {
                                 }}>add contact</div>
                         }
                     </div>
-                    {/* {!showCreationForm &&
-                        <div
-                            className='show-contact-form'
-                            onClick={e=>{
-                                e.stopPropagation()
-                                setShowCreationForm(true)
-                            }}>add contact</div>
-                    } */}
                 </div>
             </div>
             {showCreationForm &&
