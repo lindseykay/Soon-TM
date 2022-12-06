@@ -11,6 +11,7 @@ COPY main.py main.py
 # Modify these instructions to do that
 COPY queries queries
 COPY routers routers
+COPY authenticator.py authenticator.py
 
 
 # If you're using a relational database with migrations,
