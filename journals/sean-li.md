@@ -91,3 +91,14 @@
   - Reminder hook refactored. When a new reminder is created, reminder dashboard will auto update to reflect
   - Reminder dashboard styled with css, accounting for scaling
   - Added route protection (currently just for dashboard pages but easy enough to add to any route). If there is no token, the user will automatically be bounced back to landing page when trying to access an authorized only page
+
+## Dec 4, 2022
+  - Updated css for navigation menu and login widget
+  - Updated contacts book with book component and corresponding css
+
+## Dec 5, 2022
+  - Bug fixed on contacts book
+  - Added ability to add contacts within contact book
+  - Polished contact creation form
+  - Added delete functionality on contact book for contacts
+  - Added active styling to NavLinks in menu

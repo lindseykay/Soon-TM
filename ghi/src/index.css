@@ -159,14 +159,10 @@ body {
   display: inline-block;
   margin-top: 0.75vh;
   width: 50%;
-  font-size: max(1.5vh,10px);
+  font-size: max(1.5vh,12px);
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
-}
-
-.login-widget-container .show-pass input {
-  float: left;
 }
 
 .login-widget-container .form-submit {
@@ -277,6 +273,17 @@ body {
 .menu-item:hover {
   color: #e4959e;
   background-color: white;
+}
+
+.active-menu-item {
+  display: block;
+  text-decoration: none;
+  color: #e4959e;
+  background-color: white;
+  padding: 1.5vh 25px 1.5vh 20px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 /* ====================================

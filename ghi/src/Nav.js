@@ -22,16 +22,16 @@ function NavBar() {
           </NavLink>
           {token &&
             <>
-              <NavLink className="menu-item" to="/home/reminders/">
+              <NavLink className={({isActive}) => (isActive ? "active-menu-item": "menu-item")} to="/home/reminders/">
                 reminders
               </NavLink>
-              <NavLink className="menu-item" to="/home/contacts/">
+              <NavLink className={({isActive}) => (isActive ? "active-menu-item": "menu-item")} to="/home/contacts/">
                 contacts
               </NavLink>
-              <NavLink className="menu-item" to="/home/templates/">
+              <NavLink className={({isActive}) => (isActive ? "active-menu-item": "menu-item")} to="/home/templates/">
                 templates
               </NavLink>
-              <NavLink className="menu-item" to="/home/settings/">
+              <NavLink className={({isActive}) => (isActive ? "active-menu-item": "menu-item")} to="/home/settings/">
                 settings
               </NavLink>
             </>

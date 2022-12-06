@@ -120,6 +120,7 @@ export function useToken() {
     });
     if (response.ok) {
       await login(username, password);
+      navigate("/home/reminders");
     }
     return false;
   }
