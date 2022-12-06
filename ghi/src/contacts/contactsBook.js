@@ -12,7 +12,7 @@ function ContactBook(props) {
 
     const nextPageFlip = (event) => {
         const page = document.querySelector(`#page-${pageNum}`);
-        if (page.nextElementSibling) {
+        if (page.nextElementSibling && !page.nextElementSibling.hasAttribute("title")) {
             page.classList.add('flipped')
             page.classList.remove('bordered-right')
             page.classList.add('bordered-left')
@@ -124,6 +124,7 @@ function ContactBook(props) {
                         {!showCreationForm &&
                             <div
                                 className='show-contact-form'
+                                title='Add a contact'
                                 onClick={e=>{
                                     e.stopPropagation()
                                     setShowCreationForm(true)

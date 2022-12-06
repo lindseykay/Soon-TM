@@ -740,8 +740,15 @@ body {
   color: white;
 }
 
-
-
+.subdisplay-container {
+  position: relative;
+  background-color: rgb(255, 255, 255);
+  top: 2.5vh;
+  height: 65vh;
+  left: 3vh;
+  margin-right: 6vh;
+  border-radius: 3vh;
+}
 
 /* ====================================
   USER SETTINGS

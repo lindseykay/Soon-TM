@@ -1,6 +1,8 @@
 function TemplateDashboard(){
     return(
-        <div>hi</div>
+        <div className="subdisplay-container">
+
+        </div>
     )
 }
 
