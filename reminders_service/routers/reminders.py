@@ -48,7 +48,7 @@ def create_reminder(
     message_repo: MessageRepository = Depends(),
 ):
     new_message = message_repo.create(message)
-    if new_message == None or new_message == {
+    if new_message is None or new_message == {
         "message": "create message record failed"
     }:
         response.status_code = 400
@@ -61,7 +61,7 @@ def create_reminder(
         new_reminder = reminder_repo.create(
             reminder, new_message, recipients, None
         )
-    if new_reminder == None or new_reminder == {
+    if new_reminder is None or new_reminder == {
         "message": "create reminder record failed"
     }:
         response.status_code = 400
@@ -75,7 +75,7 @@ def get_all(
     repo: ReminderRepository = Depends(),
 ) -> List[ReminderOut]:
     reminders = repo.get_all(account_data["id"])
-    if reminders == None or reminders == {
+    if reminders is None or reminders == {
         "message": "get_all reminder records failed"
     }:
         response.status_code = 400
@@ -92,7 +92,7 @@ def get_one(
     repo: ReminderRepository = Depends(),
 ) -> ReminderOut:
     reminder = repo.get_one(account_data["id"], reminder_id)
-    if reminder == None or reminder == {
+    if reminder is None or reminder == {
         "message": "get_one reminder record failed"
     }:
         response.status_code = 400
@@ -112,7 +112,7 @@ def update_reminder(
     new_reminder = reminder_repo.update(
         account_data["id"], reminder_id, reminder
     )
-    if new_reminder == None or new_reminder == {
+    if new_reminder is None or new_reminder == {
         "message": "update reminder record failed"
     }:
         response.status_code = 400

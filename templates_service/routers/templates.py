@@ -33,7 +33,7 @@ authenticator = MyAuthenticator(os.environ["SIGNING_KEY"])
 
 router = APIRouter()
 
-### FOR CREATION OF PUBLIC TEMPLATES, API ENDPOINT NOT TO BE CALLED ON FRONT END
+
 @router.post(
     "/public/templates/",
     response_model=Union[List[TemplateOut], TemplateError],

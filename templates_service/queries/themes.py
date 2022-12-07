@@ -39,7 +39,8 @@ class ThemeRepository:
                         INSERT INTO themes
                             (name, picture_url)
                         VALUES
-                            (UNNEST(CAST(%s AS TEXT[])), UNNEST(CAST(%s AS TEXT[])))
+                            (UNNEST(CAST(%s AS TEXT[]))
+                            , UNNEST(CAST(%s AS TEXT[])))
                         """,
                     [names, picture_urls],
                 )

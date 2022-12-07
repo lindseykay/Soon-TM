@@ -37,7 +37,7 @@ class SpecialDaysRepository:
                         """,
                     [
                         specialday.contact_id
-                        if contact_id == None
+                        if contact_id is None
                         else contact_id,
                         specialday.name,
                         specialday.date,

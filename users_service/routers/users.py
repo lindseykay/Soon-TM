@@ -2,11 +2,9 @@ from fastapi import (
     APIRouter,
     Depends,
     Response,
-    status,
-    HTTPException,
     Request,
 )
-from typing import List, Optional, Union
+from typing import Union
 from authenticator import authenticator
 from jwtdown_fastapi.authentication import Token
 
@@ -19,7 +17,6 @@ from queries.users import (
     UserUpdate,
     UserOut,
     UserRepository,
-    DuplicateAccountError,
 )
 
 
@@ -62,7 +59,7 @@ def get_user(
     repo: UserRepository = Depends(),
 ) -> UserOut:
     user = repo.get_by_userid(account_data["id"])
-    if user == None or user == {"message": "Tough luck"}:
+    if user is None or user == {"message": "Tough luck"}:
         response.status_code = 400
     return user
 
@@ -78,7 +75,7 @@ def update_user(
         hashed_password = authenticator.hash_password(user.password)
         user.password = hashed_password
     user = repo.update(account_data["id"], user)
-    if user == None or user == {"message": "Skill diff"}:
+    if user is None or user == {"message": "Skill diff"}:
         response.status_code = 400
     return user
 

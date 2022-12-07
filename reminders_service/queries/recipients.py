@@ -93,7 +93,10 @@ class RecipientRepository:
                                 on (rrmt.reminder_id = re.id)
                         WHERE recipients.id = %s
                         AND re.id = %s
-                        RETURNING recipients.id, recipients.name, recipients.phone, recipients.email;
+                        RETURNING recipients.id
+                        , recipients.name
+                        , recipients.phone
+                        , recipients.email;
                         """,
                     [
                         recipient.name,
@@ -150,7 +153,7 @@ class RecipientRepository:
                 )
                 query = result.fetchone()
             return RecipientOut(
-                id=recipient_id,  # Can also replace id with query[0] but we defined id above
+                id=recipient_id,
                 name=query[1],
                 phone=query[2],
                 email=query[3],

@@ -1,5 +1,4 @@
 import schedule
-from datetime import date
 from emailer import formatter, send_emails
 import requests
 import json

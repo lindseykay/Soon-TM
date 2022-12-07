@@ -104,7 +104,7 @@ class ReminderRepository:
                                     re. phone,
                                     re. email
                             FROM reminders as r
-                            LEFT JOIN reminders_recipients_mapping_table as rrmt
+                            LEFT JOIN reminders_recipients_mapping_table rrmt
                             ON (r.id = rrmt.reminder_id)
                             LEFT JOIN recipients as re
                             ON (rrmt.recipient_id = re.id )
@@ -175,7 +175,7 @@ class ReminderRepository:
                                     re. phone,
                                     re. email
                             FROM reminders as r
-                            LEFT JOIN reminders_recipients_mapping_table as rrmt
+                            LEFT JOIN reminders_recipients_mapping_table rrmt
                             ON (r.id = rrmt.reminder_id)
                             LEFT JOIN recipients as re
                             ON (rrmt.recipient_id = re.id )
@@ -296,10 +296,12 @@ class ReminderRepository:
                             , r.user_id
                             , r.email_target
                             , m.content
-                            , STRING_AGG(re.name || ' || ' || re.phone || ' || ' || re.email, ',') AS recipients
+                            , STRING_AGG(re.name || ' || ' ||
+                             re.phone || ' || ' || re.email, ',') AS recipients
                         FROM reminders AS r
                         LEFT JOIN messages AS m ON r.message_id = m.id
-                        LEFT JOIN reminders_recipients_mapping_table AS rrmt ON rrmt.reminder_id = r.id
+                        LEFT JOIN reminders_recipients_mapping_table AS rrmt
+                        ON rrmt.reminder_id = r.id
                         LEFT JOIN recipients AS re ON rrmt.recipient_id = re.id
                         WHERE r.sent = false
                         AND r.reminder_date = %s

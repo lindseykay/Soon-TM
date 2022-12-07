@@ -11,7 +11,7 @@ def formatter(scheduled_reminders):
         body = ""
         for idx, reminder in enumerate(v):
             body += f"<< Reminder {idx+1} >>{chr(10)}"
-            body += f'  —  {f"{chr(10)}  —  ".join(reminder["recipients"])}{chr(10)}'
+            body += f'  —  {f"{chr(10)}  —  ".join(reminder["recipients"])}{chr(10)}'  # noqa:E501
             body += (
                 f'{chr(10)}"{reminder["message"]}"{chr(10)}{chr(10)}{chr(10)}'
             )

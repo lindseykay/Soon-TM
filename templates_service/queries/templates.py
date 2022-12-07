@@ -52,7 +52,9 @@ class TemplateRepository:
                         INSERT INTO templates
                             (public, theme_id, name, content)
                         VALUES
-                            (%s, UNNEST(CAST(%s AS INT[])), UNNEST(CAST(%s AS TEXT[])), UNNEST(CAST(%s AS TEXT[])))
+                            (%s, UNNEST(CAST(%s AS INT[]))
+                            , UNNEST(CAST(%s AS TEXT[]))
+                            , UNNEST(CAST(%s AS TEXT[])))
                         RETURNING *;
                         """,
                     [True, themes, names, contents],
@@ -71,9 +73,7 @@ class TemplateRepository:
                 ]
                 return output
         except Exception:
-            return {
-                "message": "My disappointment is immeasurable and my day is ruined"
-            }
+            return {"message": "disappointment"}
 
     def create_user_template(
         self, template: TemplateIn, user_id: int
@@ -101,9 +101,7 @@ class TemplateRepository:
                 )
                 return output
         except Exception:
-            return {
-                "message": "My disappointment is immeasurable and my day is ruined"
-            }
+            return {"message": "disappointment"}
 
     def get_all(
         self, user_id: Optional[int]
@@ -142,9 +140,7 @@ class TemplateRepository:
                     user_templates=user_templates,
                 )
         except Exception:
-            return {
-                "message": "My disappointment is immeasurable and my day is ruined"
-            }
+            return {"message": "disappointment"}
 
     def get_template(
         self, template_id: int, user_id: int
@@ -169,9 +165,7 @@ class TemplateRepository:
                     content=record[5],
                 )
         except Exception:
-            return {
-                "message": "My disappointment is immeasurable and my day is ruined"
-            }
+            return {"message": "disappointment"}
 
     def update_template(
         self, template_id: int, user_id: int, info: TemplateUpdate
@@ -198,9 +192,7 @@ class TemplateRepository:
                     content=record[5],
                 )
         except Exception:
-            return {
-                "message": "My disappointment is immeasurable and my day is ruined"
-            }
+            return {"message": "disappointment"}
 
     def delete_template(self, template_id: int, user_id: int) -> bool:
         try:
