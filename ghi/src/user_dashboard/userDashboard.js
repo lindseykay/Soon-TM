@@ -11,24 +11,24 @@ function UserDashboard() {
       </div>
       <div className="dashboard-tabs">
         <NavLink
-          to="/home/reminders"
+          to="soon-tm/home/reminders"
           className={({ isActive }) => (isActive ? "active-now" : "inactive")}
         >
           reminders
         </NavLink>
         <NavLink
-          to="/home/contacts"
+          to="soon-tm/home/contacts"
           className={({ isActive }) => (isActive ? "active-now" : "inactive")}
         >
           contacts
         </NavLink>
         <NavLink
-          to="/home/templates"
+          to="soon-tm/home/templates"
           className={({ isActive }) => (isActive ? "active-now" : "inactive")}
         >
           templates
         </NavLink>
-        {/* <NavLink to="/home/settings" className={({isActive}) => (isActive ? "active-now": "inactive")}>
+        {/* <NavLink to="soon-tm/home/settings" className={({isActive}) => (isActive ? "active-now": "inactive")}>
                     settings
                 </NavLink> */}
       </div>

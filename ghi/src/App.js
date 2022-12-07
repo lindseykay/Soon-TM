@@ -51,10 +51,9 @@ function App() {
         <NavBar />
         <div className="main-display">
           <Routes>
-            <Route path="/" element={<LandingPage />} />
-            <Route path="" element={<LandingPage />} />
+            <Route path="soon-tm" element={<LandingPage />} />
             <Route
-              path="home"
+              path="soon-tm/home"
               element={
                 <AuthRoute>
                   <UserDashboard />
@@ -62,7 +61,7 @@ function App() {
               }
             >
               <Route
-                path="reminders"
+                path="soon-tm/reminders"
                 element={
                   <ReminderDashboard
                     reminderList={reminderList}
@@ -70,26 +69,16 @@ function App() {
                   />
                 }
               />
-              <Route path="contacts" element={<ContactDashboard />} />
-              <Route path="templates" element={<TemplateDashboard />} />
-              <Route path="settings" element={<SettingsDashboard />} />
+              <Route path="soon-tm/contacts" element={<ContactDashboard />} />
+              <Route path="soon-tm/templates" element={<TemplateDashboard />} />
+              <Route path="soon-tm/settings" element={<SettingsDashboard />} />
             </Route>
-            <Route path="reminders">
+            <Route path="soon-tm/reminders">
               <Route
-                path="new"
+                path="soon-tm/new"
                 element={<ReminderForm refreshReminders={setReminderList} />}
               />
-              <Route path=":id" element={<></>} />
-            </Route>
-            <Route path="templates">
-              <Route index element={<></>} />
-              <Route path="new" element={<></>} />
-              <Route path=":id" element={<></>} />
-            </Route>
-            <Route path="contacts">
-              <Route index element={<></>} />
-              <Route path="new" element={<></>} />
-              <Route path=":id" element={<></>} />
+              <Route path="soon-tm/:id" element={<></>} />
             </Route>
           </Routes>
         </div>
