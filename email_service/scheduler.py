@@ -22,16 +22,16 @@ def job():
 
 #   ----SCHEDULER----
 
+def count(val):
+    return val + 1
+
 async def compiler_scheduler():
     schedule.every().day.at("14:00:00").do(job)
     schedule.every().day.at("15:00:00").do(job)
     schedule.every().day.at("19:00:00").do(job)
-
+    val = 0
     while True:
+        val = count(val)
         schedule.run_pending()
-        print("Waiting for emails.", flush=True)
         await asyncio.sleep(10)
-        print("Waiting for emails..", flush=True)
-        await asyncio.sleep(10)
-        print("Waiting for emails...", flush=True)
-        await asyncio.sleep(10)
+        print("Waiting for emails..", val, flush=True)
