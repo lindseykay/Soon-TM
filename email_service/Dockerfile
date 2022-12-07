@@ -21,8 +21,8 @@ COPY emailer.py emailer.py
 
 RUN python -m pip install -r requirements.txt
 # CMD uvicorn main:app --host 0.0.0.0 --port $PORT
-# CMD uvicorn main:app --host 0.0.0.0 
-CMD python main.py
+CMD uvicorn main:app --host 0.0.0.0 
+# CMD python main.py
 
 # If you're using a relational database and want migrations
 # to be run automatically, delete the previous CMD line and

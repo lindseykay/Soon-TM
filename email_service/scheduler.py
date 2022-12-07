@@ -4,6 +4,7 @@ from emailer import formatter, send_emails
 import requests
 import json
 import os
+import asyncio
 
 def reminder_compiler():
     url = f'{os.environ["REMINDERS_HOST"]}{os.environ["COMPILER_ROUTE"]}'
@@ -21,11 +22,14 @@ def job():
 
 #   ----SCHEDULER----
 
-def compiler_scheduler():
-    print("FIRST PRINT")
+async def compiler_scheduler():
     schedule.every().day.at("14:00:00").do(job)
     schedule.every().day.at("15:00:00").do(job)
     schedule.every().day.at("19:00:00").do(job)
 
     while True:
-        schedule.run_pending()
+        try:
+            schedule.run_pending()
+        except Exception:
+            print("run_pending not working!")
+        await asyncio.sleep(10)
