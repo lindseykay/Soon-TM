@@ -1,6 +1,6 @@
 from pydantic import BaseModel
 from typing import List, Optional, Union
-from queries.pools import pool
+from queries.pools import conn
 from datetime import date
 from queries.recipients import RecipientIn, RecipientOut, RecipientRepository
 from queries.messages import MessageOut, MessageRepository
@@ -30,10 +30,11 @@ class ReminderUpdate(BaseModel):
     reminder_date: date
     recurring: bool
 
+
 class ReminderRepository:
     def create(self, reminder: ReminderIn, message: MessageOut, recipients: List[RecipientIn] = [], user_id = None) -> Union[ReminderOut, Error]:
         try:
-            with pool.connection() as conn:
+            # with pool.connection() as conn:
                 with conn.cursor() as db:
                     result = db.execute(
                         """
@@ -69,7 +70,7 @@ class ReminderRepository:
 
     def get_all(self, user_id:int) -> Union[List[ReminderOut], Error]:
         try:
-            with pool.connection() as conn:
+            # with pool.connection() as conn:
                 with conn.cursor() as db:
                     result = db.execute(
                             """
@@ -132,7 +133,7 @@ class ReminderRepository:
 
     def get_one(self, user_id: int, reminder_id: int) -> Union[ReminderOut, Error]:
             try:
-                with pool.connection() as conn:
+                # with pool.connection() as conn:
                     with conn.cursor() as db:
                         result = db.execute(
                              """
@@ -198,7 +199,7 @@ class ReminderRepository:
 
     def update(self, user_id: int, reminder_id: int, reminder: ReminderUpdate) -> Union[ReminderUpdate, Error]:
             try:
-                with pool.connection() as conn:
+                # with pool.connection() as conn:
                     with conn.cursor() as db:
                         result = db.execute(
                             """
@@ -223,7 +224,7 @@ class ReminderRepository:
 
     def delete(self, reminder_id: int, user_id: int) -> bool:
         try:
-            with pool.connection() as conn:
+            # with pool.connection() as conn:
                 with conn.cursor() as db:
                     result = db.execute(
                         """
@@ -258,7 +259,7 @@ class ReminderRepository:
 
     def reminder_compiler(self):
         try:
-            with pool.connection() as conn:
+            # with pool.connection() as conn:
                 with conn.cursor() as db:
                     result = db.execute(
                         """
@@ -297,7 +298,7 @@ class ReminderRepository:
 
     def mark_complete(self):
         try:
-            with pool.connection() as conn:
+            # with pool.connection() as conn:
                 with conn.cursor() as db:
                     db.execute(
                         """

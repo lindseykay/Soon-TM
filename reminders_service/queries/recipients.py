@@ -1,6 +1,6 @@
 from pydantic import BaseModel
 from typing import Optional, Union, List
-from queries.pools import pool
+from queries.pools import conn
 from queries.error import Error
 
 class RecipientIn(BaseModel):
@@ -20,7 +20,7 @@ class RecipientOut(BaseModel):
 class RecipientRepository:
     def create(self, recipient: RecipientIn, user_id: int = None) -> Union[RecipientOut, Error]:
         try:
-            with pool.connection() as conn:
+            # with pool.connection() as conn:
                 with conn.cursor() as db:
                     check_exists = db.execute(
                         """
@@ -73,7 +73,7 @@ class RecipientRepository:
 
     def update(self, user_id: int, reminder_id: int, recipient = RecipientOut) -> Union[RecipientOut, Error]:
         try:
-            with pool.connection() as conn:
+            # with pool.connection() as conn:
                 with conn.cursor() as db:
                     result = db.execute(
                         """
@@ -110,7 +110,7 @@ class RecipientRepository:
 
     def get_all_by_user(self, user_id: int) -> Union[List[RecipientOut], Error]:
         try:
-            with pool.connection() as conn:
+            # with pool.connection() as conn:
                 with conn.cursor() as db:
                     result = db.execute(
                         """

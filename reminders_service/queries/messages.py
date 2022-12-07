@@ -1,6 +1,6 @@
 from pydantic import BaseModel
 from typing import Optional, Union
-from queries.pools import pool
+from queries.pools import conn
 from queries.error import Error
 
 class MessageIn(BaseModel):
@@ -17,7 +17,7 @@ class MessageOut(BaseModel):
 class MessageRepository:
     def create(self, message: MessageIn) -> Union[MessageOut, Error]:
         try:
-            with pool.connection() as conn:
+            # with pool.connection() as conn:
                 with conn.cursor() as db:
                     result = db.execute(
                         """
@@ -41,7 +41,7 @@ class MessageRepository:
 
     def update(self, reminder_id: int, message: MessageIn) -> Union[MessageIn, Error]:
         try:
-            with pool.connection() as conn:
+            # with pool.connection() as conn:
                 with conn.cursor() as db:
                     result = db.execute(
                         """
@@ -65,7 +65,7 @@ class MessageRepository:
 
     def get_one(self, message_id: int) -> Union[MessageOut, Error]:
         try:
-            with pool.connection() as conn:
+            # with pool.connection() as conn:
                 with conn.cursor() as db:
                     result = db.execute(
                         """

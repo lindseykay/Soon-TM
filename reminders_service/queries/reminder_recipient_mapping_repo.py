@@ -1,10 +1,10 @@
-from queries.pools import pool
+from queries.pools import conn
 from typing import List
 
 class ReminderRecipientMappingRepository:
     def create(self, reminder_id: int, recipient_id: int):
         try:
-            with pool.connection() as conn:
+            # with pool.connection() as conn:
                 with conn.cursor() as db:
                     db.execute(
                         """
@@ -24,7 +24,7 @@ class ReminderRecipientMappingRepository:
 
     def delete(self, reminder_id: int):
         try:
-            with pool.connection() as conn:
+            # with pool.connection() as conn:
                 with conn.cursor() as db:
                     db.execute(
                         """
@@ -40,7 +40,7 @@ class ReminderRecipientMappingRepository:
 
     def update(self, reminder_id: int, recipients: List[int]) -> bool:
         try:
-            with pool.connection() as conn:
+            # with pool.connection() as conn:
                 with conn.cursor() as db:
                     self.delete(reminder_id)
                     db.execute(
