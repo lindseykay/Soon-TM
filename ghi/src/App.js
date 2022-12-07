@@ -75,10 +75,10 @@ function App() {
             </Route>
             <Route path="soon-tm/reminders">
               <Route
-                path="soon-tm/new"
+                path="new"
                 element={<ReminderForm refreshReminders={setReminderList} />}
               />
-              <Route path="soon-tm/:id" element={<></>} />
+              <Route path=":id" element={<></>} />
             </Route>
           </Routes>
         </div>
