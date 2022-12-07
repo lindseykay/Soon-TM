@@ -4,6 +4,7 @@ import asyncio
 
 app = FastAPI()
 
+
 @app.on_event("startup")
 async def schedule_poller():
     loop = asyncio.get_event_loop()

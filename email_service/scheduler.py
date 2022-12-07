@@ -6,11 +6,13 @@ import json
 import os
 import asyncio
 
+
 def reminder_compiler():
     url = f'{os.environ["REMINDERS_HOST"]}{os.environ["COMPILER_ROUTE"]}'
     response = requests.get(url)
     content = json.loads(response.content)
     return content
+
 
 def job():
     x = reminder_compiler()
@@ -20,7 +22,9 @@ def job():
     except Exception:
         print("You have no reminders or crashed")
 
+
 #   ----SCHEDULER----
+
 
 async def compiler_scheduler():
     schedule.every().day.at("14:00:00").do(job)

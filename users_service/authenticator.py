@@ -1,7 +1,14 @@
 import os
 from fastapi import Depends
 from jwtdown_fastapi.authentication import Authenticator
-from queries.users import UserIn, UserOut, UserRepository, UserError, UserUpdate, UserOutWithPassword
+from queries.users import (
+    UserIn,
+    UserOut,
+    UserRepository,
+    UserError,
+    UserUpdate,
+    UserOutWithPassword,
+)
 
 
 class MyAuthenticator(Authenticator):
@@ -33,5 +40,3 @@ class MyAuthenticator(Authenticator):
 
 
 authenticator = MyAuthenticator(os.environ["SIGNING_KEY"])
-
-

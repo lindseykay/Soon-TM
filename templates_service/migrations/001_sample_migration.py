@@ -14,7 +14,7 @@ steps = [
         # "Down" SQL statement
         """
         DROP TABLE templates;
-        """
+        """,
     ],
     [
         # "Up" SQL statement
@@ -28,6 +28,6 @@ steps = [
         # "Down" SQL statement
         """
         DROP TABLE themes;
-        """
-    ]
+        """,
+    ],
 ]

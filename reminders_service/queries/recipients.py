@@ -3,6 +3,7 @@ from typing import Optional, Union, List
 from queries.pools import conn
 from queries.error import Error
 
+
 class RecipientIn(BaseModel):
     name: str
     phone: Optional[str]
@@ -18,12 +19,14 @@ class RecipientOut(BaseModel):
 
 
 class RecipientRepository:
-    def create(self, recipient: RecipientIn, user_id: int = None) -> Union[RecipientOut, Error]:
+    def create(
+        self, recipient: RecipientIn, user_id: int = None
+    ) -> Union[RecipientOut, Error]:
         try:
             # with pool.connection() as conn:
-                with conn.cursor() as db:
-                    check_exists = db.execute(
-                        """
+            with conn.cursor() as db:
+                check_exists = db.execute(
+                    """
                         SELECT *
                         FROM recipients
                         WHERE recipients.name = %s
@@ -31,23 +34,23 @@ class RecipientRepository:
                         AND recipients.email = %s
                         AND recipients.user_id = %s
                         """,
-                        [
-                            recipient.name,
-                            recipient.phone,
-                            recipient.email,
-                            user_id
-                        ]
+                    [
+                        recipient.name,
+                        recipient.phone,
+                        recipient.email,
+                        user_id,
+                    ],
+                )
+                existing_recipient = check_exists.fetchone()
+                if existing_recipient:
+                    return RecipientOut(
+                        id=existing_recipient[0],
+                        name=existing_recipient[1],
+                        phone=existing_recipient[2],
+                        email=existing_recipient[3],
                     )
-                    existing_recipient = check_exists.fetchone()
-                    if existing_recipient:
-                        return RecipientOut(
-                            id = existing_recipient[0],
-                            name = existing_recipient[1],
-                            phone = existing_recipient[2],
-                            email = existing_recipient[3]
-                        )
-                    result = db.execute(
-                        """
+                result = db.execute(
+                    """
                         INSERT INTO recipients(
                             name
                             , phone
@@ -57,26 +60,28 @@ class RecipientRepository:
                         VALUES (%s, %s, %s, %s)
                         RETURNING id;
                         """,
-                        [
-                            recipient.name,
-                            recipient.phone,
-                            recipient.email,
-                            user_id
-                        ]
-                    )
-                    recipient_id = result.fetchone()[0]
-                    input = recipient.dict()
-                    input.pop("user_id")
-                    return RecipientOut(id=recipient_id, **input)
+                    [
+                        recipient.name,
+                        recipient.phone,
+                        recipient.email,
+                        user_id,
+                    ],
+                )
+                recipient_id = result.fetchone()[0]
+                input = recipient.dict()
+                input.pop("user_id")
+                return RecipientOut(id=recipient_id, **input)
         except Exception:
             return {"message": "create recipient record failed"}
 
-    def update(self, user_id: int, reminder_id: int, recipient = RecipientOut) -> Union[RecipientOut, Error]:
+    def update(
+        self, user_id: int, reminder_id: int, recipient=RecipientOut
+    ) -> Union[RecipientOut, Error]:
         try:
             # with pool.connection() as conn:
-                with conn.cursor() as db:
-                    result = db.execute(
-                        """
+            with conn.cursor() as db:
+                result = db.execute(
+                    """
                         UPDATE recipients
                         SET name = COALESCE(%s, recipients.name)
                             , phone = COALESCE(%s, recipients.phone)
@@ -90,47 +95,49 @@ class RecipientRepository:
                         AND re.id = %s
                         RETURNING recipients.id, recipients.name, recipients.phone, recipients.email;
                         """,
-                        [
-                            recipient.name,
-                            recipient.phone,
-                            recipient.email,
-                            recipient.id,
-                            reminder_id,
-                        ]
-                    )
-                    query = result.fetchone()
-                    return RecipientOut(
-                        id = query[0],
-                        name = query[1],
-                        phone = query[2],
-                        email = query[3]
-                    )
+                    [
+                        recipient.name,
+                        recipient.phone,
+                        recipient.email,
+                        recipient.id,
+                        reminder_id,
+                    ],
+                )
+                query = result.fetchone()
+                return RecipientOut(
+                    id=query[0], name=query[1], phone=query[2], email=query[3]
+                )
         except Exception:
             return {"message": "update recipient record failed"}
 
-    def get_all_by_user(self, user_id: int) -> Union[List[RecipientOut], Error]:
+    def get_all_by_user(
+        self, user_id: int
+    ) -> Union[List[RecipientOut], Error]:
         try:
             # with pool.connection() as conn:
-                with conn.cursor() as db:
-                    result = db.execute(
-                        """
+            with conn.cursor() as db:
+                result = db.execute(
+                    """
                         SELECT *
                         FROM recipients
                         WHERE user_id = %s
                         """,
-                        [user_id]
+                    [user_id],
+                )
+                query = result.fetchall()
+                return [
+                    RecipientOut(
+                        id=record[0],
+                        name=record[1],
+                        phone=record[2],
+                        email=record[3],
                     )
-                    query = result.fetchall()
-                    return [RecipientOut(
-                        id = record[0],
-                        name = record[1],
-                        phone = record[2],
-                        email = record[3]
-                    ) for record in query]
+                    for record in query
+                ]
         except Exception:
             return {"message": "get_all_by_user recipient record failed"}
 
-    def get_by_id(self, recipient_id:int):
+    def get_by_id(self, recipient_id: int):
         try:
             with conn.cursor() as db:
                 result = db.execute(
@@ -139,16 +146,14 @@ class RecipientRepository:
                     FROM recipients
                     WHERE id = %s
                     """,
-                    [
-                        recipient_id
-                    ]
+                    [recipient_id],
                 )
                 query = result.fetchone()
             return RecipientOut(
-                id = recipient_id, #Can also replace id with query[0] but we defined id above
-                name = query[1],
-                phone = query[2],
-                email = query[3]
+                id=recipient_id,  # Can also replace id with query[0] but we defined id above
+                name=query[1],
+                phone=query[2],
+                email=query[3],
             )
         except Exception:
             return None

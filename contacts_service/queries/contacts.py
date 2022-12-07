@@ -1,33 +1,38 @@
 from pydantic import BaseModel
 from queries.pools import conn
 from typing import List, Optional, Union
-from queries.specialdays import SpecialDaysRepository, SpecialDayOut, SpecialDayIn
+from queries.specialdays import (
+    SpecialDaysRepository,
+    SpecialDayOut,
+    SpecialDayIn,
+)
 import os
 import requests
 import json
 
+
 class ContactError(BaseModel):
-    message : str
+    message: str
 
 
 class Recipient(BaseModel):
-    id : int
-    name : str
-    phone : Optional[str]
-    email : Optional[str]
+    id: int
+    name: str
+    phone: Optional[str]
+    email: Optional[str]
 
 
 class ContactIn(BaseModel):
     recipient_id: int
-    notes : str
+    notes: str
 
 
 class ContactOut(BaseModel):
-    id : int
+    id: int
     user_id: int
-    recipient : Optional[Recipient]
-    special_days : List[SpecialDayOut]
-    notes : str
+    recipient: Optional[Recipient]
+    special_days: List[SpecialDayOut]
+    notes: str
 
 
 class ContactUpdate(BaseModel):
@@ -35,7 +40,12 @@ class ContactUpdate(BaseModel):
 
 
 class ContactsRepository:
-    def create(self, user_id: int, contact: ContactIn, special_days: List[SpecialDayIn])->Union[ContactOut,ContactError]:
+    def create(
+        self,
+        user_id: int,
+        contact: ContactIn,
+        special_days: List[SpecialDayIn],
+    ) -> Union[ContactOut, ContactError]:
         try:
             with conn.cursor() as db:
                 result = db.execute(
@@ -46,27 +56,29 @@ class ContactsRepository:
                         (%s, %s, %s)
                     RETURNING *;
                     """,
-                    [user_id, contact.recipient_id, contact.notes]
+                    [user_id, contact.recipient_id, contact.notes],
                 )
                 contact_record = result.fetchone()
                 recipient = find_recipient(contact_record[2])
 
                 s_days = []
                 for day in special_days:
-                    new_sd = SpecialDaysRepository.create(SpecialDaysRepository, day, contact_record[0])
-                    if isinstance(new_sd,SpecialDayOut):
+                    new_sd = SpecialDaysRepository.create(
+                        SpecialDaysRepository, day, contact_record[0]
+                    )
+                    if isinstance(new_sd, SpecialDayOut):
                         s_days.append(new_sd)
                 return ContactOut(
-                    id = contact_record[0],
-                    user_id = contact_record[1],
-                    recipient = recipient,
-                    special_days = s_days,
-                    notes = contact_record[3]
+                    id=contact_record[0],
+                    user_id=contact_record[1],
+                    recipient=recipient,
+                    special_days=s_days,
+                    notes=contact_record[3],
                 )
         except Exception:
             return {"message": "hello error town"}
 
-    def get_all(self, user_id: int)-> Union[List[ContactOut],ContactError]:
+    def get_all(self, user_id: int) -> Union[List[ContactOut], ContactError]:
         try:
             with conn.cursor() as db:
                 result = db.execute(
@@ -75,7 +87,7 @@ class ContactsRepository:
                     FROM CONTACTS
                     WHERE user_id = %s
                     """,
-                    [user_id]
+                    [user_id],
                 )
                 query = result.fetchall()
 
@@ -83,7 +95,9 @@ class ContactsRepository:
         except Exception:
             return {"message": "hello Can't find all contacts"}
 
-    def get_contact(self, contact_id: int, user_id: int) -> Union[ContactOut,ContactError]:
+    def get_contact(
+        self, contact_id: int, user_id: int
+    ) -> Union[ContactOut, ContactError]:
         try:
             with conn.cursor() as db:
                 result = db.execute(
@@ -92,20 +106,17 @@ class ContactsRepository:
                     FROM CONTACTS
                     WHERE user_id = %s AND id = %s
                     """,
-                    [
-                        user_id,
-                        contact_id
-                    ]
+                    [user_id, contact_id],
                 )
                 query = result.fetchone()
                 return query_to_contactout(query)
 
-
         except Exception:
             return {"message": "Can't find contact"}
 
-
-    def update_contact(self, contact_id: int, user_id: int, info: ContactUpdate) -> Union[ContactOut, ContactError]:
+    def update_contact(
+        self, contact_id: int, user_id: int, info: ContactUpdate
+    ) -> Union[ContactOut, ContactError]:
         try:
             with conn.cursor() as db:
                 result = db.execute(
@@ -115,11 +126,7 @@ class ContactsRepository:
                     WHERE user_id = %s AND id=%s
                     RETURNING *
                     """,
-                    [
-                        info.notes,
-                        user_id,
-                        contact_id
-                    ]
+                    [info.notes, user_id, contact_id],
                 )
                 query = result.fetchone()
                 return query_to_contactout(query)
@@ -127,60 +134,56 @@ class ContactsRepository:
         except Exception:
             return {"message": "Can't find contact"}
 
-
     def delete_contact(self, contact_id: int, user_id: int) -> bool:
         try:
-                with conn.cursor() as db:
-                    db.execute(
-                        """
+            with conn.cursor() as db:
+                db.execute(
+                    """
                         DELETE
                         FROM contacts
                         WHERE user_id = %s AND id = %s
                         """,
-                        [
-                            user_id,
-                            contact_id
-                        ]
-                    )
-                return True
+                    [user_id, contact_id],
+                )
+            return True
         except Exception:
             return False
 
 
-#____________________HELP FUNCTIONS_________________________________
-def find_recipient(id:int):
+# ____________________HELP FUNCTIONS_________________________________
+def find_recipient(id: int):
     url = f'{os.environ["REMINDERS_HOST"]}recipients/{id}'
     response = requests.get(url)
     content = json.loads(response.content)
     return content
 
-def query_to_contactout(query:tuple) -> ContactOut:
-        with conn.cursor() as db:
-            result = db.execute(
-                """
+
+def query_to_contactout(query: tuple) -> ContactOut:
+    with conn.cursor() as db:
+        result = db.execute(
+            """
                 SELECT *
                 FROM special_days
                 WHERE contact_id = %s
                 """,
-                [query[0]]
-            )
-            sd_query = result.fetchall()
-            specialdays = [query_to_specialdayout(record) for record in sd_query]
-            recipient = find_recipient(query[2])
-            return ContactOut(
-                id = query[0],
-                user_id = query[1],
-                recipient = recipient,
-                special_days = specialdays,
-                notes = query[3]
-            )
+            [query[0]],
+        )
+        sd_query = result.fetchall()
+        specialdays = [query_to_specialdayout(record) for record in sd_query]
+        recipient = find_recipient(query[2])
+        return ContactOut(
+            id=query[0],
+            user_id=query[1],
+            recipient=recipient,
+            special_days=specialdays,
+            notes=query[3],
+        )
 
-def query_to_specialdayout(query:tuple) -> SpecialDayOut:
+
+def query_to_specialdayout(query: tuple) -> SpecialDayOut:
     return SpecialDayOut(
-        id = query[0],
-        contact_id = query[1],
-        name = query[2],
-        date = query[3]
+        id=query[0], contact_id=query[1], name=query[2], date=query[3]
     )
 
-#____________________HELP FUNCTIONS_________________________________
+
+# ____________________HELP FUNCTIONS_________________________________

@@ -17,7 +17,7 @@ steps = [
         # "Down" SQL statement
         """
         DROP TABLE reminders;
-        """
+        """,
     ],
     [
         # "Up" SQL statement
@@ -31,7 +31,7 @@ steps = [
         # "Down" SQL statement
         """
         DROP TABLE messages;
-        """
+        """,
     ],
     [
         # "Up" SQL statement
@@ -44,7 +44,7 @@ steps = [
         # "Down" SQL statement
         """
         DROP TABLE reminders_recipients_mapping_table;
-        """
+        """,
     ],
     [
         # "Up" SQL statement
@@ -60,6 +60,6 @@ steps = [
         # "Down" SQL statement
         """
         DROP TABLE recipients;
-        """
-    ]
+        """,
+    ],
 ]
