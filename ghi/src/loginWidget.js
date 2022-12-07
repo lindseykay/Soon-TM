@@ -17,29 +17,39 @@ function LoginWidget() {
   }
 
   function switchTab(event, val) {
-    event.preventDefault()
-    setMode(val)
-    const tabs = document.querySelectorAll('.login-widget-tab')
+    event.preventDefault();
+    setMode(val);
+    const tabs = document.querySelectorAll(".login-widget-tab");
     for (let node of tabs) {
-        node.classList.remove("selected-tab")
+      node.classList.remove("selected-tab");
     }
-    const tab = document.querySelector(`#login-tab-${val}`)
-    tab.classList.add('selected-tab')
+    const tab = document.querySelector(`#login-tab-${val}`);
+    tab.classList.add("selected-tab");
   }
 
   return (
     <>
       {!landing && (
-        <button
-          className="login-button"
-          onClick={(e) => setLanding(true)}>
+        <button className="login-button" onClick={(e) => setLanding(true)}>
           login / sign up
         </button>
       )}
       {landing && (
         <div className="login-widget-container">
-          <div className="login-widget-tab selected-tab" id="login-tab-0" onClick={(e) => switchTab(e,0)}>login</div>
-          <div className="login-widget-tab" id="login-tab-1" onClick={(e) => switchTab(e,1)}>sign up</div>
+          <div
+            className="login-widget-tab selected-tab"
+            id="login-tab-0"
+            onClick={(e) => switchTab(e, 0)}
+          >
+            login
+          </div>
+          <div
+            className="login-widget-tab"
+            id="login-tab-1"
+            onClick={(e) => switchTab(e, 1)}
+          >
+            sign up
+          </div>
           <div className="form-input">
             <input
               required
@@ -87,7 +97,7 @@ function LoginWidget() {
           )}
           <div className="login-widget-footer">
             <div className="show-pass">
-              <input type="checkbox" onClick={(e) => showPass(e)}/>
+              <input type="checkbox" onClick={(e) => showPass(e)} />
               <span>Show Password</span>
             </div>
             <button
@@ -101,15 +111,17 @@ function LoginWidget() {
               {mode === 0 ? "login" : "sign up"}
             </button>
           </div>
-          <div className='delete-mark'
-              onClick={e=>{
-                  setLanding(false)
-                  setUserName("")
-                  setPassword("")
-                  setEmail("")
-                  setName("")
-                }}>
-              <div className='x-mark'>x</div>
+          <div
+            className="delete-mark"
+            onClick={(e) => {
+              setLanding(false);
+              setUserName("");
+              setPassword("");
+              setEmail("");
+              setName("");
+            }}
+          >
+            <div className="x-mark">x</div>
           </div>
         </div>
       )}

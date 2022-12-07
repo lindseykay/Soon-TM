@@ -1,7 +1,5 @@
-function TemplateDashboard(){
-    return(
-        <div>hi</div>
-    )
+function TemplateDashboard() {
+  return <div>hi</div>;
 }
 
-export default TemplateDashboard
+export default TemplateDashboard;

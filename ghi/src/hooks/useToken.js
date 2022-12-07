@@ -16,7 +16,7 @@ export async function getTokenInternal() {
     if (response.ok) {
       const data = await response.json();
       internalToken = data.access_token;
-      userInfo = data.account
+      userInfo = data.account;
       return internalToken;
     }
   } catch (e) {}
@@ -96,9 +96,9 @@ export function useToken() {
       body: form,
     });
     if (response.ok) {
-        const token = await getTokenInternal();
-        setToken(token);
-        return;
+      const token = await getTokenInternal();
+      setToken(token);
+      return;
     }
     let error = await response.json();
     return handleErrorMessage(error);
@@ -112,7 +112,7 @@ export function useToken() {
         username,
         password,
         email,
-        name
+        name,
       }),
       headers: {
         "Content-Type": "application/json",
@@ -133,7 +133,7 @@ export function useToken() {
       body: JSON.stringify({
         password: password ? password : null,
         email: email,
-        name: name ? name : null
+        name: name ? name : null,
       }),
       headers: {
         "Content-Type": "application/json",

@@ -6,7 +6,7 @@ import deleteReminder from "../deleteReminder";
 function ReminderDashboard(props) {
   const [token] = useToken();
   const [filteredReminders, setFilteredReminders] = useState([]);
-  const [counter, setCounter] = useState(0)
+  const [counter, setCounter] = useState(0);
 
   const newReminders = async () => {
     const reminders = await getReminders(token);
@@ -24,9 +24,9 @@ function ReminderDashboard(props) {
 
   useEffect(() => {
     if (token) {
-      newReminders()
+      newReminders();
     }
-  },[counter])
+  }, [counter]);
 
   function filterReminders(val, rlist = props.reminderList) {
     let today = new Date();
@@ -98,9 +98,9 @@ function ReminderDashboard(props) {
                     className="delete-tab"
                     id="delete-tab"
                     onClick={(e) => {
-                      deleteReminder(reminder.id, token)
-                      setCounter(counter+1)
-                      }}
+                      deleteReminder(reminder.id, token);
+                      setCounter(counter + 1);
+                    }}
                   >
                     delete
                   </span>
