@@ -64,6 +64,7 @@ services:
       DATABASE_URL: postgresql://postgres:password@db:5432/reminders
       WAIT_HOSTS: db:5432
       PORT: 8001
+      COMPILER_ROUTE: Jj94E9GRLl6a0pAjIjVp1jLG3LAdyagN
     ports:
       - "8001:8000"
     volumes:
@@ -104,6 +105,8 @@ services:
       WAIT_HOSTS: db:5432
       PORT: 7999
       EMAIL_PASSWORD: $EMAIL_PASSWORD
+      COMPILER_ROUTE: Jj94E9GRLl6a0pAjIjVp1jLG3LAdyagN
+      REMINDERS_HOST: http://reminders_api:8000/
     ports:
       - "7999:8000"
     volumes:

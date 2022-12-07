@@ -256,6 +256,64 @@ class ReminderRepository:
         except Exception:
             return False
 
+    def reminder_compiler(self):
+        try:
+            with pool.connection() as conn:
+                with conn.cursor() as db:
+                    result = db.execute(
+                        """
+                        SELECT r.id AS reminder_id
+                            , r.user_id
+                            , r.email_target
+                            , m.content
+                            , STRING_AGG(re.name || ' || ' || re.phone || ' || ' || re.email, ',') AS recipients
+                        FROM reminders AS r
+                        LEFT JOIN messages AS m ON r.message_id = m.id
+                        LEFT JOIN reminders_recipients_mapping_table AS rrmt ON rrmt.reminder_id = r.id
+                        LEFT JOIN recipients AS re ON rrmt.recipient_id = re.id
+                        WHERE r.sent = false
+                        AND r.reminder_date = %s
+                        GROUP BY 1, 2, 3, 4
+                        """,
+                        [date.today()]
+                    )
+                    query = result.fetchall()
+                    dict = {}
+                    for record in query:
+                        recipients = record[4].split(',')
+                        if record[2] not in dict:
+                            dict[record[2]] = [{
+                                "recipients": [recipient for recipient in recipients],
+                                "message": record[3]
+                            }]
+                        else:
+                            dict[record[2]].append({
+                                "recipients": [recipient for recipient in recipients],
+                                "message": record[3]
+                            })
+                    return dict
+        except Exception:
+            return print("Reminder compiler failed", flush=True)
+
+    def mark_complete(self):
+        try:
+            with pool.connection() as conn:
+                with conn.cursor() as db:
+                    db.execute(
+                        """
+                        UPDATE reminders
+                        SET sent = true
+                            , sent_on = %s
+                        WHERE reminder_date = %s
+                        AND sent = false
+                        """,
+                        [
+                            date.today(),
+                            date.today()
+                        ]
+                    )
+        except Exception:
+            return print("Could not mark sent", flush=True)
 #HELPER FUNCTIONS
     def reminder_query_to_reminder_out(self, query: tuple, recipient_list: List[RecipientOut], message: MessageOut) -> ReminderOut:
         return ReminderOut(

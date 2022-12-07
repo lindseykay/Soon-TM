@@ -91,3 +91,11 @@ def delete(
     account_data: dict = Depends(authenticator.get_current_account_data),
     repo: ReminderRepository = Depends()):
     return repo.delete(reminder_id, account_data['id'])
+
+@router.get(f'/{os.environ["COMPILER_ROUTE"]}')
+def compile(
+    repo: ReminderRepository = Depends()):
+    reminders = repo.reminder_compiler()
+    if reminders:
+        repo.mark_complete()
+    return reminders

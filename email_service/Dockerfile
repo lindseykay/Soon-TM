@@ -8,7 +8,6 @@ COPY requirements.txt requirements.txt
 COPY main.py main.py
 COPY scheduler.py scheduler.py
 COPY emailer.py emailer.py
-COPY pools.py pools.py
 
 # Copy all of the subdirectories in your service's directory
 # Modify these instructions to do that
