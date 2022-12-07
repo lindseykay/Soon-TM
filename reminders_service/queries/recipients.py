@@ -129,3 +129,26 @@ class RecipientRepository:
                     ) for record in query]
         except Exception:
             return {"message": "get_all_by_user recipient record failed"}
+
+    def get_by_id(self, recipient_id:int):
+        try:
+            with conn.cursor() as db:
+                result = db.execute(
+                    """
+                    SELECT *
+                    FROM recipients
+                    WHERE id = %s
+                    """,
+                    [
+                        recipient_id
+                    ]
+                )
+                query = result.fetchone()
+            return RecipientOut(
+                id = recipient_id, #Can also replace id with query[0] but we defined id above
+                name = query[1],
+                phone = query[2],
+                email = query[3]
+            )
+        except Exception:
+            return None

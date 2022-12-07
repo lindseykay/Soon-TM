@@ -76,8 +76,8 @@ services:
     environment:
       SIGNING_KEY: ghostbusters
       DATABASE_URL: postgresql://postgres:password@db:5432/contacts
-      DATABASE_URL2: postgresql://postgres:password@db:5432/reminders
       WAIT_HOSTS: db:5432
+      REMINDERS_HOST: http://reminders_api:8000/
       PORT: 8002
     ports:
       - "8002:8000"

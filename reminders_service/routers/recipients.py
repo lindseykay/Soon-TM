@@ -47,3 +47,9 @@ def get_all_by_user(
     account_data: dict = Depends(authenticator.get_current_account_data),
     repo: RecipientRepository = Depends()):
     return repo.get_all_by_user(account_data['id'])
+
+@router.get("/recipients/{recipient_id}")
+def get_by_id(
+    recipient_id: int,
+    repo: RecipientRepository = Depends()):
+    return repo.get_by_id(recipient_id)

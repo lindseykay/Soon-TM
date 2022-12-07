@@ -1,7 +1,10 @@
 from pydantic import BaseModel
-from queries.pools import reminder_pool, conn
+from queries.pools import conn
 from typing import List, Optional, Union
 from queries.specialdays import SpecialDaysRepository, SpecialDayOut, SpecialDayIn
+import os
+import requests
+import json
 
 class ContactError(BaseModel):
     message : str
@@ -146,28 +149,10 @@ class ContactsRepository:
 
 #____________________HELP FUNCTIONS_________________________________
 def find_recipient(id:int):
-    try:
-        with reminder_pool.connection() as conn:
-            with conn.cursor() as db:
-                result = db.execute(
-                    """
-                    SELECT *
-                    FROM recipients
-                    WHERE id = %s
-                    """,
-                    [
-                        id
-                    ]
-                )
-                query = result.fetchone()
-            return Recipient(
-                id = id, #Can also replace id with query[0] but we defined id above
-                name = query[1],
-                phone = query[2],
-                email = query[3]
-            )
-    except Exception:
-        return None
+    url = f'{os.environ["REMINDERS_HOST"]}recipients/{id}'
+    response = requests.get(url)
+    content = json.loads(response.content)
+    return content
 
 def query_to_contactout(query:tuple) -> ContactOut:
         with conn.cursor() as db:
