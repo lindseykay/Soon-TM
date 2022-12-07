@@ -28,8 +28,10 @@ async def compiler_scheduler():
     schedule.every().day.at("19:00:00").do(job)
 
     while True:
-        try:
-            schedule.run_pending()
-        except Exception:
-            print("run_pending not working!")
+        schedule.run_pending()
+        print("Waiting for emails.", flush=True)
+        await asyncio.sleep(10)
+        print("Waiting for emails..", flush=True)
+        await asyncio.sleep(10)
+        print("Waiting for emails...", flush=True)
         await asyncio.sleep(10)
