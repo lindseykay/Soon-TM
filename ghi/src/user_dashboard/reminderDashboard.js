@@ -20,13 +20,13 @@ function ReminderDashboard(props) {
     } else if (props.reminderList) {
       filterReminders(0);
     }
-  }, [token]);
+  }, [token]); // eslint-disable-line
 
   useEffect(() => {
     if (token) {
       newReminders();
     }
-  }, [counter]);
+  }, [counter]); // eslint-disable-line
 
   function filterReminders(val, rlist = props.reminderList) {
     let today = new Date();
@@ -93,7 +93,7 @@ function ReminderDashboard(props) {
               <div className="footer">
                 Sending on: {reminder.reminder_date}
                 <span className="update-options">
-                  <span>edit</span> |{" "}
+                  {/* <span>edit</span> |{" "} */}
                   <span
                     className="delete-tab"
                     id="delete-tab"

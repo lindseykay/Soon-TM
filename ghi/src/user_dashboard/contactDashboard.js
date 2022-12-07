@@ -8,13 +8,12 @@ function ContactDashboard() {
   const [contactsList, setContactsList] = useState([]);
   const [counter, setCounter] = useState(0);
 
-  const newContacts = async () => {
-    const contacts = await getContacts(token);
-    setContactsList(contacts);
-  };
-
   useEffect(() => {
     if (token) {
+      const newContacts = async () => {
+        const contacts = await getContacts(token);
+        setContactsList(contacts);
+      };
       newContacts();
     }
   }, [token, counter]);

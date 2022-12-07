@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { useToken } from "../hooks/useToken";
-import { NavLink, useLocation } from "react-router-dom";
+import { useLocation } from "react-router-dom";
 
 function ReminderForm(props) {
   const [token, , , , , userInfo] = useToken();

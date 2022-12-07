@@ -8,7 +8,6 @@ import {
 } from "react-router-dom";
 import ReminderForm from "./reminders/reminderForm";
 import LandingPage from "./landingPage";
-import ContactBook from "./contacts/contactsBook";
 import { AuthProvider, useToken } from "./hooks/useToken";
 import NavBar from "./Nav";
 import UserDashboard from "./user_dashboard/userDashboard";
@@ -35,7 +34,7 @@ function AuthRoute({ children }) {
     } else if (!token && counter >= 1) {
       navigate("/");
     }
-  }, [token]);
+  }, [token, counter, navigate]);
 
   if (token) {
     return children ? children : <Outlet />;

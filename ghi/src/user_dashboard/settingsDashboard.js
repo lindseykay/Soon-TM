@@ -1,10 +1,9 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { useToken } from "../hooks/useToken";
 
 function SettingsDashboard() {
-  const [token, , , , update, userInfo] = useToken();
+  const [, , , , update, userInfo] = useToken();
   const [name, setName] = useState("");
-  const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [nameModalOpen, setNameModalOpen] = useState(false);
   const [passwordModalOpen, setPasswordModalOpen] = useState(false);
