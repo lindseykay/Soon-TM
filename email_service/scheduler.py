@@ -28,5 +28,4 @@ def compiler_scheduler():
     schedule.every().day.at("19:00:00").do(job)
 
     while True:
-        print("WOW")
         schedule.run_pending()
