@@ -1,5 +1,5 @@
 from pydantic import BaseModel
-from queries.pools import pool
+from queries.pools import conn
 from typing import Union
 from datetime import date
 
@@ -23,7 +23,6 @@ class SpecialDayOut(BaseModel):
 class SpecialDaysRepository:
     def create(self, specialday: SpecialDayIn, contact_id: int = None) -> Union[SpecialDayOut,SpecialDayError]:
         try:
-            with pool.connection() as conn:
                 with conn.cursor() as db:
                     result = db.execute(
                         """

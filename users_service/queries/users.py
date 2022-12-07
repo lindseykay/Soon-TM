@@ -1,6 +1,6 @@
 from pydantic import BaseModel
 from typing import Optional, Union
-from queries.pools import pool
+from queries.pools import conn
 
 class DuplicateAccountError(BaseModel):
     pass
@@ -31,7 +31,6 @@ class UserOutWithPassword(UserOut):
 class UserRepository:
     def create(self, user: UserIn, hashed_password: str) -> Union[UserOut,UserError]:
         try:
-            with pool.connection() as conn:
                 with conn.cursor() as db:
                     result = db.execute(
                         """
@@ -57,7 +56,6 @@ class UserRepository:
 
     def get_by_userid(self, user_id: int) -> Union[UserOut,UserError]:
         try:
-            with pool.connection() as conn:
                 with conn.cursor() as db:
                     result = db.execute(
                         """
@@ -76,7 +74,6 @@ class UserRepository:
 
     def get_by_username(self, username: str) -> Union[UserOutWithPassword,UserError]:
         try:
-            with pool.connection() as conn:
                 with conn.cursor() as db:
                     result = db.execute(
                         """
@@ -110,7 +107,6 @@ class UserRepository:
 
     def update(self, user_id: int, user: UserUpdate) -> Union[UserOut,UserError]:
         try:
-            with pool.connection() as conn:
                 with conn.cursor() as db:
                     result = db.execute(
                         """

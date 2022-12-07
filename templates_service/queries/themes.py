@@ -1,5 +1,5 @@
 from pydantic import BaseModel
-from queries.pools import pool
+from queries.pools import conn
 from typing import List, Optional
 
 class TemplateOut(BaseModel):
@@ -30,7 +30,6 @@ class ThemesOut(BaseModel):
 class ThemeRepository:
     def create_public_themes(self, themes: List[ThemeIn]) -> bool:
         try:
-            with pool.connection() as conn:
                 with conn.cursor() as db:
                     names = [theme.name for theme in themes]
                     picture_urls = [theme.picture_url for theme in themes]
@@ -52,7 +51,6 @@ class ThemeRepository:
 
     def get_themes(self) -> ThemesOut:
         try:
-            with pool.connection() as conn:
                 with conn.cursor() as db:
                     results = db.execute(
                         """

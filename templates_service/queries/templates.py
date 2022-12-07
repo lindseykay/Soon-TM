@@ -1,5 +1,5 @@
 from pydantic import BaseModel
-from queries.pools import pool
+from queries.pools import conn
 from typing import List, Optional, Union
 from queries.themes import ThemesOut, ThemeRepository
 
@@ -40,7 +40,6 @@ class TemplateError(BaseModel):
 class TemplateRepository:
     def create_public_templates(self, templates: List[PublicTemplateIn]) -> Union[List[TemplateOut],TemplateError]:
         try:
-            with pool.connection() as conn:
                 with conn.cursor() as db:
                     themes = [template.theme_id for template in templates]
                     names = [template.name for template in templates]
@@ -74,7 +73,6 @@ class TemplateRepository:
 
     def create_user_template(self, template: TemplateIn, user_id: int) -> Union[TemplateOut,TemplateError]:
         try:
-            with pool.connection() as conn:
                 with conn.cursor() as db:
                     result = db.execute(
                         """
@@ -106,7 +104,6 @@ class TemplateRepository:
 
     def get_all(self, user_id: Optional[int]) -> Union[TemplatesOut,TemplateError]:
         try:
-            with pool.connection() as conn:
                 with conn.cursor() as db:
                     result = db.execute(
                         """
@@ -137,7 +134,6 @@ class TemplateRepository:
 
     def get_template(self, template_id: int, user_id: int) -> Union[TemplateOut,TemplateError]:
         try:
-            with pool.connection() as conn:
                 with conn.cursor() as db:
                     result = db.execute(
                         """
@@ -164,7 +160,6 @@ class TemplateRepository:
 
     def update_template(self, template_id: int, user_id: int, info: TemplateUpdate) -> Union[TemplateOut, TemplateError]:
         try:
-            with pool.connection() as conn:
                 with conn.cursor() as db:
                     result = db.execute(
                         """
@@ -197,18 +192,17 @@ class TemplateRepository:
         try:
             if not user_id:
                 return False
-            with pool.connection() as conn:
-                with conn.cursor() as db:
-                    db.execute(
-                        """
-                        DELETE FROM templates
-                        where user_id = %s AND id = %s
-                        """,
-                        [
-                            user_id,
-                            template_id
-                        ]
-                    )
-                    return True
+            with conn.cursor() as db:
+                db.execute(
+                    """
+                    DELETE FROM templates
+                    where user_id = %s AND id = %s
+                    """,
+                    [
+                        user_id,
+                        template_id
+                    ]
+                )
+                return True
         except Exception:
             return False
