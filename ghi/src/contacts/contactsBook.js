@@ -102,7 +102,7 @@ function ContactBook(props) {
                           <div className="contact-name">
                             {contact.name}
                             <Link
-                              to="soon-tm/reminders/new"
+                              to="reminders/new"
                               state={{
                                 recName: contact.name,
                                 recPhone: contact.phone,

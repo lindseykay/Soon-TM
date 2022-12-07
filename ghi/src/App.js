@@ -51,7 +51,7 @@ function App() {
         <NavBar />
         <div className="main-display">
           <Routes>
-            <Route path="soon-tm" element={<LandingPage />} />
+            <Route path="soon-tm/" element={<LandingPage />} />
             <Route
               path="soon-tm/home"
               element={
