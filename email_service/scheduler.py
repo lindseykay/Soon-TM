@@ -15,6 +15,7 @@ def reminder_compiler():
 
 def job():
     x = reminder_compiler()
+    print("Hey, this if what the compiler gave", x)
     try:
         y = formatter(x)
         send_emails(y)

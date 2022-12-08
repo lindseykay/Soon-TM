@@ -223,7 +223,7 @@ function ReminderForm(props) {
                   placeholder="when do you want to receive this?"
                   type="date"
                   name="reminder-date"
-                  min={tomorrow()}
+                  // min={tomorrow()}
                   className="form-option"
                   value={reminderDate}
                   onChange={(e) => setReminderDate(e.target.value)}
