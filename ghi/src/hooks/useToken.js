@@ -81,7 +81,7 @@ export function useToken() {
       await fetch(url, { method: "delete", credentials: "include" });
       internalToken = null;
       setToken(null);
-      navigate("soon-tm");
+      navigate("/soon-tm/");
     }
   }
 
@@ -120,7 +120,7 @@ export function useToken() {
     });
     if (response.ok) {
       await login(username, password);
-      navigate("soon-tm/home/reminders");
+      navigate("/soon-tm/home/reminders/");
     }
     return false;
   }

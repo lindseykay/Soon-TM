@@ -32,7 +32,7 @@ function AuthRoute({ children }) {
     if (!token && counter < 1) {
       setCounter(counter + 1);
     } else if (!token && counter >= 1) {
-      navigate("/");
+      navigate("/soon-tm/");
     }
   }, [token, counter, navigate]);
 
@@ -53,7 +53,7 @@ function App() {
           <Routes>
             <Route path="soon-tm/" element={<LandingPage />} />
             <Route
-              path="soon-tm/home"
+              path="/soon-tm/home/"
               element={
                 <AuthRoute>
                   <UserDashboard />
@@ -61,7 +61,7 @@ function App() {
               }
             >
               <Route
-                path="soon-tm/reminders"
+                path="reminders/"
                 element={
                   <ReminderDashboard
                     reminderList={reminderList}
@@ -69,16 +69,16 @@ function App() {
                   />
                 }
               />
-              <Route path="soon-tm/contacts" element={<ContactDashboard />} />
-              <Route path="soon-tm/templates" element={<TemplateDashboard />} />
-              <Route path="soon-tm/settings" element={<SettingsDashboard />} />
+              <Route path="contacts/" element={<ContactDashboard />} />
+              <Route path="templates/" element={<TemplateDashboard />} />
+              <Route path="settings/" element={<SettingsDashboard />} />
             </Route>
-            <Route path="soon-tm/reminders">
+            <Route path="soon-tm/reminders/">
               <Route
-                path="new"
+                path="new/"
                 element={<ReminderForm refreshReminders={setReminderList} />}
               />
-              <Route path=":id" element={<></>} />
+              <Route path=":id/" element={<></>} />
             </Route>
           </Routes>
         </div>

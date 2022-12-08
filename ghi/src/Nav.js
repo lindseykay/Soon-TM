@@ -19,7 +19,7 @@ function NavBar() {
       )}
       <Menu>
         <div className="menu-container">
-          <NavLink className="menu-item" to="soon-tm">
+          <NavLink className="menu-item" to="/soon-tm/">
             home
           </NavLink>
           {token && (
@@ -28,7 +28,7 @@ function NavBar() {
                 className={({ isActive }) =>
                   isActive ? "active-menu-item" : "menu-item"
                 }
-                to="soon-tm/home/reminders/"
+                to="/soon-tm/home/reminders/"
               >
                 reminders
               </NavLink>
@@ -36,7 +36,7 @@ function NavBar() {
                 className={({ isActive }) =>
                   isActive ? "active-menu-item" : "menu-item"
                 }
-                to="soon-tm/home/contacts/"
+                to="/soon-tm/home/contacts/"
               >
                 contacts
               </NavLink>
@@ -44,7 +44,7 @@ function NavBar() {
                 className={({ isActive }) =>
                   isActive ? "active-menu-item" : "menu-item"
                 }
-                to="soon-tm/home/templates/"
+                to="/soon-tm/home/templates/"
               >
                 templates
               </NavLink>
@@ -52,13 +52,13 @@ function NavBar() {
                 className={({ isActive }) =>
                   isActive ? "active-menu-item" : "menu-item"
                 }
-                to="soon-tm/home/settings/"
+                to="/soon-tm/home/settings/"
               >
                 settings
               </NavLink>
             </>
           )}
-          <NavLink className="menu-item" to="soon-tm/reminders/new/">
+          <NavLink className="menu-item" to="/soon-tm/reminders/new/">
             create a new reminder
           </NavLink>
         </div>
