@@ -16,6 +16,7 @@ function ContactBook(props) {
       page.nextElementSibling &&
       !page.nextElementSibling.hasAttribute("title")
     ) {
+      console.log(page.nextElementSibling);
       page.classList.add("flipped");
       page.classList.remove("bordered-right");
       page.classList.add("bordered-left");
@@ -155,6 +156,7 @@ function ContactBook(props) {
             {!showCreationForm && (
               <div
                 className="show-contact-form"
+                title="add contact"
                 onClick={(e) => {
                   e.stopPropagation();
                   setShowCreationForm(true);
