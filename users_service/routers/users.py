@@ -36,7 +36,7 @@ class HttpError(BaseModel):
 router = APIRouter()
 
 
-@router.post("/users/", response_model=Union[AccountToken,UserOut])
+@router.post("/users/", response_model=Union[AccountToken, UserOut])
 async def create_user(
     user: UserIn,
     request: Request,
