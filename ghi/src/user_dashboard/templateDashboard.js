@@ -1,5 +1,5 @@
 function TemplateDashboard() {
-  return <div>hi</div>;
+  return <div className="subdisplay-container"></div>;
 }
 
 export default TemplateDashboard;

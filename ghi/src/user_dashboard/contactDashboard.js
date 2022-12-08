@@ -19,13 +19,13 @@ function ContactDashboard() {
   }, [token, counter]);
 
   return (
-    <>
+    <div className="subdisplay-container">
       <ContactBook
         contacts={contactsList}
         setCounter={setCounter}
         counter={counter}
       />
-    </>
+    </div>
   );
 }
 
