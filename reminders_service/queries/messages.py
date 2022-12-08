@@ -2,6 +2,8 @@ from pydantic import BaseModel
 from typing import Optional, Union
 from queries.pools import conn
 from queries.error import Error
+import os
+import psycopg
 
 
 class MessageIn(BaseModel):
@@ -19,6 +21,7 @@ class MessageRepository:
     def create(self, message: MessageIn) -> Union[MessageOut, Error]:
         try:
             # with pool.connection() as conn:
+            conn = psycopg.connect(os.environ["DATABASE_URL"])
             with conn.cursor() as db:
                 result = db.execute(
                     """
@@ -33,7 +36,8 @@ class MessageRepository:
                 )
                 id = result.fetchone()[0]
                 input = message.dict()
-                return MessageOut(id=id, **input)
+            conn.close()
+            return MessageOut(id=id, **input)
         except Exception:
             return {"message": "create message record failed"}
 

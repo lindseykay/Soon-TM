@@ -52,6 +52,7 @@ def create_reminder(
         "message": "create message record failed"
     }:
         response.status_code = 400
+    print("THIS IS THE NEW MESSAGE!:", new_message)
     if account_data:
         reminder.email_target = account_data["email"]
         new_reminder = reminder_repo.create(
