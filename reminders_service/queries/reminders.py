@@ -12,7 +12,6 @@ import os
 import psycopg
 
 
-
 class ReminderIn(BaseModel):
     email_target: str
     reminder_date: date
