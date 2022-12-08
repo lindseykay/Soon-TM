@@ -95,3 +95,15 @@
 - Wrote deleteReminder.js function that allows for deletion of specific reminder based off the reminder id. Exported it into the reminderDashboard to be used with onClick event when "delete" is clicked on the website. Still need to implement a hook to automatically update page to showcase the list of reminders after one is deleted.
 
 - Added hamburger menu bar
+
+## Dec 6, 2022
+
+- Started deployment
+- Created render account
+- Integration of CI/CD
+
+## Dec 7, 2022
+
+- Created elephantSQL account
+- Troubleshooting of getting elephantSQL and render to connect and deploy our microservices
+- Created create user account unit test

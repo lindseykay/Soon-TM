@@ -47,6 +47,7 @@ def create_reminder(
     reminder_repo: ReminderRepository = Depends(),
     message_repo: MessageRepository = Depends(),
 ):
+    print("THE CREATE ROUTE IS GETTING HIT ::::::", message, reminder)
     new_message = message_repo.create(message)
     if new_message is None or new_message == {
         "message": "create message record failed"

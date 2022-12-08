@@ -1,9 +1,10 @@
 from pydantic import BaseModel
 from typing import Optional, Union
-from queries.pools import conn
+
+# from queries.pools import conn
 from queries.error import Error
 import os
-import psycopg
+from psycopg import connect
 
 
 class MessageIn(BaseModel):
@@ -17,11 +18,18 @@ class MessageOut(BaseModel):
     content: str
 
 
+DATABASE_URL = os.environ["DATABASE_URL"]
+
+
+def get_conn():
+    kwargs = {"autocommit": True}
+    return connect(conninfo=DATABASE_URL, **kwargs)
+
+
 class MessageRepository:
     def create(self, message: MessageIn) -> Union[MessageOut, Error]:
         try:
-            # with pool.connection() as conn:
-            conn = psycopg.connect(os.environ["DATABASE_URL"])
+            conn = get_conn()
             with conn.cursor() as db:
                 result = db.execute(
                     """
@@ -34,9 +42,9 @@ class MessageRepository:
                         """,
                     [message.template_id, message.content],
                 )
-                id = result.fetchone()[0]
-                input = message.dict()
             conn.close()
+            id = result.fetchone()[0]
+            input = message.dict()
             return MessageOut(id=id, **input)
         except Exception:
             return {"message": "create message record failed"}
@@ -45,7 +53,7 @@ class MessageRepository:
         self, reminder_id: int, message: MessageIn
     ) -> Union[MessageIn, Error]:
         try:
-            # with pool.connection() as conn:
+            conn = get_conn()
             with conn.cursor() as db:
                 result = db.execute(
                     """
@@ -61,15 +69,16 @@ class MessageRepository:
                         reminder_id,
                     ],
                 )
-                query = result.fetchone()
+            conn.close()
+            query = result.fetchone()
 
-                return MessageIn(template_id=query[0], content=query[1])
+            return MessageIn(template_id=query[0], content=query[1])
         except Exception:
             return {"message": "update message record failed"}
 
     def get_one(self, message_id: int) -> Union[MessageOut, Error]:
         try:
-            # with pool.connection() as conn:
+            conn = get_conn()
             with conn.cursor() as db:
                 result = db.execute(
                     """
@@ -79,9 +88,10 @@ class MessageRepository:
                         """,
                     [message_id],
                 )
-                query = result.fetchone()
-                return MessageOut(
-                    id=query[0], template_id=query[1], content=query[2]
-                )
+            conn.close()
+            query = result.fetchone()
+            return MessageOut(
+                id=query[0], template_id=query[1], content=query[2]
+            )
         except Exception:
             return {"message": "get message record failed"}
