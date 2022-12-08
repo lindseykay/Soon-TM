@@ -62,6 +62,7 @@ services:
     environment:
       SIGNING_KEY: ghostbusters
       DATABASE_URL: postgresql://postgres:password@db:5432/reminders
+      EMAIL_HOST: http://localhost:7999
       WAIT_HOSTS: db:5432
       PORT: 8001
       COMPILER_ROUTE: Jj94E9GRLl6a0pAjIjVp1jLG3LAdyagN
