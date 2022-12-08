@@ -115,6 +115,7 @@ function LoginWidget() {
             className="delete-mark"
             onClick={(e) => {
               setLanding(false);
+              setMode(0);
               setUserName("");
               setPassword("");
               setEmail("");

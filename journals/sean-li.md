@@ -61,44 +61,65 @@
 
 ## Nov 23, 2022
 
-  - Implemented AUTH on all microservice endpoints that need it
+- Implemented AUTH on all microservice endpoints that need it
 
 ## Nov 28, 2022
-  - Minor bug fix relating to updated user accounts having unhashed passwords
-  - Pair programmed with Lindsey to get started on emailer and email formatters
+
+- Minor bug fix relating to updated user accounts having unhashed passwords
+- Pair programmed with Lindsey to get started on emailer and email formatters
 
 ## Nov 29, 2022
-  - Successfully completed emailer with SMTPlib and the formatter
-  - Merged emailer and formatter with scheduler and compilers
-  - Tested functionality and confirmed success!
+
+- Successfully completed emailer with SMTPlib and the formatter
+- Merged emailer and formatter with scheduler and compilers
+- Tested functionality and confirmed success!
 
 ## Nov 30, 2022
-  - Began React frontend work, starting with reminder form component
-  - Stylized reminder form
+
+- Began React frontend work, starting with reminder form component
+- Stylized reminder form
 
 ## Dec 1, 2022
-  - Added front end authentication. Login and logout functionality working as intended
-  - Connected reminder form with backend. Reminders can now be created from front end
+
+- Added front end authentication. Login and logout functionality working as intended
+- Connected reminder form with backend. Reminders can now be created from front end
 
 ## Dec 2, 2022
-  - Pair programmed with Alex on reminders and contacts dashboard
-  - Reminder dashboard now shows list of reminders, but needs refactoring so that list refreshes when a new reminder is created
-  - Initial start on contact creation form
-  - Need styling for reminder dashboard page
+
+- Pair programmed with Alex on reminders and contacts dashboard
+- Reminder dashboard now shows list of reminders, but needs refactoring so that list refreshes when a new reminder is created
+- Initial start on contact creation form
+- Need styling for reminder dashboard page
 
 ## Dec 3, 2022
-  - Alex & I completed a contacts dashboard with a list view and create contact functionality. Each contact has a link that redirects to creating a new reminder and auto populates the recipient field with contact info. Still needs styling
-  - Reminder hook refactored. When a new reminder is created, reminder dashboard will auto update to reflect
-  - Reminder dashboard styled with css, accounting for scaling
-  - Added route protection (currently just for dashboard pages but easy enough to add to any route). If there is no token, the user will automatically be bounced back to landing page when trying to access an authorized only page
+
+- Alex & I completed a contacts dashboard with a list view and create contact functionality. Each contact has a link that redirects to creating a new reminder and auto populates the recipient field with contact info. Still needs styling
+- Reminder hook refactored. When a new reminder is created, reminder dashboard will auto update to reflect
+- Reminder dashboard styled with css, accounting for scaling
+- Added route protection (currently just for dashboard pages but easy enough to add to any route). If there is no token, the user will automatically be bounced back to landing page when trying to access an authorized only page
 
 ## Dec 4, 2022
-  - Updated css for navigation menu and login widget
-  - Updated contacts book with book component and corresponding css
+
+- Updated css for navigation menu and login widget
+- Updated contacts book with book component and corresponding css
 
 ## Dec 5, 2022
-  - Bug fixed on contacts book
-  - Added ability to add contacts within contact book
-  - Polished contact creation form
-  - Added delete functionality on contact book for contacts
-  - Added active styling to NavLinks in menu
+
+- Bug fixed on contacts book
+- Added ability to add contacts within contact book
+- Polished contact creation form
+- Added delete functionality on contact book for contacts
+- Added active styling to NavLinks in menu
+
+## Dec 6, 2022
+
+- Worked as a team on deploying to render.com
+- Struggled to get services up, but did succeed for a few in the end
+- Turns out we needed to delete services and redo them
+- Worked with Daniel on replacing pool connections with single connections
+
+## Dec 7, 2022
+
+- Deployed email service
+- Deployed frontend on gitlab as a team, but need to troubleshoot cors issues
+- Wrote first unit test as a team

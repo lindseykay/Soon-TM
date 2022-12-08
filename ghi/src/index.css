@@ -303,6 +303,49 @@ body {
   background-repeat: no-repeat;
 }
 
+.envelope {
+  position: relative;
+  display: none;
+  opacity: 0;
+  left: max(2.8vw, 5.5vh);
+  bottom: -40vh;
+}
+
+.envelope-top {
+  position: absolute;
+  z-index: 0;
+  width: 33vh;
+  min-width: 16vw;
+  border-bottom: 16vh solid #f7cbd0;
+  border-left: 10vh solid transparent;
+  border-right: 10vh solid transparent;
+  border-top: 20vh solid transparent;
+}
+
+.envelope-bottom-top {
+  position: absolute;
+  z-index: 0;
+  width: 33vh;
+  min-width: 16vw;
+  border-bottom: 20vh solid transparent;
+  border-left: 10vh solid transparent;
+  border-right: 10vh solid transparent;
+  border-top: 16vh solid #c9dff8;
+}
+
+.envelope-bottom {
+  position: relative;
+  z-index: 1;
+  width: 33vh;
+  min-width: 16vw;
+  border-bottom: 20vh solid #ffcbd1;
+  border-left: 10vh solid #f0c8ce;
+  border-right: 10vh solid #f0c8ce;
+  border-top: 15vh solid transparent;
+  border-radius: 0 0 3vh 3vh;
+  filter: drop-shadow(1px 2px 3px rgb(0, 0, 0));
+}
+
 .reminder-form-container {
   position: absolute;
   width: 50vh;
@@ -320,7 +363,23 @@ body {
   text-overflow: ellipsis;
 }
 
-.reminder-form-container .form-input {
+.reminder-form-container .form-input-1 {
+  position: relative;
+  padding: 0.75vh 0 0.5vh 0;
+}
+
+.reminder-form-container .form-input-2 {
+  position: relative;
+  padding: 0.75vh 0 0.5vh 0;
+}
+
+.reminder-form-container .form-input-3 {
+  position: relative;
+  padding: 0.75vh 0 0.5vh 0;
+}
+
+.reminder-form-container .form-input-4 {
+  position: relative;
   padding: 0.75vh 0 0.5vh 0;
 }
 
@@ -342,8 +401,8 @@ body {
 }
 
 .reminder-form-container button {
-  float: right;
-  margin: 0.5vh 0.1vw 0 0.1vw;
+  position: relative;
+  margin: 1vh 0.1vw 0 0.1vw;
   font-size: max(1.75vh, 12px);
   border: 1px solid black;
   border-radius: 1.5vh;

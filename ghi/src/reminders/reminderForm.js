@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { useToken } from "../hooks/useToken";
 import { useLocation } from "react-router-dom";
+import reminderCreationAnimation from "./reminderAnimation";
 
 function ReminderForm(props) {
   const [token, , , , , userInfo] = useToken();
@@ -58,6 +59,10 @@ function ReminderForm(props) {
   async function formSubmission(event) {
     event.preventDefault();
 
+    //close any open recipient creation form if open
+    if (recipientFormShow === 1 && recipientName.length > 0) {
+      submitRecipient();
+    }
     if (
       (emailTarget.length === 0 && !token) ||
       message.length === 0 ||
@@ -92,7 +97,7 @@ function ReminderForm(props) {
         },
       });
       if (response.ok) {
-        setRecipientFormShow(2);
+        creationAnimation(token ? false : true);
         setEmailTarget("");
         setRecipientList([]);
         setReminderDate("");
@@ -120,14 +125,25 @@ function ReminderForm(props) {
     return year + "-" + month + "-" + day;
   }
 
+  function creationAnimation(input) {
+    const animation = reminderCreationAnimation(input);
+    animation.time(0).kill();
+    animation.play();
+  }
+
   return (
     <>
       <div className="phone-container">
+        <div className="envelope">
+          <div className="envelope-top"></div>
+          <div className="envelope-bottom-top"></div>
+          <div className="envelope-bottom"></div>
+        </div>
         <div className="reminder-form-container">
           {recipientFormShow !== 2 && (
             <form>
               {!token && (
-                <div className="form-input">
+                <div className="form-input-1">
                   <label htmlFor="target-email">your email:</label>
                   <br />
                   <input
@@ -142,7 +158,7 @@ function ReminderForm(props) {
                   />
                 </div>
               )}
-              <div className="form-input">
+              <div className="form-input-2">
                 {recipientFormShow === 0 && (
                   <>
                     <label htmlFor="recipients">to whom:</label>
@@ -215,7 +231,7 @@ function ReminderForm(props) {
                   </>
                 )}
               </div>
-              <div className="form-input">
+              <div className="form-input-3">
                 <label htmlFor="reminder-date">remind me on:</label>
                 <br />
                 <input
@@ -229,7 +245,7 @@ function ReminderForm(props) {
                   onChange={(e) => setReminderDate(e.target.value)}
                 />
               </div>
-              <div className="form-input">
+              <div className="form-input-4">
                 <label htmlFor="message">message:</label>
                 <br />
                 <textarea
@@ -242,26 +258,17 @@ function ReminderForm(props) {
                   rows="5"
                 ></textarea>
               </div>
-              <button onClick={(e) => formSubmission(e)}>
+              <button
+                className="submission-button"
+                onClick={(e) => formSubmission(e)}
+              >
                 submit reminder
               </button>
             </form>
           )}
-          {recipientFormShow === 2 && (
-            <>
-              <div className="success-message">
-                Your reminder has been successfully saved!
-              </div>
-              <button
-                className="new-reminder"
-                onClick={(e) => setRecipientFormShow(0)}
-              >
-                Create new reminder
-              </button>
-            </>
-          )}
         </div>
       </div>
+
       <div className="reminder-instructions">
         using soonTM reminders
         <div className="instruction-item">Step 1: xyz</div>
