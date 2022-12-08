@@ -292,6 +292,7 @@ class ReminderRepository:
     def reminder_compiler(self):
         try:
             # with pool.connection() as conn:
+            conn = psycopg.connect(os.environ["DATABASE_URL"])
             with conn.cursor() as db:
                 result = db.execute(
                     """

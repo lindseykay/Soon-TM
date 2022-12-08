@@ -143,6 +143,7 @@ def delete(
 @router.get(f'/{os.environ["COMPILER_ROUTE"]}')
 def compile(repo: ReminderRepository = Depends()):
     reminders = repo.reminder_compiler()
+    print("This is the compile router in reminders.py", reminders)
     if reminders:
         repo.mark_complete()
     return reminders
