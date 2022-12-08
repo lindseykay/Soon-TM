@@ -105,7 +105,7 @@ export function useToken() {
   }
 
   async function signup(username, password, email, name) {
-    const url = `${process.env.REACT_APP_ACCOUNTS_HOST}/users`;
+    const url = `${process.env.REACT_APP_ACCOUNTS_HOST}/users/`;
     const response = await fetch(url, {
       method: "post",
       body: JSON.stringify({
@@ -126,7 +126,7 @@ export function useToken() {
   }
 
   async function update(password, email, name) {
-    const url = `${process.env.REACT_APP_ACCOUNTS_HOST}/users`;
+    const url = `${process.env.REACT_APP_ACCOUNTS_HOST}/users/`;
     const response = await fetch(url, {
       method: "put",
       credentials: "include",
