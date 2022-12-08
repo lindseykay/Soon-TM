@@ -1,7 +1,10 @@
 from pydantic import BaseModel
 from typing import Optional, Union, List
-from queries.pools import conn
+
+# from queries.pools import conn
 from queries.error import Error
+import os
+from psycopg import connect
 
 
 class RecipientIn(BaseModel):
@@ -18,12 +21,20 @@ class RecipientOut(BaseModel):
     email: Optional[str]
 
 
+DATABASE_URL = os.environ["DATABASE_URL"]
+
+
+def get_conn():
+    kwargs = {"autocommit": True}
+    return connect(conninfo=DATABASE_URL, **kwargs)
+
+
 class RecipientRepository:
     def create(
         self, recipient: RecipientIn, user_id: int = None
     ) -> Union[RecipientOut, Error]:
         try:
-            # with pool.connection() as conn:
+            conn = get_conn()
             with conn.cursor() as db:
                 check_exists = db.execute(
                     """
@@ -67,10 +78,11 @@ class RecipientRepository:
                         user_id,
                     ],
                 )
-                recipient_id = result.fetchone()[0]
-                input = recipient.dict()
-                input.pop("user_id")
-                return RecipientOut(id=recipient_id, **input)
+            conn.close()
+            recipient_id = result.fetchone()[0]
+            input = recipient.dict()
+            input.pop("user_id")
+            return RecipientOut(id=recipient_id, **input)
         except Exception:
             return {"message": "create recipient record failed"}
 
@@ -78,7 +90,7 @@ class RecipientRepository:
         self, user_id: int, reminder_id: int, recipient=RecipientOut
     ) -> Union[RecipientOut, Error]:
         try:
-            # with pool.connection() as conn:
+            conn = get_conn()
             with conn.cursor() as db:
                 result = db.execute(
                     """
@@ -106,10 +118,11 @@ class RecipientRepository:
                         reminder_id,
                     ],
                 )
-                query = result.fetchone()
-                return RecipientOut(
-                    id=query[0], name=query[1], phone=query[2], email=query[3]
-                )
+            conn.close()
+            query = result.fetchone()
+            return RecipientOut(
+                id=query[0], name=query[1], phone=query[2], email=query[3]
+            )
         except Exception:
             return {"message": "update recipient record failed"}
 
@@ -117,7 +130,7 @@ class RecipientRepository:
         self, user_id: int
     ) -> Union[List[RecipientOut], Error]:
         try:
-            # with pool.connection() as conn:
+            conn = get_conn()
             with conn.cursor() as db:
                 result = db.execute(
                     """
@@ -127,21 +140,23 @@ class RecipientRepository:
                         """,
                     [user_id],
                 )
-                query = result.fetchall()
-                return [
-                    RecipientOut(
-                        id=record[0],
-                        name=record[1],
-                        phone=record[2],
-                        email=record[3],
-                    )
-                    for record in query
-                ]
+            conn.close()
+            query = result.fetchall()
+            return [
+                RecipientOut(
+                    id=record[0],
+                    name=record[1],
+                    phone=record[2],
+                    email=record[3],
+                )
+                for record in query
+            ]
         except Exception:
             return {"message": "get_all_by_user recipient record failed"}
 
     def get_by_id(self, recipient_id: int):
         try:
+            conn = get_conn()
             with conn.cursor() as db:
                 result = db.execute(
                     """
@@ -151,7 +166,8 @@ class RecipientRepository:
                     """,
                     [recipient_id],
                 )
-                query = result.fetchone()
+            conn.close()
+            query = result.fetchone()
             return RecipientOut(
                 id=recipient_id,
                 name=query[1],
