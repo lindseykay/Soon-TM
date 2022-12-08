@@ -1,5 +1,5 @@
-from unittest import TestCase
-import pytest
+# from unittest import TestCase
+# import pytest
 
 from fastapi.testclient import TestClient
 from queries.users import UserIn, UserRepository

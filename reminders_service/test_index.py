@@ -1,5 +1,5 @@
-from unittest import TestCase
-import pytest
+# from unittest import TestCase
+# import pytest
 import json
 
 from fastapi.testclient import TestClient
@@ -79,25 +79,25 @@ def test_create_reminder():
 
     new_json = json.dumps(json_response)
 
-    expected = {
-        "id": 0,
-        "user_id": None,
-        "email_target": "hackreactor@hackreactor.com",
-        "reminder_date": "2022-12-24",
-        "message": {"id": 0, "template_id": 0, "content": "This is a test"},
-        "sent": False,
-        "sent_on": None,
-        "recurring": False,
-        "created_on": "2022-12-08",
-        "recipients": [
-            {
-                "id": 0,
-                "name": "Test",
-                "phone": "9099099090",
-                "email": "email@email.com",
-            }
-        ],
-    }
+    # expected = {
+    #     "id": 0,
+    #     "user_id": None,
+    #     "email_target": "hackreactor@hackreactor.com",
+    #     "reminder_date": "2022-12-24",
+    #     "message": {"id": 0, "template_id": 0, "content": "This is a test"},
+    #     "sent": False,
+    #     "sent_on": None,
+    #     "recurring": False,
+    #     "created_on": "2022-12-08",
+    #     "recipients": [
+    #         {
+    #             "id": 0,
+    #             "name": "Test",
+    #             "phone": "9099099090",
+    #             "email": "email@email.com",
+    #         }
+    #     ],
+    # }
 
     # print("THIS IS THE JSON:::::::", new_json)
     # Act
