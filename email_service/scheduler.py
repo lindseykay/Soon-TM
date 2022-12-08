@@ -27,9 +27,9 @@ def job():
 
 async def compiler_scheduler():
     schedule.every().day.at("14:00:00").do(job)
-    schedule.every().day.at("15:00:00").do(job)
-    schedule.every().day.at("19:00:00").do(job)
+    # schedule.every().day.at("15:00:00").do(job)
+    # schedule.every().day.at("19:00:00").do(job)
     while True:
-        schedule.run_pending()
-        await asyncio.sleep(10)
+        schedule.run_all()
+        await asyncio.sleep(60)
         print("Waiting for emails..", flush=True)
