@@ -8,6 +8,9 @@ from queries.error import Error
 from queries.reminder_recipient_mapping_repo import (
     ReminderRecipientMappingRepository,
 )
+import os
+import psycopg
+
 
 
 class ReminderIn(BaseModel):
@@ -44,6 +47,7 @@ class ReminderRepository:
     ) -> Union[ReminderOut, Error]:
         try:
             # with pool.connection() as conn:
+            conn = psycopg.connect(os.environ["DATABASE_URL"])
             with conn.cursor() as db:
                 result = db.execute(
                     """
