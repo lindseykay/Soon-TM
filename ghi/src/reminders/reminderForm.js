@@ -66,7 +66,7 @@ function ReminderForm(props) {
     ) {
       alert("Please fill out all parts of the form!");
     } else {
-      const url = `${process.env.REACT_APP_REMINDERS_HOST}/reminders/`;
+      const url = `${process.env.REACT_APP_REMINDERS_HOST}/reminders`;
       const body = JSON.stringify({
         reminder: {
           email_target: token ? userInfo.email : emailTarget,
