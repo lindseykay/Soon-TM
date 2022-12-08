@@ -10,7 +10,9 @@ app.include_router(recipients.router)
 
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=[os.environ.get("CORS_HOST", "http://localhost:3000", "EMAIL_HOST")],
+    allow_origins=[
+        os.environ.get("CORS_HOST", "http://localhost:3000", "EMAIL_HOST")
+    ],
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
