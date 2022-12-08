@@ -12,7 +12,7 @@ steps = [
         # "Down" SQL statement
         """
         DROP TABLE contacts;
-        """
+        """,
     ],
     [
         # "Up" SQL statement
@@ -27,6 +27,6 @@ steps = [
         # "Down" SQL statement
         """
         DROP TABLE special_days;
-        """
+        """,
     ],
 ]

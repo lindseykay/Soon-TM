@@ -8,7 +8,7 @@ export function getToken() {
 }
 
 export async function getTokenInternal() {
-  const url = `${process.env.REACT_APP_ACCOUNTS_HOST}/token/`;
+  const url = `${process.env.REACT_APP_ACCOUNTS_HOST}/token`;
   try {
     const response = await fetch(url, {
       credentials: "include",
@@ -16,7 +16,7 @@ export async function getTokenInternal() {
     if (response.ok) {
       const data = await response.json();
       internalToken = data.access_token;
-      userInfo = data.account
+      userInfo = data.account;
       return internalToken;
     }
   } catch (e) {}
@@ -77,16 +77,16 @@ export function useToken() {
 
   async function logout() {
     if (token) {
-      const url = `${process.env.REACT_APP_ACCOUNTS_HOST}/token/`;
+      const url = `${process.env.REACT_APP_ACCOUNTS_HOST}/token`;
       await fetch(url, { method: "delete", credentials: "include" });
       internalToken = null;
       setToken(null);
-      navigate("/");
+      navigate("/soon-tm/");
     }
   }
 
   async function login(username, password) {
-    const url = `${process.env.REACT_APP_ACCOUNTS_HOST}/token/`;
+    const url = `${process.env.REACT_APP_ACCOUNTS_HOST}/token`;
     const form = new FormData();
     form.append("username", username);
     form.append("password", password);
@@ -96,9 +96,9 @@ export function useToken() {
       body: form,
     });
     if (response.ok) {
-        const token = await getTokenInternal();
-        setToken(token);
-        return;
+      const token = await getTokenInternal();
+      setToken(token);
+      return;
     }
     let error = await response.json();
     return handleErrorMessage(error);
@@ -112,7 +112,7 @@ export function useToken() {
         username,
         password,
         email,
-        name
+        name,
       }),
       headers: {
         "Content-Type": "application/json",
@@ -120,7 +120,7 @@ export function useToken() {
     });
     if (response.ok) {
       await login(username, password);
-      navigate("/home/reminders");
+      navigate("/soon-tm/home/reminders/");
     }
     return false;
   }
@@ -133,7 +133,7 @@ export function useToken() {
       body: JSON.stringify({
         password: password ? password : null,
         email: email,
-        name: name ? name : null
+        name: name ? name : null,
       }),
       headers: {
         "Content-Type": "application/json",

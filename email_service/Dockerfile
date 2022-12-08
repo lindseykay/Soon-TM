@@ -6,6 +6,8 @@ WORKDIR /app
 # Modify these instructions to do that
 COPY requirements.txt requirements.txt
 COPY main.py main.py
+COPY scheduler.py scheduler.py
+COPY emailer.py emailer.py
 
 # Copy all of the subdirectories in your service's directory
 # Modify these instructions to do that
@@ -20,6 +22,7 @@ COPY main.py main.py
 RUN python -m pip install -r requirements.txt
 # CMD uvicorn main:app --host 0.0.0.0 --port $PORT
 CMD uvicorn main:app --host 0.0.0.0 
+# CMD python main.py
 
 # If you're using a relational database and want migrations
 # to be run automatically, delete the previous CMD line and

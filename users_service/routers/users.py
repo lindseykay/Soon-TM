@@ -1,5 +1,10 @@
-from fastapi import APIRouter, Depends, Response, status, HTTPException, Request
-from typing import List, Optional, Union
+from fastapi import (
+    APIRouter,
+    Depends,
+    Response,
+    Request,
+)
+from typing import Union
 from authenticator import authenticator
 from jwtdown_fastapi.authentication import Token
 
@@ -12,29 +17,32 @@ from queries.users import (
     UserUpdate,
     UserOut,
     UserRepository,
-    DuplicateAccountError
 )
+
 
 class AccountForm(BaseModel):
     username: str
     password: str
 
+
 class AccountToken(Token):
     account: UserOut
+
 
 class HttpError(BaseModel):
     detail: str
 
 
-
 router = APIRouter()
+
 
 @router.post("/users/", response_model=AccountToken)
 async def create_user(
     user: UserIn,
     request: Request,
     response: Response,
-    repo: UserRepository = Depends()):
+    repo: UserRepository = Depends(),
+):
     hashed_password = authenticator.hash_password(user.password)
     new_user = repo.create(user, hashed_password)
 
@@ -44,28 +52,30 @@ async def create_user(
     return AccountToken(account=new_user, **token.dict())
 
 
-@router.get("/users/", response_model=Union[UserOut,UserError])
+@router.get("/users/", response_model=Union[UserOut, UserError])
 def get_user(
     response: Response,
     account_data: dict = Depends(authenticator.get_current_account_data),
-    repo: UserRepository = Depends()) -> UserOut:
+    repo: UserRepository = Depends(),
+) -> UserOut:
     user = repo.get_by_userid(account_data["id"])
-    if user == None or user == {"message": "Tough luck"}:
+    if user is None or user == {"message": "Tough luck"}:
         response.status_code = 400
     return user
 
 
-@router.put("/users/", response_model=Union[UserOut,UserError])
+@router.put("/users/", response_model=Union[UserOut, UserError])
 def update_user(
     user: UserUpdate,
     response: Response,
     account_data: dict = Depends(authenticator.get_current_account_data),
-    repo: UserRepository = Depends()) -> UserOut:
+    repo: UserRepository = Depends(),
+) -> UserOut:
     if user.password:
         hashed_password = authenticator.hash_password(user.password)
         user.password = hashed_password
     user = repo.update(account_data["id"], user)
-    if user == None or user == {"message": "Skill diff"}:
+    if user is None or user == {"message": "Skill diff"}:
         response.status_code = 400
     return user
 
@@ -73,7 +83,7 @@ def update_user(
 @router.get("/token", response_model=AccountToken | None)
 async def get_token(
     request: Request,
-    account: UserOut = Depends(authenticator.try_get_current_account_data)
+    account: UserOut = Depends(authenticator.try_get_current_account_data),
 ) -> AccountToken | None:
     if account and authenticator.cookie_name in request.cookies:
         return {
