@@ -42,10 +42,10 @@ class MessageRepository:
                         """,
                     [message.template_id, message.content],
                 )
-            id = result.fetchone()[0]
-            input = message.dict()
-            print("this is the message input in the message repo:", input)
-            return MessageOut(id=id, **input)
+                id = result.fetchone()[0]
+                input = message.dict()
+                print("this is the message input in the message repo:", input)
+                return MessageOut(id=id, **input)
         except Exception:
             return {"message": "create message record failed"}
 
