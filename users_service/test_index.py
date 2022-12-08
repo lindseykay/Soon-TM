@@ -1,6 +1,3 @@
-from unittest import TestCase
-import pytest
-
 from fastapi.testclient import TestClient
 from queries.users import UserIn, UserRepository
 from main import app
@@ -14,13 +11,12 @@ class CreateUserRepository:
         result = {
             "access_token": "abc",
             "token_type": "Bearer",
-            "account": {
-                "id": 21
-            },
+            "account": {"id": 21},
         }
-        result['account'].update(user)
-        result['account'].pop('password')
+        result["account"].update(user)
+        result["account"].pop("password")
         return result
+
 
 def test_create_user():
     # Arrange
@@ -40,13 +36,12 @@ def test_create_user():
             "id": 21,
             "username": "CeyF15adHSC4BWoWAQs5wEuM1jaSAwC9",
             "email": "hacker@hack.com",
-            "name": "hacker"
+            "name": "hacker",
         },
     }
 
     # Act
     response = client.post("/users/", json=json)
-
 
     # Assert
     assert response.status_code == 200
@@ -54,7 +49,3 @@ def test_create_user():
 
     # Clean up
     app.dependency_overrides = {}
-
-
-
-
