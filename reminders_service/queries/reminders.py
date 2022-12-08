@@ -1,6 +1,7 @@
 from pydantic import BaseModel
 from typing import List, Optional, Union
-from queries.pools import conn
+
+# from queries.pools import conn
 from datetime import date
 from queries.recipients import RecipientIn, RecipientOut, RecipientRepository
 from queries.messages import MessageOut, MessageRepository
@@ -8,6 +9,8 @@ from queries.error import Error
 from queries.reminder_recipient_mapping_repo import (
     ReminderRecipientMappingRepository,
 )
+import os
+from psycopg import connect
 
 
 class ReminderIn(BaseModel):
@@ -34,6 +37,14 @@ class ReminderUpdate(BaseModel):
     recurring: bool
 
 
+DATABASE_URL = os.environ["DATABASE_URL"]
+
+
+def get_conn():
+    kwargs = {"autocommit": True}
+    return connect(conninfo=DATABASE_URL, **kwargs)
+
+
 class ReminderRepository:
     def create(
         self,
@@ -43,7 +54,7 @@ class ReminderRepository:
         user_id=None,
     ) -> Union[ReminderOut, Error]:
         try:
-            # with pool.connection() as conn:
+            conn = get_conn()
             with conn.cursor() as db:
                 result = db.execute(
                     """
@@ -65,27 +76,28 @@ class ReminderRepository:
                         reminder.recurring,
                     ],
                 )
-                query = result.fetchone()
-                recipient_list = []
-                for recipient in recipients:
-                    new_recipient = RecipientRepository.create(
-                        RecipientRepository, recipient, user_id
-                    )
-                    recipient_list.append(new_recipient)
-                recipient_ids = [recipient.id for recipient in recipient_list]
-                for id in recipient_ids:
-                    ReminderRecipientMappingRepository.create(
-                        ReminderRecipientMappingRepository, query[0], id
-                    )
-                return self.reminder_query_to_reminder_out(
-                    query, recipient_list, message
+            conn.close()
+            query = result.fetchone()
+            recipient_list = []
+            for recipient in recipients:
+                new_recipient = RecipientRepository.create(
+                    RecipientRepository, recipient, user_id
                 )
+                recipient_list.append(new_recipient)
+            recipient_ids = [recipient.id for recipient in recipient_list]
+            for id in recipient_ids:
+                ReminderRecipientMappingRepository.create(
+                    ReminderRecipientMappingRepository, query[0], id
+                )
+            return self.reminder_query_to_reminder_out(
+                query, recipient_list, message
+            )
         except Exception:
             return {"message": "create reminder record failed"}
 
     def get_all(self, user_id: int) -> Union[List[ReminderOut], Error]:
         try:
-            # with pool.connection() as conn:
+            conn = get_conn()
             with conn.cursor() as db:
                 result = db.execute(
                     """
@@ -113,42 +125,43 @@ class ReminderRepository:
                             """,
                     [user_id],
                 )
-                query = result.fetchall()
-                new_dict = {}
-                for record in query:
-                    if record[0] not in new_dict:
-                        new_dict[record[0]] = ReminderOut(
-                            id=record[0],
-                            user_id=record[1],
-                            email_target=record[2],
-                            reminder_date=record[3],
-                            message=MessageRepository.get_one(
-                                MessageRepository, record[4]
-                            ),
-                            sent=record[5],
-                            sent_on=record[6],
-                            recurring=record[7],
-                            created_on=record[8],
-                            recipients=[
-                                RecipientOut(
-                                    id=record[9],
-                                    name=record[10],
-                                    phone=record[11],
-                                    email=record[12],
-                                )
-                            ],
-                        )
-                    else:
-                        new_dict[record[0]].recipients.append(
+            conn.close()
+            query = result.fetchall()
+            new_dict = {}
+            for record in query:
+                if record[0] not in new_dict:
+                    new_dict[record[0]] = ReminderOut(
+                        id=record[0],
+                        user_id=record[1],
+                        email_target=record[2],
+                        reminder_date=record[3],
+                        message=MessageRepository.get_one(
+                            MessageRepository, record[4]
+                        ),
+                        sent=record[5],
+                        sent_on=record[6],
+                        recurring=record[7],
+                        created_on=record[8],
+                        recipients=[
                             RecipientOut(
                                 id=record[9],
                                 name=record[10],
                                 phone=record[11],
                                 email=record[12],
                             )
+                        ],
+                    )
+                else:
+                    new_dict[record[0]].recipients.append(
+                        RecipientOut(
+                            id=record[9],
+                            name=record[10],
+                            phone=record[11],
+                            email=record[12],
                         )
-                returns = list(new_dict.values())
-                return returns
+                    )
+            returns = list(new_dict.values())
+            return returns
         except Exception:
             return {"message": "get_all reminder records failed"}
 
@@ -156,7 +169,7 @@ class ReminderRepository:
         self, user_id: int, reminder_id: int
     ) -> Union[ReminderOut, Error]:
         try:
-            # with pool.connection() as conn:
+            conn = get_conn()
             with conn.cursor() as db:
                 result = db.execute(
                     """
@@ -184,40 +197,41 @@ class ReminderRepository:
                             """,
                     [user_id, reminder_id],
                 )
-                query = result.fetchall()
-                new_dict = {}
-                for record in query:
-                    if record[0] not in new_dict:
-                        new_dict[record[0]] = ReminderOut(
-                            id=record[0],
-                            user_id=record[1],
-                            email_target=record[2],
-                            reminder_date=record[3],
-                            message=MessageRepository.get_one(
-                                MessageRepository, record[4]
-                            ),
-                            sent=record[5],
-                            sent_on=record[6],
-                            recurring=record[7],
-                            created_on=record[8],
-                            recipients=[
-                                RecipientOut(
-                                    id=record[9],
-                                    name=record[10],
-                                    phone=record[11],
-                                    email=record[12],
-                                )
-                            ],
-                        )
-                    else:
-                        new_dict[record[0]].recipients.append(
+            conn.close()
+            query = result.fetchall()
+            new_dict = {}
+            for record in query:
+                if record[0] not in new_dict:
+                    new_dict[record[0]] = ReminderOut(
+                        id=record[0],
+                        user_id=record[1],
+                        email_target=record[2],
+                        reminder_date=record[3],
+                        message=MessageRepository.get_one(
+                            MessageRepository, record[4]
+                        ),
+                        sent=record[5],
+                        sent_on=record[6],
+                        recurring=record[7],
+                        created_on=record[8],
+                        recipients=[
                             RecipientOut(
                                 id=record[9],
                                 name=record[10],
                                 phone=record[11],
                                 email=record[12],
                             )
+                        ],
+                    )
+                else:
+                    new_dict[record[0]].recipients.append(
+                        RecipientOut(
+                            id=record[9],
+                            name=record[10],
+                            phone=record[11],
+                            email=record[12],
                         )
+                    )
             returns = new_dict[reminder_id]
             return returns
         except Exception:
@@ -227,7 +241,7 @@ class ReminderRepository:
         self, user_id: int, reminder_id: int, reminder: ReminderUpdate
     ) -> Union[ReminderUpdate, Error]:
         try:
-            # with pool.connection() as conn:
+            conn = get_conn()
             with conn.cursor() as db:
                 result = db.execute(
                     """
@@ -245,18 +259,19 @@ class ReminderRepository:
                         user_id,
                     ],
                 )
-                query = result.fetchone()
-                return ReminderUpdate(
-                    email_target=query[0],
-                    reminder_date=query[1],
-                    recurring=query[2],
-                )
+            conn.close()
+            query = result.fetchone()
+            return ReminderUpdate(
+                email_target=query[0],
+                reminder_date=query[1],
+                recurring=query[2],
+            )
         except Exception:
             return {"message": "update reminder record failed"}
 
     def delete(self, reminder_id: int, user_id: int) -> bool:
         try:
-            # with pool.connection() as conn:
+            conn = get_conn()
             with conn.cursor() as db:
                 result = db.execute(
                     """
@@ -282,13 +297,14 @@ class ReminderRepository:
                         """,
                     [reminder_id],
                 )
-                return True
+            conn.close()
+            return True
         except Exception:
             return False
 
     def reminder_compiler(self):
         try:
-            # with pool.connection() as conn:
+            conn = get_conn()
             with conn.cursor() as db:
                 result = db.execute(
                     """
@@ -309,35 +325,36 @@ class ReminderRepository:
                         """,
                     [date.today()],
                 )
-                query = result.fetchall()
-                dict = {}
-                for record in query:
-                    recipients = record[4].split(",")
-                    if record[2] not in dict:
-                        dict[record[2]] = [
-                            {
-                                "recipients": [
-                                    recipient for recipient in recipients
-                                ],
-                                "message": record[3],
-                            }
-                        ]
-                    else:
-                        dict[record[2]].append(
-                            {
-                                "recipients": [
-                                    recipient for recipient in recipients
-                                ],
-                                "message": record[3],
-                            }
-                        )
-                return dict
+            conn.close()
+            query = result.fetchall()
+            dict = {}
+            for record in query:
+                recipients = record[4].split(",")
+                if record[2] not in dict:
+                    dict[record[2]] = [
+                        {
+                            "recipients": [
+                                recipient for recipient in recipients
+                            ],
+                            "message": record[3],
+                        }
+                    ]
+                else:
+                    dict[record[2]].append(
+                        {
+                            "recipients": [
+                                recipient for recipient in recipients
+                            ],
+                            "message": record[3],
+                        }
+                    )
+            return dict
         except Exception:
             return print("Reminder compiler failed", flush=True)
 
     def mark_complete(self):
         try:
-            # with pool.connection() as conn:
+            conn = get_conn()
             with conn.cursor() as db:
                 db.execute(
                     """
@@ -349,6 +366,7 @@ class ReminderRepository:
                         """,
                     [date.today(), date.today()],
                 )
+            conn.close()
         except Exception:
             return print("Could not mark sent", flush=True)
 

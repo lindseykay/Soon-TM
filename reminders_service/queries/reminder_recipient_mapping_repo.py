@@ -1,11 +1,21 @@
-from queries.pools import conn
+# from queries.pools import conn
 from typing import List
+import os
+from psycopg import connect
+
+
+DATABASE_URL = os.environ["DATABASE_URL"]
+
+
+def get_conn():
+    kwargs = {"autocommit": True}
+    return connect(conninfo=DATABASE_URL, **kwargs)
 
 
 class ReminderRecipientMappingRepository:
     def create(self, reminder_id: int, recipient_id: int):
         try:
-            # with pool.connection() as conn:
+            conn = get_conn()
             with conn.cursor() as db:
                 db.execute(
                     """
@@ -17,12 +27,13 @@ class ReminderRecipientMappingRepository:
                         """,
                     [reminder_id, recipient_id],
                 )
+            conn.close()
         except Exception:
             return {"message": "create reminder recipient record failed"}
 
     def delete(self, reminder_id: int):
         try:
-            # with pool.connection() as conn:
+            conn = get_conn()
             with conn.cursor() as db:
                 db.execute(
                     """
@@ -31,12 +42,13 @@ class ReminderRecipientMappingRepository:
                         """,
                     [reminder_id],
                 )
+            conn.close()
         except Exception:
             return {"message": "delete reminder recipients record failed"}
 
     def update(self, reminder_id: int, recipients: List[int]) -> bool:
         try:
-            # with pool.connection() as conn:
+            conn = get_conn()
             with conn.cursor() as db:
                 self.delete(reminder_id)
                 db.execute(
@@ -49,6 +61,7 @@ class ReminderRecipientMappingRepository:
                         """,
                     [reminder_id, recipients],
                 )
-                return True
+            conn.close()
+            return True
         except Exception:
             return False
