@@ -1,3 +1,33 @@
+# Soon <sup>TM</sup>
+
+* Alex Pallotta
+* Lindsey Carlson
+* Ron Seng
+* Sean Li
+
+<p>
+Hello!  Welcome to Soon-TM.  Relationships are important to us.  The world thrives and revolves around relationships which is why we feel that it’s important to stay in touch.  Life gets busy and we set out to create an app that facilitates genuine interaction and strengthens the relationship with the people you care about.      
+</p>
+
+
+# MVP
+
+* Create an account
+* Allow a user to log in and log out (Authentication)
+* Allow users to edit settings (Edit account information) (Authorization)
+* Create a reminder message
+* Allow users to maintain a bank of reminders
+* Create a contact list
+* Set a reminder for a certain day to be sent to the user via email
+* Anonymous users can create reminder messages
+
+
+# Design Concept
+
+! ()
+
+
+
 # Reminders Microservice
 
 ## Reminders Endpoints - Quick Overview
