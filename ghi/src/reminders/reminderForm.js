@@ -127,23 +127,23 @@ function ReminderForm(props) {
     }
   }
 
-  function tomorrow() {
-    let nextDay = new Date();
-    nextDay.setDate(nextDay.getDate() + 1);
+  // function tomorrow() {
+  //   let nextDay = new Date();
+  //   nextDay.setDate(nextDay.getDate() + 1);
 
-    let month = nextDay.getMonth() + 1;
-    let day = nextDay.getDate();
-    let year = nextDay.getFullYear();
+  //   let month = nextDay.getMonth() + 1;
+  //   let day = nextDay.getDate();
+  //   let year = nextDay.getFullYear();
 
-    if (month < 10) {
-      month = "0" + month;
-    }
-    if (day < 10) {
-      day = "0" + day;
-    }
+  //   if (month < 10) {
+  //     month = "0" + month;
+  //   }
+  //   if (day < 10) {
+  //     day = "0" + day;
+  //   }
 
-    return year + "-" + month + "-" + day;
-  }
+  //   return year + "-" + month + "-" + day;
+  // }
 
   function creationAnimation(input) {
     const animation = reminderCreationAnimation(input);
@@ -268,7 +268,7 @@ function ReminderForm(props) {
                   placeholder="when do you want to receive this?"
                   type="date"
                   name="reminder-date"
-                  min={tomorrow()}
+                  // min={tomorrow()}
                   className="form-option"
                   value={reminderDate}
                   onChange={(e) => setReminderDate(e.target.value)}
