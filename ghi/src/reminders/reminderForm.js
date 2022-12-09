@@ -299,11 +299,53 @@ function ReminderForm(props) {
       </div>
       <div className="reminder-instructions">
         using soonTM reminders
-        <div className="instruction-item">Step 1: xyz</div>
-        <div className="instruction-item">Step 2: xyz</div>
-        <div className="instruction-item">Step 3: xyz</div>
-        <div className="instruction-item">Step 4: xyz</div>
-        <div className="instruction-item">Step 5: xyz</div>
+        {token && (
+          <>
+            <div className="instruction-item">
+              &#9829; &nbsp;add recipient(s) that you want to contact
+            </div>
+            <div className="instruction-item">
+              &#9829; &nbsp;save frequent recipients to your contact book to
+              easily add again in the future
+            </div>
+            <div className="instruction-item">
+              &#9829; &nbsp;choose a date you want to receive your reminder
+            </div>
+            <div className="instruction-item">
+              &#9829; &nbsp;add your reminder message (for yourself or for the
+              recipients)
+            </div>
+            <div className="instruction-item">
+              &#9829; &nbsp;click submit and you're all set!
+            </div>
+            <div className="instruction-item">
+              &#9829; &nbsp;you will receive an email on the set reminder date
+            </div>
+          </>
+        )}
+        {!token && (
+          <>
+            <div className="instruction-item">
+              &#9829; &nbsp;enter the email to receive this reminder
+            </div>
+            <div className="instruction-item">
+              &#9829; &nbsp;add recipient(s) that you want to contact
+            </div>
+            <div className="instruction-item">
+              &#9829; &nbsp;choose a date you want to receive your reminder
+            </div>
+            <div className="instruction-item">
+              &#9829; &nbsp;add your reminder message (for yourself or for the
+              recipients)
+            </div>
+            <div className="instruction-item">
+              &#9829; &nbsp;click submit and you're all set!
+            </div>
+            <div className="instruction-item">
+              &#9829; &nbsp;you will receive an email on the set reminder date
+            </div>
+          </>
+        )}
       </div>
       {contactBookShow && (
         <div className="rem-contact-book">
