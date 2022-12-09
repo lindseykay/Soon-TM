@@ -14,6 +14,7 @@ from queries.reminder_recipient_mapping_repo import (
 )
 from jwtdown_fastapi.authentication import Authenticator
 import os
+import requests
 
 
 class MyAuthenticator(Authenticator):
@@ -145,3 +146,9 @@ def compile(repo: ReminderRepository = Depends()):
     if reminders:
         repo.mark_complete()
     return reminders
+
+
+@router.get("/marco-polo")
+def prodder():
+    url = f'{os.environ["EMAIL_HOST"]}/marco-polo'
+    response = requests.get(url)

@@ -12,7 +12,6 @@ def reminder_compiler():
     content = json.loads(response.content)
     return content
 
-
 def job():
     x = reminder_compiler()
     print("SCHEDULER reminder_compiler:::", x)

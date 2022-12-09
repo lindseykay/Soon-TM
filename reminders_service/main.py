@@ -2,6 +2,7 @@ from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from routers import reminders, messages, recipients
 import os
+import asyncio
 
 app = FastAPI()
 app.include_router(reminders.router)
@@ -32,3 +33,4 @@ def launch_details():
             "tz:": "PST",
         }
     }
+    

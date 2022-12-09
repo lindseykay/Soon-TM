@@ -25,4 +25,5 @@ tomli==2.0.1
 urllib3==1.26.9
 whitenoise==5.3.0
 jwtdown-fastapi>=0.2.0
+requests
 
