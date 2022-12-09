@@ -61,6 +61,7 @@ def get_all_by_user(
     account_data: dict = Depends(authenticator.get_current_account_data),
     repo: RecipientRepository = Depends(),
 ):
+    print(account_data)
     return repo.get_all_by_user(account_data["id"])
 
 

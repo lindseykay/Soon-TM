@@ -1,7 +1,7 @@
 from pydantic import BaseModel
 from typing import List, Optional, Union
 
-# from queries.pools import conn
+from queries.pools import conn
 from datetime import date
 from queries.recipients import RecipientIn, RecipientOut, RecipientRepository
 from queries.messages import MessageOut, MessageRepository
@@ -40,9 +40,9 @@ class ReminderUpdate(BaseModel):
 DATABASE_URL = os.environ["DATABASE_URL"]
 
 
-def get_conn():
-    kwargs = {"autocommit": True}
-    return connect(conninfo=DATABASE_URL, **kwargs)
+# def get_conn():
+#     kwargs = {"autocommit": True}
+#     return connect(conninfo=DATABASE_URL, **kwargs)
 
 
 class ReminderRepository:
@@ -54,7 +54,7 @@ class ReminderRepository:
         user_id=None,
     ) -> Union[ReminderOut, Error]:
         try:
-            conn = get_conn()
+            # conn = get_conn()
             with conn.cursor() as db:
                 result = db.execute(
                     """
@@ -76,22 +76,21 @@ class ReminderRepository:
                         reminder.recurring,
                     ],
                 )
-            conn.close()
-            query = result.fetchone()
-            recipient_list = []
-            for recipient in recipients:
-                new_recipient = RecipientRepository.create(
-                    RecipientRepository, recipient, user_id
+                query = result.fetchone()
+                recipient_list = []
+                for recipient in recipients:
+                    new_recipient = RecipientRepository.create(
+                        RecipientRepository, recipient, user_id
+                    )
+                    recipient_list.append(new_recipient)
+                recipient_ids = [recipient.id for recipient in recipient_list]
+                for id in recipient_ids:
+                    ReminderRecipientMappingRepository.create(
+                        ReminderRecipientMappingRepository, query[0], id
+                    )
+                return self.reminder_query_to_reminder_out(
+                    query, recipient_list, message
                 )
-                recipient_list.append(new_recipient)
-            recipient_ids = [recipient.id for recipient in recipient_list]
-            for id in recipient_ids:
-                ReminderRecipientMappingRepository.create(
-                    ReminderRecipientMappingRepository, query[0], id
-                )
-            return self.reminder_query_to_reminder_out(
-                query, recipient_list, message
-            )
         except Exception:
             return {"message": "create reminder record failed"}
 

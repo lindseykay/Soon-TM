@@ -1,9 +1,10 @@
 from fastapi.testclient import TestClient
 from queries.reminders import ReminderRepository
 from queries.messages import MessageRepository
-from queries.recipients import RecipientOut
+from queries.recipients import RecipientOut, RecipientRepository
 from main import app
 from pydantic import BaseModel
+from routers.reminders import authenticator
 
 client = TestClient(app)
 
@@ -104,4 +105,27 @@ def test_create_reminder():
     assert response.json() == expected
 
     # Clean up
+    app.dependency_overrides = {}
+
+
+----get recipient test---
+
+class EmptyRecipientRepository:
+    def get_all_by_user(self, user_id):
+        return []
+
+def test_get_all_recipients_by_user():
+    fake_account_data = {
+        "id": 8,
+        "username": "string",
+        "email": "string",
+        "name": "string"
+    }
+    app.dependency_overrides[RecipientRepository] = EmptyRecipientRepository
+    app.dependency_overrides[authenticator.try_get_current_account_data] = lambda: fake_account_data
+
+    response = client.get("/recipients", cookies={authenticator.cookie_name: "HELLO!"})
+    assert response.status_code == 401
+    assert response.json() == {}
+
     app.dependency_overrides = {}
