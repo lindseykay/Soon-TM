@@ -1,4 +1,5 @@
 import os
 import psycopg
 
-conn = psycopg.connect(os.environ["DATABASE_URL"])
+kwargs = {"autocommit": True}
+conn = psycopg.connect(conninfo=os.environ["DATABASE_URL"], **kwargs)
