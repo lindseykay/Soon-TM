@@ -43,6 +43,7 @@ function AuthRoute({ children }) {
 
 function App() {
   const [reminderList, setReminderList] = useState();
+  const [contactsList, setContactsList] = useState([]);
 
   return (
     <AuthProvider>
@@ -69,14 +70,28 @@ function App() {
                   />
                 }
               />
-              <Route path="contacts/" element={<ContactDashboard />} />
+              <Route
+                path="contacts/"
+                element={
+                  <ContactDashboard
+                    contactsList={contactsList}
+                    updateContacts={setContactsList}
+                  />
+                }
+              />
               <Route path="templates/" element={<TemplateDashboard />} />
               <Route path="settings/" element={<SettingsDashboard />} />
             </Route>
             <Route path="soon-tm/reminders/">
               <Route
                 path="new/"
-                element={<ReminderForm refreshReminders={setReminderList} />}
+                element={
+                  <ReminderForm
+                    refreshReminders={setReminderList}
+                    contactsList={contactsList}
+                    updateContacts={setContactsList}
+                  />
+                }
               />
               <Route path=":id/" element={<></>} />
             </Route>

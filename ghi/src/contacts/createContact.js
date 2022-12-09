@@ -19,7 +19,7 @@ export function CreateContact(props) {
       alert("Recipient creation failed :(");
       return;
     }
-    const url = `${process.env.REACT_APP_CONTACTS_HOST}/contacts/`;
+    const url = `${process.env.REACT_APP_CONTACTS_HOST}/contacts`;
     const body = JSON.stringify({
       contact: {
         recipient_id: recipient_id,
@@ -36,18 +36,19 @@ export function CreateContact(props) {
       },
     });
     if (response.ok) {
-      props.refreshContacts(props.counter + 1);
+      props.updateContacts([]);
       setRecipientName("");
       setRecipientPhone("");
       setRecipientEmail("");
       setNote("");
       setSpecialDays([]);
       props.showForm(false);
+      props.setPageNum(1);
     }
   }
 
   async function createRecipient() {
-    const url = `${process.env.REACT_APP_REMINDERS_HOST}/recipients/`;
+    const url = `${process.env.REACT_APP_REMINDERS_HOST}/recipients`;
     const body = JSON.stringify({
       name: recipientName,
       phone: recipientPhone,

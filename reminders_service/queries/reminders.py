@@ -304,7 +304,7 @@ class ReminderRepository:
                         ON rrmt.reminder_id = r.id
                         LEFT JOIN recipients AS re ON rrmt.recipient_id = re.id
                         WHERE r.sent = false
-                        AND r.reminder_date = %s
+                        AND r.reminder_date <= %s
                         GROUP BY 1, 2, 3, 4
                         """,
                     [date.today()],
@@ -344,7 +344,7 @@ class ReminderRepository:
                         UPDATE reminders
                         SET sent = true
                             , sent_on = %s
-                        WHERE reminder_date = %s
+                        WHERE reminder_date <= %s
                         AND sent = false
                         """,
                     [date.today(), date.today()],

@@ -1,7 +1,9 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useToken } from "../hooks/useToken";
 import { useLocation } from "react-router-dom";
 import reminderCreationAnimation from "./reminderAnimation";
+import RemContactBook from "../contacts/remContactsBook";
+import { getContacts } from "../dataLoadFunctions";
 
 function ReminderForm(props) {
   const [token, , , , , userInfo] = useToken();
@@ -12,12 +14,30 @@ function ReminderForm(props) {
   const [reminderDate, setReminderDate] = useState("");
   const [message, setMessage] = useState("");
   const [recipientFormShow, setRecipientFormShow] = useState(0);
+  const [contactBookShow, setContactBookShow] = useState(false);
   const [recipientList, setRecipientList] = useState([]);
   const [savedID, setSavedID] = useState();
   const location = useLocation();
   const { recName, recPhone, recEmail, recID } = location["state"]
     ? location.state
     : { name: "", phone: "", email: "", id: "" };
+  const [emptyFlag, setEmptyFlag] = useState(false);
+
+  useEffect(() => {
+    if (token && props.contactsList.length === 0 && !emptyFlag) {
+      const newContacts = async () => {
+        const contacts = await getContacts(token);
+        props.updateContacts(contacts);
+        if (contacts.length === 0) {
+          setEmptyFlag(true);
+        }
+      };
+      newContacts();
+    } else if (props.contactsList.length > 0 && emptyFlag) {
+      setEmptyFlag(false);
+    }
+  }, [props.contactsList]); // eslint-disable-line
+
   if (!savedID && savedID !== recID) {
     let recipient = {
       name: recName,
@@ -221,7 +241,16 @@ function ReminderForm(props) {
                     />
                     <br />
                     <button onClick={submitRecipient}>add recipient</button>
-                    {token && <button>add from contacts</button>}
+                    {token && (
+                      <button
+                        onClick={(e) => {
+                          e.preventDefault();
+                          setContactBookShow(true);
+                        }}
+                      >
+                        add from contacts
+                      </button>
+                    )}
                     <button
                       className="form-return-button"
                       onClick={(e) => setRecipientFormShow(0)}
@@ -268,15 +297,71 @@ function ReminderForm(props) {
           )}
         </div>
       </div>
-
       <div className="reminder-instructions">
         using soonTM reminders
-        <div className="instruction-item">Step 1: xyz</div>
-        <div className="instruction-item">Step 2: xyz</div>
-        <div className="instruction-item">Step 3: xyz</div>
-        <div className="instruction-item">Step 4: xyz</div>
-        <div className="instruction-item">Step 5: xyz</div>
+        {token && (
+          <>
+            <div className="instruction-item">
+              &#9829; &nbsp;add recipient(s) that you want to contact
+            </div>
+            <div className="instruction-item">
+              &#9829; &nbsp;save frequent recipients to your contact book to
+              easily add again in the future
+            </div>
+            <div className="instruction-item">
+              &#9829; &nbsp;choose a date you want to receive your reminder
+            </div>
+            <div className="instruction-item">
+              &#9829; &nbsp;add your reminder message (for yourself or for the
+              recipients)
+            </div>
+            <div className="instruction-item">
+              &#9829; &nbsp;click submit and you're all set!
+            </div>
+            <div className="instruction-item">
+              &#9829; &nbsp;you will receive an email on the set reminder date
+            </div>
+          </>
+        )}
+        {!token && (
+          <>
+            <div className="instruction-item">
+              &#9829; &nbsp;enter the email to receive this reminder
+            </div>
+            <div className="instruction-item">
+              &#9829; &nbsp;add recipient(s) that you want to contact
+            </div>
+            <div className="instruction-item">
+              &#9829; &nbsp;choose a date you want to receive your reminder
+            </div>
+            <div className="instruction-item">
+              &#9829; &nbsp;add your reminder message (for yourself or for the
+              recipients)
+            </div>
+            <div className="instruction-item">
+              &#9829; &nbsp;click submit and you're all set!
+            </div>
+            <div className="instruction-item">
+              &#9829; &nbsp;you will receive an email on the set reminder date
+            </div>
+          </>
+        )}
       </div>
+      {contactBookShow && (
+        <div className="rem-contact-book">
+          <div
+            className="dim-background"
+            onClick={(e) => setContactBookShow(false)}
+          ></div>
+          <RemContactBook
+            contactsList={props.contactsList}
+            updateContacts={props.updateContacts}
+            recipientList={recipientList}
+            setRecipientList={setRecipientList}
+            setRecipientFormShow={setRecipientFormShow}
+          />
+        </div>
+      )}
     </>
   );
 }

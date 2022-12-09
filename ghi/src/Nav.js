@@ -40,14 +40,14 @@ function NavBar() {
               >
                 contacts
               </NavLink>
-              <NavLink
+              {/* <NavLink
                 className={({ isActive }) =>
                   isActive ? "active-menu-item" : "menu-item"
                 }
                 to="/soon-tm/home/templates/"
               >
                 templates
-              </NavLink>
+              </NavLink> */}
               <NavLink
                 className={({ isActive }) =>
                   isActive ? "active-menu-item" : "menu-item"

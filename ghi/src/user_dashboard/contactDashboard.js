@@ -3,27 +3,30 @@ import { useToken } from "../hooks/useToken";
 import { getContacts } from "../dataLoadFunctions";
 import ContactBook from "../contacts/contactsBook";
 
-function ContactDashboard() {
+function ContactDashboard(props) {
   const [token] = useToken();
-  const [contactsList, setContactsList] = useState([]);
-  const [counter, setCounter] = useState(0);
+  const [emptyFlag, setEmptyFlag] = useState(false);
 
   useEffect(() => {
-    if (token) {
+    if (token && props.contactsList.length === 0 && !emptyFlag) {
       const newContacts = async () => {
         const contacts = await getContacts(token);
-        setContactsList(contacts);
+        props.updateContacts(contacts);
+        if (contacts.length === 0) {
+          setEmptyFlag(true);
+        }
       };
       newContacts();
+    } else if (props.contactsList.length > 0 && emptyFlag) {
+      setEmptyFlag(false);
     }
-  }, [token, counter]);
+  }, [props.contactsList]); // eslint-disable-line
 
   return (
     <div className="subdisplay-container">
       <ContactBook
-        contacts={contactsList}
-        setCounter={setCounter}
-        counter={counter}
+        contactsList={props.contactsList}
+        updateContacts={props.updateContacts}
       />
     </div>
   );

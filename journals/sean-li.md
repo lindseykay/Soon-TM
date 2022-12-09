@@ -123,3 +123,17 @@
 - Deployed email service
 - Deployed frontend on gitlab as a team, but need to troubleshoot cors issues
 - Wrote first unit test as a team
+
+## Dec 8, 2022
+
+- Added animation for reminder success
+- Added contactbook for reminderform to select from
+- Code formatting
+- Worked as team to finish remaining unit tests
+- Got frontend to successfully work with backend (turns out it was a db commit issue)
+- Performance improvement with contactbook refactor
+
+## Dec 9, 2022
+
+- Minor bugfixes
+- Working on readme and planning on demoing

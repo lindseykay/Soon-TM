@@ -22,12 +22,12 @@ function UserDashboard() {
         >
           contacts
         </NavLink>
-        <NavLink
+        {/* <NavLink
           to="/soon-tm/home/templates/"
           className={({ isActive }) => (isActive ? "active-now" : "inactive")}
         >
           templates
-        </NavLink>
+        </NavLink> */}
         {/* <NavLink to="/soon-tm/home/settings" className={({isActive}) => (isActive ? "active-now": "inactive")}>
                     settings
                 </NavLink> */}

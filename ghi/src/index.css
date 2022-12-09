@@ -491,6 +491,8 @@ body {
 
 .reminder-instructions .instruction-item {
   margin: 1.5vh 0 1.5vh 1.5vw;
+  font-size: max(2.6vh, 20px);
+  font-weight: 500;
 }
 
 .instruction-item:nth-child(1) {
@@ -511,6 +513,10 @@ body {
 
 .instruction-item:nth-child(5) {
   animation: slideUp 0.5s ease-out 0.6s both;
+}
+
+.instruction-item:nth-child(6) {
+  animation: slideUp 0.5s ease-out 0.7s both;
 }
 
 @keyframes slideUp {
