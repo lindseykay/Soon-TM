@@ -22,6 +22,10 @@
   - struggling with how to connect reminder to recipiets with no pk.
     - created a mapping table to solve this
 
+## Nov 18, 2022
+-Pair programming with Alex
+  -Contined worked on reminderes routers
+
 ## Nov 21, 2022
 
 - Worked with Ron on the following:
