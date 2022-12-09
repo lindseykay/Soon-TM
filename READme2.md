@@ -6,7 +6,7 @@
 * Sean Li
 
 <p>
-Hello!  Welcome to Soon-TM.  Relationships are important to us.  The world thrives and revolves around relationships which is why we feel that it’s important to stay in touch.  Life gets busy and we set out to create an app that facilitates genuine interaction and strengthens the relationship with the people you care about.      
+Hello!  Welcome to Soon-TM.  Relationships are important to us.  The world thrives and revolves around relationships which is why we feel that it’s important to stay in touch.  Life gets busy and we set out to create an app that facilitates genuine interaction and strengthens the relationship with the people you care about.
 </p>
 
 
@@ -24,7 +24,7 @@ Hello!  Welcome to Soon-TM.  Relationships are important to us.  The world thriv
 
 # Design Concept
 
-! ()
+<img src='soonTM_design.png' alt='diagram of microservices'>
 
 
 
