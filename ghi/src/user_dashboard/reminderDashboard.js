@@ -91,7 +91,8 @@ function ReminderDashboard(props) {
               </div>
               <div className="content"> {reminder.message.content}</div>
               <div className="footer">
-                Sending on: {reminder.reminder_date}
+                {reminder.sent ? "Sent on" : "Sending on"}:{" "}
+                {reminder.reminder_date}
                 <span className="update-options">
                   {/* <span>edit</span> |{" "} */}
                   <span
