@@ -15,6 +15,7 @@ def reminder_compiler():
 
 def job():
     x = reminder_compiler()
+    print("SCHEDULER reminder_compiler:::", x)
     try:
         y = formatter(x)
         send_emails(y)
