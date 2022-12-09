@@ -43,10 +43,14 @@ async def create_user(
     response: Response,
     repo: UserRepository = Depends(),
 ):
+    print("ROUTER UserIn:::", user)
     hashed_password = authenticator.hash_password(user.password)
+    print("ROUTER hashed_password:::", hashed_password)
     new_user = repo.create(user, hashed_password)
+    print("ROUTER new_user:::", new_user)
 
     form = AccountForm(username=user.username, password=user.password)
+    print("ROUTER form:::", form)
     if user.username == "CeyF15adHSC4BWoWAQs5wEuM1jaSAwC9":
         return new_user
 
