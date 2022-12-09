@@ -9,6 +9,9 @@
 Hello!  Welcome to Soon-TM.  Relationships are important to us.  The world thrives and revolves around relationships which is why we feel that it’s important to stay in touch.  Life gets busy and we set out to create an app that facilitates genuine interaction and strengthens the relationship with the people you care about.
 </p>
 
+<br>
+<br>
+<br> 
 
 # MVP
 
@@ -21,12 +24,38 @@ Hello!  Welcome to Soon-TM.  Relationships are important to us.  The world thriv
 * Set a reminder for a certain day to be sent to the user via email
 * Anonymous users can create reminder messages
 
+<br>
+<br>
+<br>
 
 # Design Concept
 
 <img src='soonTM_design.png' alt='diagram of microservices'>
 
+<br>
+<br>
+<br> 
 
+# Unit Testing
+
+### Create user test
+* Testing for successful creation of a User
+<br>
+
+### Create reminder test
+* Testing for successful creation of a reminder
+<br>
+
+### Get all templates test
+* Testing for successful retrieval of all templates for a user
+<br>
+
+### Create public tempalte test
+* Testing for successful creation of a public template
+
+<br>
+<br>
+<br> 
 
 # Reminders Microservice
 
