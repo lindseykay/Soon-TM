@@ -14,6 +14,22 @@
   user-select: none;
 }
 
+.rem-contact-book .book-cover {
+  top: 10vh;
+}
+
+.recipient-confirmation {
+  float: right;
+  position: relative;
+  top: 0.5vh;
+  clear: both;
+  font-size: max(1.75vh, 12px);
+}
+
+.d-none {
+  display: none;
+}
+
 .show-contact-form {
   position: absolute;
   bottom: 1vh;

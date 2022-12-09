@@ -1,5 +1,5 @@
 async function getReminders(token) {
-  const url = `${process.env.REACT_APP_REMINDERS_HOST}/reminders/`;
+  const url = `${process.env.REACT_APP_REMINDERS_HOST}/reminders`;
   try {
     const response = await fetch(url, {
       method: "get",
@@ -17,7 +17,7 @@ async function getReminders(token) {
 }
 
 export async function getContacts(token) {
-  const url = `${process.env.REACT_APP_CONTACTS_HOST}/contacts/`;
+  const url = `${process.env.REACT_APP_CONTACTS_HOST}/contacts`;
   try {
     const response = await fetch(url, {
       method: "get",

@@ -1,11 +1,9 @@
 import { useState } from "react";
-import { Link } from "react-router-dom";
 import { CreateContact } from "./createContact";
 import { deleteContact } from "../dataLoadFunctions";
 import { useToken } from "../hooks/useToken";
-import "./contactBook.css";
 
-function ContactBook(props) {
+function RemContactBook(props) {
   const [token] = useToken();
   const [pageNum, setPageNum] = useState(1);
   const [showCreationForm, setShowCreationForm] = useState(false);
@@ -104,22 +102,32 @@ function ContactBook(props) {
                         <div className="contact" key={idx}>
                           <div className="contact-name">
                             {contact.name}
-                            <Link
-                              to="/soon-tm/reminders/new/"
-                              state={{
-                                recName: contact.name,
-                                recPhone: contact.phone,
-                                recEmail: contact.email,
-                                recID: contact.recipient_id,
+                            <span
+                              onClick={(e) => {
+                                e.stopPropagation();
+                                const rlist = [...props.recipientList];
+                                const recipient = {
+                                  name: contact.name,
+                                  phone: contact.phone,
+                                  email: contact.email,
+                                };
+                                rlist.push(recipient);
+                                props.setRecipientList(rlist);
+                                props.setRecipientFormShow(0);
+
+                                const confirmation = document.querySelector(
+                                  `#confirmation-${contact.contact_id}`
+                                );
+                                confirmation.classList.remove("d-none");
                               }}
                             >
                               <img
                                 src={require("../assets/paper-plane.png")}
                                 className="send-icon"
                                 alt="send-icon"
-                                title="send reminder"
+                                title="add recipient"
                               />
-                            </Link>
+                            </span>
                             <img
                               src={require("../assets/trash.png")}
                               className="trash-icon"
@@ -132,6 +140,12 @@ function ContactBook(props) {
                                 setPageNum(1);
                               }}
                             />
+                            <span
+                              className="recipient-confirmation d-none"
+                              id={`confirmation-${contact.contact_id}`}
+                            >
+                              added
+                            </span>
                           </div>
                           <div className="contact-phone">
                             <span>phone: </span>
@@ -180,4 +194,4 @@ function ContactBook(props) {
   );
 }
 
-export default ContactBook;
+export default RemContactBook;

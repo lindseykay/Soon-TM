@@ -1,7 +1,9 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useToken } from "../hooks/useToken";
 import { useLocation } from "react-router-dom";
 import reminderCreationAnimation from "./reminderAnimation";
+import RemContactBook from "../contacts/remContactsBook";
+import { getContacts } from "../dataLoadFunctions";
 
 function ReminderForm(props) {
   const [token, , , , , userInfo] = useToken();
@@ -12,12 +14,30 @@ function ReminderForm(props) {
   const [reminderDate, setReminderDate] = useState("");
   const [message, setMessage] = useState("");
   const [recipientFormShow, setRecipientFormShow] = useState(0);
+  const [contactBookShow, setContactBookShow] = useState(false);
   const [recipientList, setRecipientList] = useState([]);
   const [savedID, setSavedID] = useState();
   const location = useLocation();
   const { recName, recPhone, recEmail, recID } = location["state"]
     ? location.state
     : { name: "", phone: "", email: "", id: "" };
+  const [emptyFlag, setEmptyFlag] = useState(false);
+
+  useEffect(() => {
+    if (token && props.contactsList.length === 0 && !emptyFlag) {
+      const newContacts = async () => {
+        const contacts = await getContacts(token);
+        props.updateContacts(contacts);
+        if (contacts.length === 0) {
+          setEmptyFlag(true);
+        }
+      };
+      newContacts();
+    } else if (props.contactsList.length > 0 && emptyFlag) {
+      setEmptyFlag(false);
+    }
+  }, [props.contactsList]); // eslint-disable-line
+
   if (!savedID && savedID !== recID) {
     let recipient = {
       name: recName,
@@ -107,23 +127,23 @@ function ReminderForm(props) {
     }
   }
 
-  // function tomorrow() {
-  //   let nextDay = new Date();
-  //   nextDay.setDate(nextDay.getDate() + 1);
+  function tomorrow() {
+    let nextDay = new Date();
+    nextDay.setDate(nextDay.getDate() + 1);
 
-  //   let month = nextDay.getMonth() + 1;
-  //   let day = nextDay.getDate();
-  //   let year = nextDay.getFullYear();
+    let month = nextDay.getMonth() + 1;
+    let day = nextDay.getDate();
+    let year = nextDay.getFullYear();
 
-  //   if (month < 10) {
-  //     month = "0" + month;
-  //   }
-  //   if (day < 10) {
-  //     day = "0" + day;
-  //   }
+    if (month < 10) {
+      month = "0" + month;
+    }
+    if (day < 10) {
+      day = "0" + day;
+    }
 
-  //   return year + "-" + month + "-" + day;
-  // }
+    return year + "-" + month + "-" + day;
+  }
 
   function creationAnimation(input) {
     const animation = reminderCreationAnimation(input);
@@ -221,7 +241,16 @@ function ReminderForm(props) {
                     />
                     <br />
                     <button onClick={submitRecipient}>add recipient</button>
-                    {token && <button>add from contacts</button>}
+                    {token && (
+                      <button
+                        onClick={(e) => {
+                          e.preventDefault();
+                          setContactBookShow(true);
+                        }}
+                      >
+                        add from contacts
+                      </button>
+                    )}
                     <button
                       className="form-return-button"
                       onClick={(e) => setRecipientFormShow(0)}
@@ -239,7 +268,7 @@ function ReminderForm(props) {
                   placeholder="when do you want to receive this?"
                   type="date"
                   name="reminder-date"
-                  // min={tomorrow()}
+                  min={tomorrow()}
                   className="form-option"
                   value={reminderDate}
                   onChange={(e) => setReminderDate(e.target.value)}
@@ -268,7 +297,6 @@ function ReminderForm(props) {
           )}
         </div>
       </div>
-
       <div className="reminder-instructions">
         using soonTM reminders
         <div className="instruction-item">Step 1: xyz</div>
@@ -277,6 +305,21 @@ function ReminderForm(props) {
         <div className="instruction-item">Step 4: xyz</div>
         <div className="instruction-item">Step 5: xyz</div>
       </div>
+      {contactBookShow && (
+        <div className="rem-contact-book">
+          <div
+            className="dim-background"
+            onClick={(e) => setContactBookShow(false)}
+          ></div>
+          <RemContactBook
+            contactsList={props.contactsList}
+            updateContacts={props.updateContacts}
+            recipientList={recipientList}
+            setRecipientList={setRecipientList}
+            setRecipientFormShow={setRecipientFormShow}
+          />
+        </div>
+      )}
     </>
   );
 }
