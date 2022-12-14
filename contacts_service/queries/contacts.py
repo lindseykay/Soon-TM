@@ -100,32 +100,42 @@ class ContactsRepository:
                 q_dict = {}
                 for record in query:
                     if q_dict.get(record[0]):
-                        q_dict[record[0]][4].append(SpecialDayOut(
-                            id = record[4],
-                            contact_id = record[5],
-                            name = record[6],
-                            date = record[7]
-                        ))
+                        q_dict[record[0]][4].append(
+                            SpecialDayOut(
+                                id=record[4],
+                                contact_id=record[5],
+                                name=record[6],
+                                date=record[7],
+                            )
+                        )
                     else:
                         q_dict[record[0]] = (
                             record[0],
                             record[1],
                             Recipient(**recipients_dict[record[2]]),
                             record[3],
-                            [SpecialDayOut(
-                                id = record[4],
-                                contact_id = record[5],
-                                name = record[6],
-                                date = record[7])
-                            ] if record[4] else [])
+                            [
+                                SpecialDayOut(
+                                    id=record[4],
+                                    contact_id=record[5],
+                                    name=record[6],
+                                    date=record[7],
+                                )
+                            ]
+                            if record[4]
+                            else [],
+                        )
 
-                output = [ContactOut(
-                    id = rec[0],
-                    user_id = rec[1],
-                    recipient = rec[2],
-                    special_days = rec[4],
-                    notes = rec[3]
-                ) for rec in q_dict.values()]
+                output = [
+                    ContactOut(
+                        id=rec[0],
+                        user_id=rec[1],
+                        recipient=rec[2],
+                        special_days=rec[4],
+                        notes=rec[3],
+                    )
+                    for rec in q_dict.values()
+                ]
 
                 return output
         except Exception:
