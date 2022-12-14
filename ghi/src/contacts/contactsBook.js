@@ -123,13 +123,30 @@ function ContactBook(props) {
                             <img
                               src={require("../assets/trash.png")}
                               className="trash-icon"
-                              alt="send-icon"
+                              alt="trash-icon"
                               title="delete contact"
                               onClick={(e) => {
                                 e.stopPropagation();
                                 deleteContact(contact.contact_id, token);
                                 props.updateContacts([]);
                                 setPageNum(1);
+                              }}
+                            />
+                            <img
+                              src={require("../assets/celebration.png")}
+                              className="sd-icon"
+                              alt="sd-icon"
+                              title="show special days"
+                              onClick={(e) => {
+                                e.stopPropagation();
+                                const sd_text = document.querySelector(
+                                  `#sd_for_${contact.contact_id}`
+                                );
+                                if (sd_text.classList.contains("d-none")) {
+                                  sd_text.classList.remove("d-none");
+                                } else {
+                                  sd_text.classList.add("d-none");
+                                }
                               }}
                             />
                           </div>
@@ -144,6 +161,19 @@ function ContactBook(props) {
                           <div className="contact-notes">
                             <span>notes: </span>
                             {contact.notes}
+                          </div>
+                          <div
+                            className="contact-notes d-none"
+                            id={`sd_for_${contact.contact_id}`}
+                          >
+                            <span>special days: </span>
+                            {contact.special_days.map((day) => {
+                              return (
+                                <div key={day.id}>
+                                  {day.name}: {day.date}
+                                </div>
+                              );
+                            })}
                           </div>
                         </div>
                       );

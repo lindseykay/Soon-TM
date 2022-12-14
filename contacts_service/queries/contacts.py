@@ -31,7 +31,7 @@ class ContactOut(BaseModel):
     id: int
     user_id: int
     recipient: Optional[Recipient]
-    special_days: List[SpecialDayOut]
+    special_days: Optional[List[SpecialDayOut]]
     notes: str
 
 
@@ -84,14 +84,50 @@ class ContactsRepository:
                 result = db.execute(
                     """
                     SELECT *
-                    FROM CONTACTS
+                    FROM CONTACTS c
+                    LEFT JOIN special_days sd on c.id = sd.contact_id
                     WHERE user_id = %s
                     """,
                     [user_id],
                 )
                 query = result.fetchall()
 
-                return [query_to_contactout(record) for record in query]
+                recipients = find_all_recipients(user_id)
+                recipients_dict = {}
+                for recipient in recipients:
+                    recipients_dict[recipient["id"]] = recipient
+
+                q_dict = {}
+                for record in query:
+                    if q_dict.get(record[0]):
+                        q_dict[record[0]][4].append(SpecialDayOut(
+                            id = record[4],
+                            contact_id = record[5],
+                            name = record[6],
+                            date = record[7]
+                        ))
+                    else:
+                        q_dict[record[0]] = (
+                            record[0],
+                            record[1],
+                            Recipient(**recipients_dict[record[2]]),
+                            record[3],
+                            [SpecialDayOut(
+                                id = record[4],
+                                contact_id = record[5],
+                                name = record[6],
+                                date = record[7])
+                            ] if record[4] else [])
+
+                output = [ContactOut(
+                    id = rec[0],
+                    user_id = rec[1],
+                    recipient = rec[2],
+                    special_days = rec[4],
+                    notes = rec[3]
+                ) for rec in q_dict.values()]
+
+                return output
         except Exception:
             return {"message": "hello Can't find all contacts"}
 
@@ -154,6 +190,14 @@ class ContactsRepository:
 def find_recipient(id: int):
     url = f'{os.environ["REMINDERS_HOST"]}recipients/{id}'
     response = requests.get(url)
+    content = json.loads(response.content)
+    return content
+
+
+def find_all_recipients(user_id: int):
+    url = f'{os.environ["REMINDERS_HOST"]}contacts/recipients/'
+    params = {"user_id": user_id}
+    response = requests.get(url, params)
     content = json.loads(response.content)
     return content
 
