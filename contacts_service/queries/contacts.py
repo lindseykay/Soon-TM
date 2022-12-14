@@ -84,13 +84,15 @@ class ContactsRepository:
                 result = db.execute(
                     """
                     SELECT *
-                    FROM CONTACTS
+                    FROM CONTACTS c
+                    LEFT JOIN special_days sd on c.id = sd.contact_id
                     WHERE user_id = %s
                     """,
                     [user_id],
                 )
                 query = result.fetchall()
-
+                recipients = find_all_recipients(user_id)
+                print(recipients)
                 return [query_to_contactout(record) for record in query]
         except Exception:
             return {"message": "hello Can't find all contacts"}
@@ -154,6 +156,14 @@ class ContactsRepository:
 def find_recipient(id: int):
     url = f'{os.environ["REMINDERS_HOST"]}recipients/{id}'
     response = requests.get(url)
+    content = json.loads(response.content)
+    return content
+
+
+def find_all_recipients(user_id: int):
+    url = f'{os.environ["REMINDERS_HOST"]}contacts/recipients/'
+    params = {"user_id": user_id}
+    response = requests.get(url, params)
     content = json.loads(response.content)
     return content
 

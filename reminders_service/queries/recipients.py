@@ -160,3 +160,27 @@ class RecipientRepository:
             )
         except Exception:
             return None
+
+    def get_all_for_contacts(self, user_id: int):
+        try:
+            with conn.cursor() as db:
+                result = db.execute(
+                    """
+                    SELECT *
+                    FROM recipients
+                    WHERE user_id = %s
+                    """,
+                    [user_id],
+                )
+                query = result.fetchall()
+            return [
+                RecipientOut(
+                    id=record[0],
+                    name=record[1],
+                    phone=record[2],
+                    email=record[3],
+                )
+                for record in query
+            ]
+        except Exception:
+            return None

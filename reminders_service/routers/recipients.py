@@ -67,3 +67,8 @@ def get_all_by_user(
 @router.get("/recipients/{recipient_id}")
 def get_by_id(recipient_id: int, repo: RecipientRepository = Depends()):
     return repo.get_by_id(recipient_id)
+
+
+@router.get("/contacts/recipients/")
+def get_all_recipients(user_id: int, repo: RecipientRepository = Depends()):
+    return repo.get_all_for_contacts(user_id)
