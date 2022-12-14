@@ -209,7 +209,7 @@ function ReminderForm(props) {
                 )}
                 {recipientFormShow === 1 && (
                   <>
-                    <label>To whom:</label>
+                    <label>to whom:</label>
                     <br />
                     <input
                       required

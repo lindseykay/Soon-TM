@@ -31,7 +31,7 @@ class ContactOut(BaseModel):
     id: int
     user_id: int
     recipient: Optional[Recipient]
-    special_days: List[SpecialDayOut]
+    special_days: Optional[List[SpecialDayOut]]
     notes: str
 
 
@@ -91,9 +91,43 @@ class ContactsRepository:
                     [user_id],
                 )
                 query = result.fetchall()
+
                 recipients = find_all_recipients(user_id)
-                print(recipients)
-                return [query_to_contactout(record) for record in query]
+                recipients_dict = {}
+                for recipient in recipients:
+                    recipients_dict[recipient["id"]] = recipient
+
+                q_dict = {}
+                for record in query:
+                    if q_dict.get(record[0]):
+                        q_dict[record[0]][4].append(SpecialDayOut(
+                            id = record[4],
+                            contact_id = record[5],
+                            name = record[6],
+                            date = record[7]
+                        ))
+                    else:
+                        q_dict[record[0]] = (
+                            record[0],
+                            record[1],
+                            Recipient(**recipients_dict[record[2]]),
+                            record[3],
+                            [SpecialDayOut(
+                                id = record[4],
+                                contact_id = record[5],
+                                name = record[6],
+                                date = record[7])
+                            ] if record[4] else [])
+
+                output = [ContactOut(
+                    id = rec[0],
+                    user_id = rec[1],
+                    recipient = rec[2],
+                    special_days = rec[4],
+                    notes = rec[3]
+                ) for rec in q_dict.values()]
+
+                return output
         except Exception:
             return {"message": "hello Can't find all contacts"}
 
